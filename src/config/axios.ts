@@ -7,9 +7,12 @@ const config: AxiosRequestConfig = {
 const api = axios.create(config);
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
-    if (token != null) {
-        config.headers['Authorization'] = `Bearer ${localStorage.getItem("token")}`
+    const userInfo = localStorage.getItem("userSession");
+    if (userInfo != null) {
+        const token = localStorage.getItem(JSON.parse(userInfo).token);
+        if (token != null) {
+            config.headers['Authorization'] = `Bearer ${token}`
+        }
     }
     return config;
 });

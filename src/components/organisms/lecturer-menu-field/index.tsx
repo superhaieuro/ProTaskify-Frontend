@@ -10,7 +10,7 @@ const LecturerMenuField = () => {
                 components={[
                     <>
                         <NavLink to={"dashboard"}>
-                            <MenuItem icon="line_axis" message="Dashboard" />
+                            <MenuItem icon="grid_view" message="Dashboard" />
                         </NavLink>
 
                         <NavLink to={"classes"}>

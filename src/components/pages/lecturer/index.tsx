@@ -5,9 +5,10 @@ const Lecturer = () => {
     return (
         <div className="flex">
             <LecturerMenuBar />
-            <Outlet />
+            <div className="p-5">
+                <Outlet />
+            </div>
         </div>
-            
     )
 }
 

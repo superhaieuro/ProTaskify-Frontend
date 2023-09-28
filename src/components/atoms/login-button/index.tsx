@@ -28,7 +28,7 @@ const LoginButton = () => {
         }
     }, [userToken]);
 
-    if (redirecting) {
+    if (redirecting) {        
         return (
             <Navigate to={role === "LECTURER" ? "/lecturer" : "/student"} replace={true} />
         );
