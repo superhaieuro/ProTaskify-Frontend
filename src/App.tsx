@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Lecturer from "./components/pages/lecturer";
 import Login from "./components/pages/login";
 import PrivateRoute from "./utils/private-route";
@@ -25,8 +25,8 @@ function App() {
 
           <Route path="/lecturer" element={<PrivateRoute authRole={'LECTURER'} />}>
             <Route path="/lecturer" element={<Lecturer />} >
-              <Route index element={<LecturerDashboard />} />
-              <Route path="dashboard" element={<LecturerDashboard />} />
+              <Route path="" element={<Navigate to="dashboard" />} />
+              <Route index path="dashboard" element={<LecturerDashboard />} />
               <Route path="classes" element={<LecturerClasses />} />
               <Route path="notification" element={<LecturerNotification />} />
             </Route>
@@ -34,7 +34,7 @@ function App() {
 
           <Route path="/student" element={<PrivateRoute authRole={'STUDENT'} />}>
             <Route path="/student" element={<Student />} >
-              <Route index element={<StudentTimeline />} />
+              <Route path="" element={<Navigate to="timeline" />} />
               <Route path="timeline" element={<StudentTimeline />} />
               <Route path="backlog" element={<StudentBacklog />} />
               <Route path="tasks" element={<StudentTasks />} />

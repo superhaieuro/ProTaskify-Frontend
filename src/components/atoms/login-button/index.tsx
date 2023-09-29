@@ -16,7 +16,7 @@ const LoginButton = () => {
     useEffect(() => {
         if (userToken) {
             const fetchUserData = async () => {
-                const response = await api.post("/api/v1/auth", userToken);
+                const response = await api.post("/api/v1/auth", userToken); 
                 const { token, role, userInfo } = response.data;
                 const userSessionData = { token, role, userInfo };
                 const userSession = JSON.stringify(userSessionData);
