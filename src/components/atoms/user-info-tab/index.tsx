@@ -6,8 +6,8 @@ const UserInfoTab = () => {
             <img className="w-8 h-8 rounded-full" 
             src={userInfo.userInfo.picture}></img>
             <div className="w-fit">
-                <div className="text-sm">{userInfo.userInfo.name}</div>
-                <p className="text-xs text-gray-600">{userInfo.role}</p>
+                <div className="text-sm">{userInfo.userInfo.FullName}</div>
+                <p className="text-xs text-gray-600">{userInfo.userInfo.authorities[0].authority}</p>
             </div>
         </div>
     )

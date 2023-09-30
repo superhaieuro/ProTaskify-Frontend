@@ -16,19 +16,19 @@ const LoginButton = () => {
     useEffect(() => {
         if (userToken) {
             const fetchUserData = async () => {
-                const response = await api.post("/api/v1/auth", userToken); 
-                const { token, role, userInfo } = response.data;
-                const userSessionData = { token, role, userInfo };
+                const response = await api.post("/api/v1/auth", userToken);
+                const { token, userInfo } = response.data;
+                const userSessionData = { token, userInfo };
                 const userSession = JSON.stringify(userSessionData);
                 localStorage.setItem("userSession", userSession);
-                setRole(userSessionData.role);
+                setRole(userSessionData.userInfo.authorities[0].authority);
                 setRedirecting(true);
             }
             fetchUserData();
         }
     }, [userToken]);
 
-    if (redirecting) {        
+    if (redirecting) {
         return (
             <Navigate to={role === "LECTURER" ? "/lecturer" : "/student"} replace={true} />
         );

@@ -81,9 +81,13 @@ function DemoApphehe(): JSX.Element {
                 //     }
                 // }
                 // fetchUserData();
-                
+
                 const fetchUserData = async () => {
-                    const response = await api.post("/api/v1/lecturer/import", jsonData);
+                    const response = await api.post("/api/v1/lecturer/import-student", jsonData, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
                     if (response.status === 200) {
                         console.log(response);
                     } else {
@@ -93,9 +97,9 @@ function DemoApphehe(): JSX.Element {
                 fetchUserData();
             } catch (error) {
                 console.log(error);
-                
+
             }
-            
+
         }
     }, [jsonData]);
 

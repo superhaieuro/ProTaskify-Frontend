@@ -10,7 +10,7 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ authRole }) => {
   if (userInfo == null) {
     return <Navigate to={"/login"} replace={true} />;
   } else {
-    const role = JSON.parse(userInfo).role;
+    const role = JSON.parse(userInfo).userInfo.authorities[0].authority;
     return authRole === role
       ? <Outlet /> : <Navigate to={"/login"} replace={true} />;
   }
