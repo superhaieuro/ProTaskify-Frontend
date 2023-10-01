@@ -5,7 +5,7 @@ const LogoutButton = () => {
         <button
             className="w-full"
             onClick={() => {
-                localStorage.removeItem("userSession");
+                localStorage.clear();
                 window.location.reload();
             }}>
             <MenuItem icon="logout" message="Logout" />

@@ -5,7 +5,7 @@ const Student = () => {
     return (
         <div className="flex">
             <StudentMenuBar />
-            <div className="p-5">
+            <div className="p-5 w-full">
                 <Outlet />
             </div>
         </div>

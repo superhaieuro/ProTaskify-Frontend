@@ -1,4 +1,5 @@
 import LoginButton from "../../atoms/login-button"
+import LogoutButton from "../../atoms/logout-button";
 import SuggestionBox from "../../atoms/suggestion-box";
 
 const Login = () => {
@@ -10,8 +11,9 @@ const Login = () => {
                     <div className="text-sm text-gray-600">Organize courses, groups and projects with ease and efficiency.</div>
                 </div>
                 <LoginButton />
-                <SuggestionBox icon="lightbulb" message="We suggest using the email address you use at your work."/>
+                <SuggestionBox icon="lightbulb" message="We suggest using the email address you use at your work." style="text-gray-600 border-gray-200 bg-gray-50"/>
             </div>
+            <LogoutButton />
         </div>
     );
 }
