@@ -27,16 +27,23 @@ function DemoApphehe(): JSX.Element {
                         setExcelFile(e.target.result);
                     }
                 };
+                console.log("Ok");
+
             } else {
                 setTypeError("Please select only excel file types");
                 setExcelFile(null);
+                console.log("no");
+
+
             }
         }
+
     };
 
     const handleFileSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         if (excelFile !== null) {
+
             const workbook = XLSX.read(excelFile, { type: "buffer" });
             const worksheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[worksheetName];
@@ -45,6 +52,7 @@ function DemoApphehe(): JSX.Element {
             // Convert the data to JSON format
             const jsonData = JSON.stringify(data);
             setJsonData(jsonData);
+
             //   console.log(jsonData);
             //   try {
             //     const request = await axios.post(

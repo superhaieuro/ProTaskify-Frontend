@@ -1,5 +1,5 @@
 const UserInfoTab = () => {
-    const userInfo = JSON.parse(localStorage.getItem("userSession")!);
+    const userInfo = JSON.parse(sessionStorage.getItem("userSession")!);
 
     return (
         <div className="border border-gray-200 w-full rounded-lg px-3 py-1.5 flex gap-1.5 items-center">

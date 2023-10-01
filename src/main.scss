@@ -22,6 +22,6 @@
 
 .active {
     div {
-        color: rgb(37, 99, 235);
+        @apply text-blue-600;
     }
 }

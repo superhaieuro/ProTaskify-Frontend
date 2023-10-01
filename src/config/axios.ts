@@ -7,7 +7,7 @@ const config: AxiosRequestConfig = {
 const api = axios.create(config);
 
 api.interceptors.request.use((config) => {
-    const userInfo = localStorage.getItem("userSession");
+    const userInfo = sessionStorage.getItem("userSession");
     if (userInfo != null) {
         const token = JSON.parse(userInfo).token;
         if (token != null) {

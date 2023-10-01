@@ -3,7 +3,7 @@ import HeaderTitle from "../../atoms/header-title";
 const LecturerDashboard = () => {
     return (
         <div>
-            <HeaderTitle title="Welcome back" subTitle={JSON.parse(localStorage.getItem("userSession")!).userInfo.FullName} />
+            <HeaderTitle title="Dashboard" subTitle="Take an overview of your work here." />
         </div>
     )
 }

@@ -20,7 +20,7 @@ const LoginButton = () => {
                 const { token, userInfo } = response.data;
                 const userSessionData = { token, userInfo };
                 const userSession = JSON.stringify(userSessionData);
-                localStorage.setItem("userSession", userSession);
+                sessionStorage.setItem("userSession", userSession);
                 setRole(userSessionData.userInfo.authorities[0].authority);
                 setRedirecting(true);
             }
