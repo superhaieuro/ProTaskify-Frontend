@@ -1,13 +1,13 @@
 import { FC } from "react";
 
-type NormalButtonProps = {
+type ApproveButtonProps = {
     icon: string;
     message: string;
 }
 
-const NormalButton: FC<NormalButtonProps> = ({ icon, message }) => {
+const ApproveButton: FC<ApproveButtonProps> = ({ icon, message }) => {
     return (
-        <div className="border-gray-200 hover:border-gray-400 active:bg-gray-200 gap-x-1.5 border px-3 py-1.5 flex-col flex items-center rounded-lg h-fit w-fit">
+        <div className="text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 gap-x-1.5 border px-3 py-1.5 flex-col flex items-center rounded-lg h-fit w-fit">
             <div className="gap-x-1.5 flex items-center">
                 {icon !== "" ? <span className="material-symbols-rounded h-fit icon">{icon}</span> : null}
                 {message !== "" ? <div className="text-sm">{message}</div> : null}
@@ -18,4 +18,4 @@ const NormalButton: FC<NormalButtonProps> = ({ icon, message }) => {
     )
 }
 
-export default NormalButton;
+export default ApproveButton;

@@ -1,51 +1,73 @@
 import { ChangeEvent, useContext, useState } from "react";
 import NormalButton from "../../atoms/normal-button"
-import { ToastContext } from "../../../utils/my-context";
+import { ToastContext } from "../../../utils/toast-context";
 import * as XLSX from "xlsx";
+import ModalImportStudentList from "../../molecules/modal-import-student-list";
 
 const LecturerImportStudentList = () => {
+    const [invalid, setInvalid] = useState(true); //Check the format of Excel file
     const [jsonData, setJsonData] = useState<string | null>(null);
-    const Toast = useContext(ToastContext);
+    const [showModal, setShowModal] = useState(false);
+    const [className, setClassName] = useState("");
+
+    const toast = useContext(ToastContext); //Update toast for notification
+
+    //Valid the excel fileds
+    const isValidExcelFormat = (data: any[]): boolean => {
+        const expectedKeys = ["Class", "RollNumber", "MemberCode", "FullName"];
+        return data.every(item => expectedKeys.every(key => Object.keys(item).includes(key)));
+    }
 
     const handleFile = (e: ChangeEvent<HTMLInputElement>): void => {
-        const fileTypes = [
-            "application/vnd.ms-excel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "text/csv",
-        ];
         const selectedFile = e.target.files && e.target.files[0];
 
         if (selectedFile) {
-            if (fileTypes.includes(selectedFile.type)) {
-                const reader = new FileReader();
-                reader.readAsArrayBuffer(selectedFile);
-                reader.onload = (e: ProgressEvent<FileReader>) => {
-                    if (e.target && e.target.result instanceof ArrayBuffer) {
-                        const workbook = XLSX.read(e.target.result, { type: "buffer" });
-                        const worksheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[worksheetName];
-                        const data = XLSX.utils.sheet_to_json(worksheet);
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(selectedFile);
+            reader.onload = (e: ProgressEvent<FileReader>) => {
+                if (e.target && e.target.result instanceof ArrayBuffer) {
+                    const workbook = XLSX.read(e.target.result, { type: "buffer" });
+                    const worksheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[worksheetName];
+                    const data = XLSX.utils.sheet_to_json(worksheet);
+                    if (isValidExcelFormat(data)) {
                         setJsonData(JSON.stringify(data));
+                        setClassName(JSON.parse(JSON.stringify(data))[0].Class);
+                        setShowModal(true);
+                        setInvalid(false);
+                    } else {
+                        toast?.setErrorMessage("Inalid excel format, please import another one.");
                     }
-                };
-            } else {
-                e.target.value = "";
-                Toast?.setErrorMessage("Please import excel file types only.");
+                }
             }
         }
-    };
+
+        if (invalid) {
+            e.target.value = "";
+        }
+    }
 
     return (
-        <form>
-            <input type="file" required id="inputList" hidden onChange={handleFile} />
-            <label htmlFor="inputList">
-                <NormalButton
-                    icon="upload"
-                    message="Import new class"
-                    style="border-gray-200 hover:border-gray-400 active:bg-gray-200"
-                />
-            </label>
-        </form>
+        <>
+            <form>
+                <input type="file" required id="inputList" hidden onChange={handleFile}
+                    accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, text/csv" />
+                <label htmlFor="inputList">
+                    <NormalButton
+                        icon="upload"
+                        message="Import new class" />
+                </label>
+            </form>
+
+            <ModalImportStudentList
+                isVisible={showModal}
+                onClose={() => {
+                    setShowModal(false);
+                    setInvalid(true);
+                }}
+                className={className}
+                data={jsonData!} />
+        </>
     )
 }
 

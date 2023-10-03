@@ -17,6 +17,8 @@ const LoginButton = () => {
         if (userToken) {
             const fetchUserData = async () => {
                 const response = await api.post("/api/v1/auth", userToken);
+                console.log(response);
+                
                 const { token, userInfo } = response.data;
                 const userSessionData = { token, userInfo };
                 const userSession = JSON.stringify(userSessionData);

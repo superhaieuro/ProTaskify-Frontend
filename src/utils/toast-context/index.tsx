@@ -3,17 +3,20 @@ import toast, { Toaster } from "react-hot-toast";
 import NotificationBox from "../../components/atoms/notification-box";
 
 type ToastContextProps = {
+    successMessage: string | null;
+    setSuccessMessage: React.Dispatch<React.SetStateAction<string | null>>;
+
     errorMessage: string | null;
     setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
-type MyProviderProps = {
+type ToastProviderProps = {
     children: ReactNode;
 }
 
-const MyProvider: FC<MyProviderProps> = ({ children }) => {
+const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     useEffect(() => {
         if (errorMessage != null) (
@@ -27,12 +30,28 @@ const MyProvider: FC<MyProviderProps> = ({ children }) => {
         setErrorMessage(null);
     }, [errorMessage]);
 
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    useEffect(() => {
+        if (successMessage != null) (
+            toast.custom((t) => (
+                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} drop-shadow`}>
+                    <NotificationBox icon="check_circle" message={successMessage!} style="text-green-600 border-green-200 bg-green-50" />
+                </div>
+            )
+            )
+        )
+        setSuccessMessage(null);
+    }, [successMessage]);
+
     return (
-        <ToastContext.Provider value={{ errorMessage: errorMessage, setErrorMessage: setErrorMessage }}>
+        <ToastContext.Provider value={{
+            successMessage: successMessage, setSuccessMessage: setSuccessMessage,
+            errorMessage: errorMessage, setErrorMessage: setErrorMessage
+        }}>
             {children}
             <Toaster position="bottom-right" />
         </ToastContext.Provider>
     )
 }
 
-export { ToastContext, MyProvider };
+export { ToastContext, ToastProvider };

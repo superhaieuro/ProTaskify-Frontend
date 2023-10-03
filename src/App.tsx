@@ -13,13 +13,13 @@ import StudentTasks from "./components/templates/student-tasks";
 import StudentTeam from "./components/templates/student-team";
 import StudentNotification from "./components/templates/student-notification";
 import StudentSetting from "./components/templates/student-setting";
-import { MyProvider } from "./utils/my-context";
+import { ToastProvider } from "./utils/toast-context";
 
 function App() {
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <BrowserRouter>
-        <MyProvider>
+        <ToastProvider>
           <Routes>
             <Route path="*" element={<Navigate to="/" />} />
             <Route index element={<Login />} />
@@ -45,7 +45,7 @@ function App() {
               </Route>
             </Route>
           </Routes>
-        </MyProvider>
+        </ToastProvider>
       </BrowserRouter>
     </GoogleOAuthProvider >
   )
