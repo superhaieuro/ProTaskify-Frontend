@@ -49,7 +49,7 @@ const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
             errorMessage: errorMessage, setErrorMessage: setErrorMessage
         }}>
             {children}
-            <Toaster position="bottom-right" />
+            <Toaster />
         </ToastContext.Provider>
     )
 }

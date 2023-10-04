@@ -7,21 +7,21 @@ export default {
   theme: {
     extend: {
       animation: {
-        enter: "fadeInRight 500ms ease-out",
-        leave: "fadeOutLeft 500ms ease-in forwards"
+        enter: "fadeInDown 500ms ease-out",
+        leave: "fadeOutDown 500ms ease-in forwards"
       },
       keyframes: {
-        fadeInRight: {
+        fadeInDown: {
           "0%": {
             opacity: "0",
-            transform: "translate(2rem)"
+            transform: "translateY(-2rem)"
           },
           "100%": {
             opacity: "1",
-            transform: "translate(0)"
+            transform: "translateY(0)"
           }
         },
-        fadeOutLeft: {
+        fadeOutDown: {
           "0%": {
             opacity: "1"
           },

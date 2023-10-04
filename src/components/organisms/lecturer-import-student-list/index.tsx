@@ -3,12 +3,14 @@ import NormalButton from "../../atoms/normal-button"
 import { ToastContext } from "../../../utils/toast-context";
 import * as XLSX from "xlsx";
 import ModalImportStudentList from "../../molecules/modal-import-student-list";
+import api from "../../../config/axios";
 
 const LecturerImportStudentList = () => {
     const [invalid, setInvalid] = useState(true); //Check the format of Excel file
     const [jsonData, setJsonData] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const [className, setClassName] = useState("");
+    const [className, setClassName] = useState<string | null>(null);
+    const [semester, setSemester] = useState<string | null>(null);
 
     const toast = useContext(ToastContext); //Update toast for notification
 
@@ -19,32 +21,47 @@ const LecturerImportStudentList = () => {
     }
 
     const handleFile = (e: ChangeEvent<HTMLInputElement>): void => {
-        const selectedFile = e.target.files && e.target.files[0];
+        //Get active Semester
+        const fetchUserData = async () => {
+            try {
+                const response = await api.get("/api/v1/common/get-active-semester");
+                if (response.status === 200) {
+                    if (response.data !== "") {
+                        setSemester(JSON.stringify(response.data));
+                        const selectedFile = e.target.files && e.target.files[0];
+                        if (selectedFile) {
+                            const reader = new FileReader();
+                            reader.readAsArrayBuffer(selectedFile);
+                            reader.onload = (e: ProgressEvent<FileReader>) => {
+                                if (e.target && e.target.result instanceof ArrayBuffer) {
+                                    const workbook = XLSX.read(e.target.result, { type: "buffer" });
+                                    const worksheetName = workbook.SheetNames[0];
+                                    const worksheet = workbook.Sheets[worksheetName];
+                                    const data = XLSX.utils.sheet_to_json(worksheet);
+                                    if (isValidExcelFormat(data)) {
+                                        setJsonData(JSON.stringify(data));
+                                        setClassName(JSON.parse(JSON.stringify(data))[0].Class);
+                                        setShowModal(true);
+                                        setInvalid(false);
+                                    } else {
+                                        toast?.setErrorMessage("Inalid excel format, please import another one.");
+                                    }
+                                }
+                            }
+                        }
 
-        if (selectedFile) {
-            const reader = new FileReader();
-            reader.readAsArrayBuffer(selectedFile);
-            reader.onload = (e: ProgressEvent<FileReader>) => {
-                if (e.target && e.target.result instanceof ArrayBuffer) {
-                    const workbook = XLSX.read(e.target.result, { type: "buffer" });
-                    const worksheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[worksheetName];
-                    const data = XLSX.utils.sheet_to_json(worksheet);
-                    if (isValidExcelFormat(data)) {
-                        setJsonData(JSON.stringify(data));
-                        setClassName(JSON.parse(JSON.stringify(data))[0].Class);
-                        setShowModal(true);
-                        setInvalid(false);
+                        if (invalid) {
+                            e.target.value = "";
+                        }
                     } else {
-                        toast?.setErrorMessage("Inalid excel format, please import another one.");
+                        toast?.setErrorMessage("No semester is ongoing now.");
                     }
                 }
+            } catch (error) {
+                console.error(error);
             }
         }
-
-        if (invalid) {
-            e.target.value = "";
-        }
+        fetchUserData();
     }
 
     return (
@@ -65,7 +82,8 @@ const LecturerImportStudentList = () => {
                     setShowModal(false);
                     setInvalid(true);
                 }}
-                className={className}
+                className={className!}
+                semeter={semester!}
                 data={jsonData!} />
         </>
     )

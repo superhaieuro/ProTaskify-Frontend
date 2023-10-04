@@ -17,6 +17,7 @@ type ModalImportStudentListProps = {
     isVisible: boolean;
     onClose: () => void;
     className: string;
+    semeter: string;
     data: string;
 };
 
@@ -24,6 +25,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
     isVisible,
     onClose,
     className,
+    semeter, 
     data,
 }) => {
     const toast = useContext(ToastContext);
@@ -53,8 +55,6 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
         return null;
     } else {
         const jsonData: Student[] = JSON.parse(data);
-        console.log(JSON.parse(data));
-        
 
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
@@ -72,7 +72,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
                             <InputText title="Class ID" placeholder="" value={className} readonly={true} />
                         </div>
                         <div className="w-full">
-                            <InputText title="Semester" placeholder="" value="Fall 2023" readonly={true} />
+                            <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} />
                         </div>
                     </div>
 
@@ -85,7 +85,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
                                 <div className="w-52">Member Code</div>
                                 <div className="w-52">Full Name</div>
                             </div>
-                            <div className="h-80 overflow-y-auto">
+                            <div className="max-h-80 overflow-y-auto">
                                 {jsonData.map((student, index) => (
                                     <div key={index} className="p-5 flex gap-x-2">
                                         <div className="w-10">{index + 1}</div>

@@ -16,15 +16,17 @@ const LoginButton = () => {
     useEffect(() => {
         if (userToken) {
             const fetchUserData = async () => {
-                const response = await api.post("/api/v1/auth", userToken);
-                console.log(response);
-                
-                const { token, userInfo } = response.data;
-                const userSessionData = { token, userInfo };
-                const userSession = JSON.stringify(userSessionData);
-                sessionStorage.setItem("userSession", userSession);
-                setRole(userSessionData.userInfo.authorities[0].authority);
-                setRedirecting(true);
+                try {
+                    const response = await api.post("/api/v1/auth", userToken);
+                    const { token, userInfo } = response.data;
+                    const userSessionData = { token, userInfo };
+                    const userSession = JSON.stringify(userSessionData);
+                    sessionStorage.setItem("userSession", userSession);
+                    setRole(userSessionData.userInfo.authorities[0].authority);
+                    setRedirecting(true);
+                } catch (error) {
+                    console.log(error);
+                }
             }
             fetchUserData();
         }
