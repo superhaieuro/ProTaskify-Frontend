@@ -9,7 +9,7 @@ const LecturerImportStudentList = () => {
     const [invalid, setInvalid] = useState(true); //Check the format of Excel file
     const [jsonData, setJsonData] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const [className, setClassName] = useState<string | null>(null);
+    const [classId, setClassId] = useState<string | null>(null);
     const [semester, setSemester] = useState<string | null>(null);
 
     const toast = useContext(ToastContext); //Update toast for notification
@@ -40,7 +40,7 @@ const LecturerImportStudentList = () => {
                                     const data = XLSX.utils.sheet_to_json(worksheet);
                                     if (isValidExcelFormat(data)) {
                                         setJsonData(JSON.stringify(data));
-                                        setClassName(JSON.parse(JSON.stringify(data))[0].Class);
+                                        setClassId(JSON.parse(JSON.stringify(data))[0].Class);
                                         setShowModal(true);
                                         setInvalid(false);
                                     } else {
@@ -82,7 +82,7 @@ const LecturerImportStudentList = () => {
                     setShowModal(false);
                     setInvalid(true);
                 }}
-                className={className!}
+                classId={classId!}
                 semeter={semester!}
                 data={jsonData!} />
         </>

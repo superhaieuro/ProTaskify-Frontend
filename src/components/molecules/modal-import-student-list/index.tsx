@@ -16,7 +16,7 @@ type Student = {
 type ModalImportStudentListProps = {
     isVisible: boolean;
     onClose: () => void;
-    className: string;
+    classId: string;
     semeter: string;
     data: string;
 };
@@ -24,7 +24,7 @@ type ModalImportStudentListProps = {
 const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
     isVisible,
     onClose,
-    className,
+    classId,
     semeter, 
     data,
 }) => {
@@ -32,8 +32,14 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
     const handleCreate = () => {
         try {
+            const request = {
+                students: JSON.parse(data), //Student list
+                classId: classId, //Class Id
+                lecturerEmail: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.MemberCode //Lecturer email
+            }
+            
             const fetchUserData = async () => {
-                const response = await api.post("/api/v1/lecturer/import-student", JSON.parse(data), {
+                const response = await api.post("/api/v1/lecturer/import-student", request, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -56,6 +62,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
     } else {
         const jsonData: Student[] = JSON.parse(data);
 
+
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
             flex justify-center items-center drop-shadow">
@@ -69,7 +76,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
                     <div className="flex gap-5">
                         <div className="w-full">
-                            <InputText title="Class ID" placeholder="" value={className} readonly={true} />
+                            <InputText title="Class" placeholder="" value={classId} readonly={true} />
                         </div>
                         <div className="w-full">
                             <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} />
