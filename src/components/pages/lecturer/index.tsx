@@ -3,9 +3,9 @@ import LecturerMenuBar from "../../templates/lecturer-menu-bar";
 
 const Lecturer = () => {
     return (
-        <div className="flex">
+        <div className="flex h-screen">
             <LecturerMenuBar />
-            <div className="p-5 w-full">
+            <div className="p-5 w-full overflow-y-auto">
                 <Outlet />
             </div>
         </div>

@@ -3,7 +3,6 @@ import XButton from "../../atoms/x-button";
 import InputText from "../../atoms/input-text";
 import ApproveButton from "../../atoms/approve-button";
 import NormalButton from "../../atoms/normal-button";
-import "./index.scss"
 import api from "../../../config/axios";
 import { ToastContext } from "../../../utils/toast-context";
 
@@ -16,7 +15,7 @@ type Student = {
 type ModalImportStudentListProps = {
     isVisible: boolean;
     onClose: () => void;
-    classId: string;
+    className: string;
     semeter: string;
     data: string;
 };
@@ -24,7 +23,7 @@ type ModalImportStudentListProps = {
 const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
     isVisible,
     onClose,
-    classId,
+    className,
     semeter, 
     data,
 }) => {
@@ -34,14 +33,14 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
         try {
             const request = {
                 students: JSON.parse(data), //Student list
-                classId: classId, //Class Id
+                className: className, //Class Name
                 lecturerEmail: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.MemberCode //Lecturer email
             }
             
             const fetchUserData = async () => {
                 const response = await api.post("/api/v1/lecturer/import-student", request, {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json;charset=UTF-8'
                     }
                 });
                 if (response.status === 200) {
@@ -62,7 +61,6 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
     } else {
         const jsonData: Student[] = JSON.parse(data);
 
-
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
             flex justify-center items-center drop-shadow">
@@ -76,7 +74,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
                     <div className="flex gap-5">
                         <div className="w-full">
-                            <InputText title="Class" placeholder="" value={classId} readonly={true} />
+                            <InputText title="Class" placeholder="" value={className} readonly={true} />
                         </div>
                         <div className="w-full">
                             <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} />
@@ -85,8 +83,8 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
                     <div className="flex flex-col gap-2 text-sm">
                         <div>Student list</div>
-                        <div className="border border-gray-200 rounded-lg">
-                            <div className="p-5 bg-gray-50 flex gap-x-2 rounded-t-lg border-b border-gray-200">
+                        <div className="border border-gray-200 rounded-lg overflow-auto">
+                            <div className="p-5 bg-gray-50 flex gap-x-2 border-b border-gray-200">
                                 <div className="w-10">#</div>
                                 <div className="w-28">Roll Number</div>
                                 <div className="w-52">Member Code</div>
