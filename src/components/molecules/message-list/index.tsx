@@ -1,6 +1,21 @@
+import { useEffect } from "react";
 import MessageGroup from "../../atoms/message-group";
+import api from "../../../config/axios";
 
 const MessageList = () => {
+    // useEffect(() => {
+    //     const fetchUserData = async () => {
+    //         try {
+    //             const response = await api.get("/api/v1/common/message-list?studentId=SE172220");
+    //             console.log(response);
+                
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    //     fetchUserData();
+    // }, []);
+
     return (
         <div className="w-1/3 border border-gray-200 rounded-lg overflow-y-auto h-fit max-h-full">
             <MessageGroup
