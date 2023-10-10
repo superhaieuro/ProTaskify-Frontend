@@ -1,74 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MessageGroup from "../../atoms/message-group";
 import api from "../../../config/axios";
 
+type MessageListProps = {
+    onClick: () => void;
+}
+
 const MessageList = () => {
-    // useEffect(() => {
-    //     const fetchUserData = async () => {
-    //         try {
-    //             const response = await api.get("/api/v1/common/message-list?studentId=SE172220");
-    //             console.log(response);
-                
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
-    //     fetchUserData();
-    // }, []);
+    const [groupChatList, setGroupChatList] = useState<[]>([]);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const lecturerId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
+                const response = await api.get(`/api/v1/common/message-list?lecturerId=${lecturerId}`);
+                setGroupChatList(JSON.parse(JSON.stringify(response.data)));
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchUserData();
+    }, []);
 
     return (
         <div className="w-1/3 border border-gray-200 rounded-lg overflow-y-auto h-fit max-h-full">
-            <MessageGroup
-                title="NET1700 - Rainbow Dragon"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={false} />
-            <MessageGroup
-                title="NET1700 - Rainbow Dragon"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={false} />
-            <MessageGroup
-                title="NET1700 - Rainbow Dragon"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={false} />
-
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
-            <MessageGroup
-                title="NET1700 - Rainbow Pig"
-                message="alo alo alo alo alo alo Danzxcvzxvzxvzxvxzvzxvzxcvzxcvxzvczvxdv"
-                date={new Date(2023, 11, 19)}
-                status={true} />
+            {
+                groupChatList.map((groupChatItem) => (
+                    <MessageGroup
+                        title={`${groupChatItem[1]} - ${groupChatItem[5]}`}
+                        message={groupChatItem[2]}
+                        date={new Date(groupChatItem[3])}
+                        status={groupChatItem[4]} />
+                ))
+            }
         </div>
     )
 }

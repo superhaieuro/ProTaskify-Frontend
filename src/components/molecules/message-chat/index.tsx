@@ -9,12 +9,21 @@ import Stomp from "stompjs";
 
 const STUDENT_ID = "SE172220";
 
+type MessageChat = {
+    content: string;
+    date: Date;
+    fromId: string;
+    status: boolean;
+}
+
 const MessageChat = () => {
-    const [message, setMessage] = useState("");
-    const [stomp, setStomp] = useState<any>(null);
+    const [inputMessage, setInputMessage] = useState(""); //Message input box
+    const [stomp, setStomp] = useState<any>(null); //Connect with Socket
+    const [pageSize, setPageSize] = useState(20);
+    const [messageChatList, setMessageChatList] = useState<MessageChat[]>([]);
 
     const connect = () => {
-        const socket = new SockJS(`${import.meta.env.VITE_API_ENDPOINT}/api/v1/common/room`);
+        const socket = new SockJS(`${import.meta.env.VITE_API_ENDPOINT}/web-socket`);
         setStomp(Stomp.over(socket));
         if (stomp) {
             stomp.connect({}, () => {
@@ -24,24 +33,25 @@ const MessageChat = () => {
             })
         }
     }
-    
+
     if (stomp == null) {
         connect();
     }
 
     const handleSendMessage = () => {
-        if (message !== "") {
+        if (inputMessage.trim() !== "") {
             try {
                 const messages = {
-                    content: message,
+                    content: inputMessage,
                     lecturerId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
                     studentId: STUDENT_ID,
-                    date: new Date(),
+                    date: new Date().toISOString(),
                     fromId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
-                    status: false
                 }
-                stomp.send("/topic/room", {}, messages);
-                setMessage("");
+                stomp.send("/app/room", {}, JSON.stringify(messages));
+                setInputMessage("");
+                setPageSize(pageSize + 1);
+                getNewMessage();
             } catch (error) {
                 console.log(error);
             }
@@ -55,20 +65,29 @@ const MessageChat = () => {
         }
     };
 
-    useEffect(() => {
+    const getNewMessage = () => {
         const fetchUserData = async () => {
             try {
-                const response = await api.get("/api/v1/common/message-detail?pageNo=1&pageSize=10&studentId=SE172220");
-                // console.log(response);
+                const lecturerId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
+                const studentId = STUDENT_ID;
+                const response = await api.get(`/api/v1/common/message-detail?pageNo=0&pageSize=${pageSize}&studentId=${studentId}&lecturerId=${lecturerId}`);
+                setMessageChatList(JSON.parse(JSON.stringify(response.data)).reverse());
+                if (response.data.length < 10) {
+                    setPageSize(response.data.length + 1);
+                }
             } catch (error) {
                 console.log(error);
             }
         }
         fetchUserData();
+    }
+
+    useEffect(() => {
+        getNewMessage();
 
         //Auto scroll into bottom
         document.getElementById("scroll-into-bottom")?.scrollIntoView({ behavior: "smooth", inline: "start" });
-    }, [])
+    }, [messageChatList.length, pageSize]);
 
     return (
         <div className="border border-gray-200 rounded-lg h-full w-2/3 flex flex-col overflow-y-auto">
@@ -79,25 +98,21 @@ const MessageChat = () => {
 
             <div className="flex flex-col h-full overflow-y-auto">
                 <div className="h-full overflow-y-auto flex flex-col gap-5 py-10 px-5">
-                    <ChatSend message="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        date={new Date(2023, 11, 19, 10, 30)} />
-                    <ChatReceive message="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        date={new Date(2023, 11, 19, 10, 30)} />
-                    <ChatSend message="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        date={new Date(2023, 11, 19, 10, 30)} />
-                    <ChatSend message="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
-                        date={new Date(2023, 11, 19, 10, 30)} />
+                    {messageChatList.map((chatItem) => (
+                        chatItem.fromId === JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber ?
+                            <ChatSend message={chatItem.content} date={new Date(chatItem.date)} /> :
+                            <ChatReceive message={chatItem.content} date={new Date(chatItem.date)} />
+                    ))}
                     <div id="scroll-into-bottom"></div>
                 </div>
 
                 <div className="flex gap-2 p-5 border-t border-gray-200 items-end">
                     <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg outline-none w-full h-fit resize-none"
                         minRows={1} maxRows={10} placeholder="Write something..."
-                        value={message} onChange={(e) => { setMessage(e.target.value) }} onKeyDown={handleKeyDown} />
+                        value={inputMessage} onChange={(e) => { setInputMessage(e.target.value) }} onKeyDown={handleKeyDown} />
                     <button onClick={handleSendMessage}>
                         <ApproveButton icon="send" message="" />
                     </button>
-                    <button onClick={connect}>Connect</button>
                 </div>
             </div>
         </div>
