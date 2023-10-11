@@ -1,13 +1,13 @@
 import { FC } from "react";
 
-type NormalButtonProps = {
+type RejectButtonProps = {
     icon: string;
     message: string;
 }
 
-const NormalButton: FC<NormalButtonProps> = ({ icon, message }) => {
+const RejectButton: FC<RejectButtonProps> = ({ icon, message }) => {
     return (
-        <div className="border-gray-200 hover:border-gray-600 active:bg-gray-200 gap-x-1.5 border px-3 py-1.5 flex-col flex items-center rounded-lg h-fit w-fit">
+        <div className="bg-red-50 text-red-600 border-red-200 hover:border-red-600 active:bg-red-200 gap-x-1.5 border px-3 py-1.5 flex-col flex items-center rounded-lg h-fit w-fit">
             <div className="gap-x-1.5 flex items-center">
                 {icon !== "" ? <span className="material-symbols-rounded h-fit icon">{icon}</span> : null}
                 {message !== "" ? <div className="text-sm">{message}</div> : null}
@@ -18,4 +18,4 @@ const NormalButton: FC<NormalButtonProps> = ({ icon, message }) => {
     )
 }
 
-export default NormalButton;
+export default RejectButton;

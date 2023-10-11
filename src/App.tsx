@@ -14,6 +14,8 @@ import StudentTeam from "./components/templates/student-team";
 import StudentNotification from "./components/templates/student-notification";
 import StudentSetting from "./components/templates/student-setting";
 import { ToastProvider } from "./utils/toast-context";
+import StudentFeatureTask from "./components/organisms/student-feature-task";
+import StudentVerifyRequest from "./components/organisms/student-verify-request";
 
 function App() {
   return (
@@ -37,7 +39,11 @@ function App() {
               <Route path="/student" element={<Student />} >
                 <Route path="" element={<Navigate to="timeline" />} />
                 <Route path="timeline" element={<StudentTimeline />} />
-                <Route path="backlog" element={<StudentBacklog />} />
+                <Route path="backlog" element={<StudentBacklog />} >
+                <Route path="" element={<Navigate to="featuretask" />} />
+                  <Route path="featuretask" element={<StudentFeatureTask />} />
+                  <Route path="verifyrequest" element={<StudentVerifyRequest />} />
+                </Route>
                 <Route path="tasks" element={<StudentTasks />} />
                 <Route path="team" element={<StudentTeam />} />
                 <Route path="notification" element={<StudentNotification />} />

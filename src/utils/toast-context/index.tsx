@@ -34,7 +34,7 @@ const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     useEffect(() => {
         if (successMessage != null) (
             toast.custom((t) => (
-                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} drop-shadow`}>
+                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} shadow`}>
                     <NotificationBox icon="check_circle" message={successMessage!} style="text-green-600 border-green-200 bg-green-50" />
                 </div>
             )

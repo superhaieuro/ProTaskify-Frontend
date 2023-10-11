@@ -31,6 +31,23 @@
     }
 }
 
+.sub-menu {
+    a {
+        @apply py-1.5 px-3 rounded m-1 w-fit text-center
+    }
+
+    a {
+        // Min weight
+        div {
+            @apply w-32
+        }
+    }
+
+    .active {
+        @apply bg-white text-black shadow
+    }
+}
+
 div, textarea {
     &::-webkit-scrollbar {
        @apply w-1
