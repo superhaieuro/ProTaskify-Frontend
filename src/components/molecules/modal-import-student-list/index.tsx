@@ -63,7 +63,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center drop-shadow">
+            flex justify-center items-center shadow">
                 <div className="bg-white p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">New class</div>
@@ -74,10 +74,10 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
                     <div className="flex gap-5">
                         <div className="w-full">
-                            <InputText title="Class" placeholder="" value={className} readonly={true} />
+                            <InputText title="Class" placeholder="" value={className} readonly={true} onChange={() => null} />
                         </div>
                         <div className="w-full">
-                            <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} />
+                            <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} onChange={() => null}/>
                         </div>
                     </div>
 

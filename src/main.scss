@@ -37,6 +37,7 @@
     }
 
     a {
+
         // Min weight
         div {
             @apply w-32
@@ -50,7 +51,7 @@
 
 div, textarea {
     &::-webkit-scrollbar {
-       @apply w-1
+        @apply w-1
     }
 
     &::-webkit-scrollbar-thumb {

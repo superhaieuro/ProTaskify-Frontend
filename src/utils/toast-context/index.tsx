@@ -21,7 +21,7 @@ const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     useEffect(() => {
         if (errorMessage != null) (
             toast.custom((t) => (
-                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} drop-shadow`}>
+                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} shadow`}>
                     <NotificationBox icon="error" message={errorMessage!} style="text-red-600 border-red-200 bg-red-50" />
                 </div>
             )

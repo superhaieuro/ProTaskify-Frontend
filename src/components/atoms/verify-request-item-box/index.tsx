@@ -1,5 +1,5 @@
 import { FC } from "react";
-import RejectButton from "../../reject-button";
+import RejectButton from "../reject-button";
 import ApproveButton from "../approve-button";
 
 type VerifyRequestItemBoxProps = {
