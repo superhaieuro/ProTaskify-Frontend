@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+body {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     transition: all 0.1s ease-in-out;
@@ -21,7 +21,7 @@
 }
 
 .text-xxs {
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     line-height: 1rem;
 }
 

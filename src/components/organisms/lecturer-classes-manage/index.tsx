@@ -9,7 +9,7 @@ const LecturerClassesManage = () => {
         const fetchUserData = async () => {
             try {
                 const lecturerEmail = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.MemberCode;
-                const response = await api.get(`/api/v1/lecturer/get-lecturer-semester?lecturerId=${lecturerEmail}`);
+                const response = await api.get(`/api/v1/lecturer/get-lecturer-semester?lecturerEmail=${lecturerEmail}`);
                 setSemester(JSON.stringify(response.data));
             } catch (error) {
                 console.log(error);
