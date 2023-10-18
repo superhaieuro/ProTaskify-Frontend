@@ -3,17 +3,17 @@ import StatusBox from "../status-box";
 
 type TaskBoardItemBoxProps = {
     picture: string;
-    status: string;
-    feature: string;
-    description: string;
+    priority: string;
+    feature: string | undefined;
+    name: string;
 }
 
-const TaskBoardItemBox: FC<TaskBoardItemBoxProps> = ({ picture, status, feature, description }) => {
+const TaskBoardItemBox: FC<TaskBoardItemBoxProps> = ({ picture, priority, feature, name }) => {
     let color;
 
-    if (status === "High") {
+    if (priority === "High") {
         color = "red";
-    } else if (status === "Medium") {
+    } else if (priority === "Medium") {
         color = "yellow";
     } else {
         color = "green";
@@ -23,12 +23,13 @@ const TaskBoardItemBox: FC<TaskBoardItemBoxProps> = ({ picture, status, feature,
         <div className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs hover:shadow border border-gray-200">
             <div className="flex justify-between items-center">
                 <img className="w-8 h-8 rounded-full" src={picture}></img>
-                <StatusBox color={color} message={status} />
+                <StatusBox color={color} message={priority} />
             </div>
 
-            <div className="text-xs text-gray-600 uppercase">{feature}</div>
-
-            <div className="w-full">{description}</div>
+            <div>
+                <div className="text-xxs font-bold text-gray-600 uppercase">{feature}</div>
+                <div className="w-full text-sm">{name}</div>
+            </div>
         </div>
     )
 }

@@ -6,7 +6,7 @@ import ModalImportStudentList from "../../molecules/modal-import-student-list";
 import api from "../../../config/axios";
 
 const LecturerImportStudentList = () => {
-    const [invalid, setInvalid] = useState(true); //Check the format of Excel file
+    const [valid, setValid] = useState(true); //Check the format of Excel file
     const [jsonData, setJsonData] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [className, setclassName] = useState<string | null>(null);
@@ -42,7 +42,7 @@ const LecturerImportStudentList = () => {
                                         setJsonData(JSON.stringify(data));
                                         setclassName(JSON.parse(JSON.stringify(data))[0].Class);
                                         setShowModal(true);
-                                        setInvalid(false);
+                                        setValid(false);
                                     } else {
                                         toast?.setErrorMessage("Inalid excel format, please import another one.");
                                     }
@@ -50,7 +50,7 @@ const LecturerImportStudentList = () => {
                             }
                         }
 
-                        if (invalid) {
+                        if (valid) {
                             e.target.value = "";
                         }
                     } else {
@@ -80,7 +80,7 @@ const LecturerImportStudentList = () => {
                 isVisible={showModal}
                 onClose={() => {
                     setShowModal(false);
-                    setInvalid(true);
+                    setValid(true);
                 }}
                 className={className!}
                 semeter={semester!}

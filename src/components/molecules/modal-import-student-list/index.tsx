@@ -24,7 +24,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
     isVisible,
     onClose,
     className,
-    semeter, 
+    semeter,
     data,
 }) => {
     const toast = useContext(ToastContext);
@@ -36,7 +36,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
                 className: className, //Class Name
                 lecturerEmail: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.MemberCode //Lecturer email
             }
-            
+
             const fetchUserData = async () => {
                 const response = await api.post("/api/v1/lecturer/import-student", request, {
                     headers: {
@@ -44,8 +44,8 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
                     }
                 });
                 if (response.status === 200) {
-                    toast?.setSuccessMessage("Create class successfully.");
-                    onClose();
+                    // toast?.setSuccessMessage("Create class successfully.");
+                    window.location.reload();
                 } else {
                     toast?.setErrorMessage("Failed to send data.");
                 }
@@ -74,10 +74,10 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
                     <div className="flex gap-5">
                         <div className="w-full">
-                            <InputText title="Class" placeholder="" value={className} readonly={true} onChange={() => null} />
+                            <InputText title="Class" placeholder="" value={className} readonly={true} onChange={() => null} error="" />
                         </div>
                         <div className="w-full">
-                            <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} onChange={() => null}/>
+                            <InputText title="Semester" placeholder="" value={JSON.parse(semeter).name} readonly={true} onChange={() => null} error="" />
                         </div>
                     </div>
 

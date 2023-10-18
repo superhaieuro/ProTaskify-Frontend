@@ -6,6 +6,7 @@ import NormalButton from "../../atoms/normal-button";
 import InputText from "../../atoms/input-text";
 import InputDate from "../../atoms/input-date";
 import { ToastContext } from "../../../utils/toast-context";
+import api from "../../../config/axios";
 
 type ModalCreateNewFeatureProps = {
     isVisible: boolean;
@@ -17,6 +18,9 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
     const [inputName, setInputName] = useState("");
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
+
+    const [inputNameError, setInputNameError] = useState("");
+    const [inputDescriptionError, setInputDescriptionError] = useState("");
 
     const toast = useContext(ToastContext);
 
@@ -34,6 +38,50 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
         }
     }, [startDate, endDate]);
 
+    const handleCreate = () => {
+        let valid = true;
+        if (inputName.length < 5 || inputName.length > 200) {
+            setInputNameError("Name must be from 5 to 200 characters.");
+            valid = false;
+        } else {
+            setInputNameError("");
+        }
+
+        if (inputDescription.length < 5) {
+            setInputDescriptionError("Description must be from 5 characters.");
+            valid = false;
+        } else {
+            setInputDescriptionError("");
+        }
+
+        if (valid === true) {
+            try {
+                const request = {
+                    name: inputName,
+                    description: inputDescription,
+                    status: false,
+                    startDate: startDate,
+                    endDate: endDate
+                }
+                const fetchUserData = async () => {
+                    const response = await api.post("/api/v1/student/create-feature", request, {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    });
+                    if (response.status === 201) {
+                        // toast?.setSuccessMessage("Create feature successfully.");
+                        window.location.reload();
+                    } else {
+                        toast?.setErrorMessage("Failed to send data.");
+                    }
+                }
+                fetchUserData();
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
 
     if (!isVisible) {
         return null;
@@ -56,7 +104,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Feature name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} />
+                        <InputText title="Feature name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="flex gap-5">
@@ -75,6 +123,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
                             <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
                             outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
                                 minRows={5} maxRows={10} value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />
+                            {inputDescriptionError !== "" ? <div className="text-xs text-red-600">{inputDescriptionError}</div> : null}
                         </div>
                     </div>
 
@@ -89,7 +138,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
                             <NormalButton icon="" message="Cancel" />
                         </button>
 
-                        <button>
+                        <button onClick={handleCreate}>
                             <ApproveButton icon="" message="Create" />
                         </button>
                     </div>

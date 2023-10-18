@@ -1,17 +1,34 @@
 import { FC, useContext, useEffect, useState } from "react";
-import InputText from "../../atoms/input-text";
-import XButton from "../../atoms/x-button";
-import NormalButton from "../../atoms/normal-button";
 import ApproveButton from "../../atoms/approve-button";
-import TextareaAutosize from 'react-textarea-autosize';
+import InputText from "../../atoms/input-text";
 import InputSelect from "../../atoms/input-select";
+import TextareaAutosize from 'react-textarea-autosize';
+import XButton from "../../atoms/x-button";
 import api from "../../../config/axios";
 import { ToastContext } from "../../../utils/toast-context";
+import ModalAlert from "../modal-alert";
+import RejectButton from "../../atoms/reject-button";
 
-type ModalCreateNewTaskProps = {
+type ModalEditTaskProps = {
     isVisible: boolean;
     onClose: () => void;
+    task: Tasks | undefined;
+    feature: Feature | undefined;
 };
+
+type Tasks = {
+    id: string,
+    name: string,
+    status: string,
+    feedback: string,
+    priority: string,
+    description: string,
+    createDate: Date,
+    finishDate: Date,
+    taskIndex: number,
+    feature: Feature,
+    student: Student
+}
 
 type Feature = {
     id: string;
@@ -28,12 +45,14 @@ type StudentFormatted = {
     name: string;
 }
 
-const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose }) => {
+const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, feature }) => {
     const [inputName, setInputName] = useState("");
     const [inputFeature, setInputFeature] = useState("");
     const [inputPriority, setInputPriority] = useState("");
     const [inputMember, setInputMember] = useState("");
+    const [inputStatus, setInputStatus] = useState("");
     const [inputDescription, setInputDescription] = useState("");
+    const [showAlertModel, setShowAlertModel] = useState(false);
 
     const [studentList, setStudentList] = useState<Student[]>([]);
     const [studentListFormatted, setStudentListFormatted] = useState<StudentFormatted[]>([]);
@@ -41,14 +60,19 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
 
     const [inputNameError, setInputNameError] = useState("");
     const [inputFeatureError, setInputFeatureError] = useState("");
-    const [inputPriorityError, setInputPriorityError] = useState("");
-    const [inputMemberError, setInputMemberError] = useState("");
     const [inputDescriptionError, setInputDescriptionError] = useState("");
 
     const priorityList = [
         { id: "Low", name: "Low" },
         { id: "Medium", name: "Medium" },
         { id: "High", name: "High" }
+    ];
+
+    const statusList = [
+        { id: "To do", name: "To do" },
+        { id: "In progress", name: "In progress" },
+        { id: "Verifying", name: "Verifying" },
+        { id: "Done", name: "Done" }
     ];
 
     const toast = useContext(ToastContext);
@@ -75,7 +99,20 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
         setStudentListFormatted(formattedStudents);
     }, [studentList]);
 
-    const handleCreate = () => {
+    useEffect(() => {
+        if (task) {
+            setInputName(task.name);
+            if (feature) {
+                setInputFeature(feature!.id);
+            }
+            setInputPriority(task.priority);
+            setInputMember(task.student.RollNumber);
+            setInputDescription(task.description);
+            setInputStatus(task.status);
+        }
+    }, [task])
+
+    const handleUpdate = () => {
         let valid = true;
         if (inputName.length < 5 || inputName.length > 200) {
             setInputNameError("Name must be from 5 to 200 characters.");
@@ -98,31 +135,18 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
             setInputFeatureError("");
         }
 
-        if (inputPriority === "") {
-            setInputPriorityError("Please select a priority.");
-            valid = false;
-        } else {
-            setInputPriorityError("");
-        }
-
-        if (inputMember === "") {
-            setInputMemberError("Please select a member.");
-            valid = false;
-        } else {
-            setInputMemberError("");
-        }
-
         if (valid === true) {
             try {
                 const request = {
+                    id: task?.id,
                     name: inputName,
-                    status: "To do",
                     description: inputDescription,
+                    status: inputStatus,
                     priority: inputPriority,
-                    createDate: new Date(),
+                    taskIndex: task!.taskIndex
                 }
                 const fetchUserData = async () => {
-                    const response = await api.post(`/api/v1/student/create-task/${inputMember}/${inputFeature}`, request, {
+                    const response = await api.put(`/api/v1/student/update-task/${inputMember.trim()}/${inputFeature}`, request, {
                         headers: {
                             'Content-Type': 'application/json;charset=UTF-8'
                         }
@@ -141,6 +165,23 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
         }
     }
 
+    const handleDelete = () => {
+        try {
+            const fetchUserData = async () => {
+                const response = await api.delete(`/api/v1/student/delete-task/${task!.id}/${inputMember}/${inputFeature}`);
+                if (response.status === 204) {
+                    // toast?.setSuccessMessage("Create feature successfully.");
+                    window.location.reload();
+                } else {
+                    toast?.setErrorMessage("Failed to send data.");
+                }
+            }
+            fetchUserData();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     if (!isVisible) {
         return null;
     } else {
@@ -149,20 +190,9 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
             flex justify-center items-center shadow">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
-                        <div className="text-2xl font-bold">New task</div>
+                        <div className="text-2xl font-bold">Edit task</div>
                         <button onClick={() => {
                             onClose();
-                            setInputName("");
-                            setInputFeature("");
-                            setInputPriority("");
-                            setInputMember("");
-                            setInputDescription("");
-
-                            setInputNameError("");
-                            setInputFeatureError("");
-                            setInputPriorityError("");
-                            setInputMemberError("");
-                            setInputDescriptionError("");
                         }}>
                             <XButton />
                         </button>
@@ -173,15 +203,19 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Feature" data={JSON.stringify(featureList)} onChange={(e) => setInputFeature(e.target.value)} value={""} error={inputFeatureError} />
+                        <InputSelect title="Feature" data={JSON.stringify(featureList)} onChange={(e) => setInputFeature(e.target.value)} value={inputFeature} error={inputFeatureError} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Priority" data={JSON.stringify(priorityList)} onChange={(e) => setInputPriority(e.target.value)} value={""} error={inputPriorityError} />
+                        <InputSelect title="Priority" data={JSON.stringify(priorityList)} onChange={(e) => setInputPriority(e.target.value)} value={inputPriority} error="" />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Assign to" data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} value={""} error={inputMemberError} />
+                        <InputSelect title="Status" data={JSON.stringify(statusList)} onChange={(e) => setInputStatus(e.target.value)} value={inputStatus} error="" />
+                    </div>
+
+                    <div className="w-full">
+                        <InputSelect title="Assign to" data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} value={inputMember} error="" />
                     </div>
 
                     <div className="w-full">
@@ -195,31 +229,28 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
                     </div>
 
                     <div className="flex gap-2 justify-end">
-                        <button onClick={() => {
-                            onClose();
-                            setInputName("");
-                            setInputFeature("");
-                            setInputPriority("");
-                            setInputMember("");
-                            setInputDescription("");
-
-                            setInputNameError("");
-                            setInputFeatureError("");
-                            setInputPriorityError("");
-                            setInputMemberError("");
-                            setInputDescriptionError("");
-                        }}>
-                            <NormalButton icon="" message="Cancel" />
+                        <button onClick={() => setShowAlertModel(true)}>
+                            <RejectButton icon="" message="Delete" />
                         </button>
 
-                        <button onClick={handleCreate}>
-                            <ApproveButton icon="" message="Create" />
+                        <button onClick={handleUpdate}>
+                            <ApproveButton icon="" message="Update" />
                         </button>
                     </div>
                 </div>
+                <ModalAlert
+                    isVisible={showAlertModel}
+                    onClose={() => setShowAlertModel(false)} type={"warning"}
+                    title="Warning"
+                    description="Are you sure you want to delete this feature?"
+                    button={
+                        <button onClick={handleDelete}>
+                            <RejectButton icon="" message="Delete" />
+                        </button>
+                    } />
             </div>
         )
     }
 }
 
-export default ModalCreateNewTask;
+export default ModalEditTask;

@@ -27,12 +27,13 @@ const TaskDetailBox: FC<TaskDetailBoxProps> = ({ picture, status, feature, date,
                 <StatusBox color={color} message={status} />
             </div>
 
-            <div className="text-xs text-gray-600 uppercase">{feature}</div>
-
-            <div className="w-full">{description}</div>
+            <div>
+                <div className="text-xxs font-bold text-gray-600 uppercase">{feature}</div>
+                <div className="w-full text-sm">{description}</div>
+            </div>
 
             <div className="text-gray-600 flex gap-1.5 items-center">
-                <span className="material-symbols-rounded h-fit icon">calendar_today</span>
+                {/* <span className="material-symbols-rounded h-fit icon">calendar_today</span> */}
                 <div>
                     {date.toLocaleDateString(undefined, {
                         year: 'numeric',

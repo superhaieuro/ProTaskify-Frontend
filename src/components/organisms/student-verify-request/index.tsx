@@ -6,7 +6,7 @@ const StudentVerifyRequest = () => {
             <VerifyRequestItemBox
                 picture=""
                 feature="Login module for example"
-                description="This is the task which is a small thing to do of a feature. Whenever all the tasks are done, the feature is done. " />
+                description="This is the task which is a small thing to do of a feature. Whenever all the tasks are done, the feature is done. This is the task which is a small thing to do of a feature. Whenever all the tasks are done, the feature is done. " />
             <VerifyRequestItemBox
                 picture=""
                 feature="Login module for example"
