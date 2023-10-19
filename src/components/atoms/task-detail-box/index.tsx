@@ -5,11 +5,11 @@ type TaskDetailBoxProps = {
     picture: string;
     status: string;
     feature: string;
-    date: Date;
-    description: string;
+    date: Date | null;
+    title: string;
 }
 
-const TaskDetailBox: FC<TaskDetailBoxProps> = ({ picture, status, feature, date, description }) => {
+const TaskDetailBox: FC<TaskDetailBoxProps> = ({ picture, status, feature, date, title: description }) => {
     let color;
 
     if (status === "High") {
@@ -27,20 +27,23 @@ const TaskDetailBox: FC<TaskDetailBoxProps> = ({ picture, status, feature, date,
                 <StatusBox color={color} message={status} />
             </div>
 
-            <div>
+            <div className="text-start">
                 <div className="text-xxs font-bold text-gray-600 uppercase">{feature}</div>
                 <div className="w-full text-sm">{description}</div>
             </div>
 
             <div className="text-gray-600 flex gap-1.5 items-center">
                 {/* <span className="material-symbols-rounded h-fit icon">calendar_today</span> */}
-                <div>
-                    {date.toLocaleDateString(undefined, {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit'
-                    })}
-                </div>
+                {date != null ?
+                    <div>
+                        {new Date(date).toLocaleDateString(undefined, {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit'
+                        })}
+                    </div> : null
+                }
+
             </div>
         </div>
     )

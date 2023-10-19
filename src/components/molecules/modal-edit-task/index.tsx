@@ -168,7 +168,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     const handleDelete = () => {
         try {
             const fetchUserData = async () => {
-                const response = await api.delete(`/api/v1/student/delete-task/${task!.id}/${inputMember}/${inputFeature}`);
+                const response = await api.delete(`/api/v1/student/delete-task/${task!.id}/${inputMember}/${inputFeature === "" ? 0 : inputFeature}`);
                 if (response.status === 204) {
                     // toast?.setSuccessMessage("Create feature successfully.");
                     window.location.reload();

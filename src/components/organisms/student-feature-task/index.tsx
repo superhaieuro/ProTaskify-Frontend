@@ -70,6 +70,13 @@ const StudentFeatureTask = () => {
                     <div>Feature board</div>
                     <div>{featureList.length}</div>
                 </div>
+
+                <button onClick={() => setShowCreateNewFeatureModal(true)}>
+                    <DashedButton
+                        icon="add"
+                        message="Create new feature" />
+                </button>
+
                 {featureList.map((featureItem) => (
                     <div role="button" onClick={() => {
                         setShowEditFeatureModal(true);
@@ -83,12 +90,7 @@ const StudentFeatureTask = () => {
                             endDate={new Date(featureItem.endDate)} />
                     </div>
                 ))}
-                <button onClick={() => setShowCreateNewFeatureModal(true)}>
-                    <DashedButton
-                        icon="add"
-                        message="Create new feature" />
-                </button>
-
+                
                 <ModalCreateNewFeature
                     isVisible={showCreateNewFeatureModal}
                     onClose={() => setShowCreateNewFeatureModal(false)} />
@@ -105,6 +107,12 @@ const StudentFeatureTask = () => {
                     <div>{taskList.length}</div>
                 </div>
 
+                <button onClick={() => setShowCreateNewTaskModal(true)}>
+                    <DashedButton
+                        icon="add"
+                        message="Create new task" />
+                </button>
+
                 {taskList.map((taskItem) => (
                     <div role="button" onClick={() => {
                         setShowEditTaskModal(true);
@@ -120,12 +128,6 @@ const StudentFeatureTask = () => {
                             name={taskItem.name} />
                     </div>
                 ))}
-
-                <button onClick={() => setShowCreateNewTaskModal(true)}>
-                    <DashedButton
-                        icon="add"
-                        message="Create new task" />
-                </button>
 
                 <ModalCreateNewTask
                     isVisible={showCreateNewTaskModal}

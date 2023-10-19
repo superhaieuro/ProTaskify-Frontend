@@ -11,37 +11,65 @@ const StudentSettingForm = () => {
     const [inputFacebook, setInputFacebook] = useState(userInfo.userInfo.facebook);
     const [inputGitHub, setInputGitHub] = useState(userInfo.userInfo.github);
 
+    const [inputSkillError, setInputSkillError] = useState("");
+    const [inputFacebookError, setInputFacebookError] = useState("");
+    const [inputGitHubError, setInputGitHubError] = useState("");
+
     const toast = useContext(ToastContext);
-    
+
     const handleChange = () => {
-        try {
-            const request = {
-                studentId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
-                facebook: inputFacebook,
-                github: inputGitHub,
-                skill: inputSkill
-            }
-            const fetchUserData = async () => {
-                const response = await api.put("/api/v1/student/update-student-info", request, {
-                    headers: {
-                        'Content-Type': 'application/json;charset=UTF-8'
-                    }
-                });
-                if (response.status === 200) {
-                    // toast?.setSuccessMessage("Create class successfully.");
-                    const updatedUserInfo = {
-                        ...userInfo,
-                        userInfo: response.data
-                    }
-                    sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
-                    window.location.reload();
-                } else {
-                    toast?.setErrorMessage("Failed to send data.");
+        let valid = true;
+        if (inputSkill && inputSkill.length > 100) {
+            setInputSkillError("Skill must be below 100 characters.");
+            valid = false;
+        } else {
+            setInputSkillError("");
+        }
+        
+        if (inputGitHub && inputGitHub.length > 100) {
+            setInputGitHubError("GitHub link must be below 100 characters.");
+            valid = false;
+        } else {
+            setInputGitHubError("");
+        }
+
+        if (inputFacebook && inputFacebook.length > 100) {
+            setInputFacebookError("Facebook link must be below 100 characters.");
+            valid = false;
+        } else {
+            setInputFacebookError("");
+        }
+
+        if (valid === true) {
+            try {
+                const request = {
+                    studentId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
+                    facebook: inputFacebook,
+                    github: inputGitHub,
+                    skill: inputSkill
                 }
+                const fetchUserData = async () => {
+                    const response = await api.put("/api/v1/student/update-student-info", request, {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8'
+                        }
+                    });
+                    if (response.status === 200) {
+                        // toast?.setSuccessMessage("Create class successfully.");
+                        const updatedUserInfo = {
+                            ...userInfo,
+                            userInfo: response.data
+                        }
+                        sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
+                        window.location.reload();
+                    } else {
+                        toast?.setErrorMessage("Failed to send data.");
+                    }
+                }
+                fetchUserData();
+            } catch (error) {
+                console.log(error);
             }
-            fetchUserData();
-        } catch (error) {
-            console.log(error);
         }
     }
 
@@ -57,15 +85,15 @@ const StudentSettingForm = () => {
             </div>
 
             <div className="w-full">
-                <InputText title="Skill" error="" onChange={(e) => setInputSkill(e.target.value)} placeholder="Java, C#, ReactJS,..." readonly={false} value={inputSkill} />
+                <InputText title="Skill" error={inputSkillError} onChange={(e) => setInputSkill(e.target.value)} placeholder="Java, C#, ReactJS,..." readonly={false} value={inputSkill} />
             </div>
 
             <div className="w-full">
-                <InputText title="GitHub" error="" onChange={(e) => setInputGitHub(e.target.value)} placeholder="github.com/uchiha_super_dev" readonly={false} value={inputGitHub} />
+                <InputText title="GitHub" error={inputGitHubError} onChange={(e) => setInputGitHub(e.target.value)} placeholder="github.com/uchiha_super_dev" readonly={false} value={inputGitHub} />
             </div>
 
             <div className="w-full">
-                <InputText title="Facebook" error="" onChange={(e) => setInputFacebook(e.target.value)} placeholder="facebook.com/uchiha_sasuke" readonly={false} value={inputFacebook} />
+                <InputText title="Facebook" error={inputFacebookError} onChange={(e) => setInputFacebook(e.target.value)} placeholder="facebook.com/uchiha_sasuke" readonly={false} value={inputFacebook} />
             </div>
 
             <div className="w-full">
