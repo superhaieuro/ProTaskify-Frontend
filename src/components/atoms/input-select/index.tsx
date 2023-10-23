@@ -17,7 +17,7 @@ const InputSelect: FC<InputSelectProps> = ({ title, data, onChange, value, error
     const dataList: Data[] = JSON.parse(data);
     return (
         <div className="flex flex-col gap-y-2">
-            <div className="text-sm">{title}</div>
+            <div className="text-sm font-semibold">{title}</div>
             <div className="relative">
                 <select name="feature" id="feature" className="border border-gray-200 bg-gray-50 py-1.5 pl-3 pr-10 text-sm rounded-lg
                             outline-none w-full h-fit ring-blue-600 focus:ring-1 focus:border-blue-600 appearance-none" onChange={(e) => onChange(e)}>

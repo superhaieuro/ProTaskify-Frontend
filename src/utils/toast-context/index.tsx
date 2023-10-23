@@ -21,7 +21,7 @@ const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     useEffect(() => {
         if (errorMessage != null) (
             toast.custom((t) => (
-                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} shadow`}>
+                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} shadow-sm`}>
                     <NotificationBox icon="error" message={errorMessage!} style="text-red-600 border-red-200 bg-red-50" />
                 </div>
             )
@@ -34,7 +34,7 @@ const ToastProvider: FC<ToastProviderProps> = ({ children }) => {
     useEffect(() => {
         if (successMessage != null) (
             toast.custom((t) => (
-                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} shadow`}>
+                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} shadow-sm`}>
                     <NotificationBox icon="check_circle" message={successMessage!} style="text-green-600 border-green-200 bg-green-50" />
                 </div>
             )

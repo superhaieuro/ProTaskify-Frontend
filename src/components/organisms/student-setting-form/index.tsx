@@ -7,6 +7,7 @@ import { ToastContext } from "../../../utils/toast-context";
 
 const StudentSettingForm = () => {
     const userInfo = JSON.parse(sessionStorage.getItem("userSession")!);
+    
     const [inputSkill, setInputSkill] = useState(userInfo.userInfo.skills);
     const [inputFacebook, setInputFacebook] = useState(userInfo.userInfo.facebook);
     const [inputGitHub, setInputGitHub] = useState(userInfo.userInfo.github);
@@ -78,7 +79,7 @@ const StudentSettingForm = () => {
             <div className="flex gap-5 items-center">
                 <img className="w-20 h-20 rounded-full" src={userInfo.userInfo.picture}></img>
                 <div>
-                    <div className="text-xxs font-bold text-gray-600">STUDENT</div>
+                    <div className="text-xs font-bold text-gray-600">STUDENT</div>
                     <div className="text-2xl font-bold">{userInfo.userInfo.FullName}</div>
                     <div className="text-base text-gray-600">{userInfo.userInfo.MemberCode}</div>
                 </div>

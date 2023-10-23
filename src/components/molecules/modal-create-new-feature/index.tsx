@@ -88,7 +88,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
     } else {
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center shadow">
+            flex justify-center items-center shadow-sm">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">New feature</div>
@@ -118,7 +118,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
                     </div>
 
                     <div className="w-full">
-                        <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-col gap-y-2 font-semibold">
                             <div className="text-sm">Description</div>
                             <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
                             outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"

@@ -26,7 +26,7 @@ const FeatureBoardItemBox: React.FC<FeatureBoardItemBoxProps> = ({ totalTask, do
     }
 
     return (
-        <div className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs hover:shadow border border-gray-200">
+        <div className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs hover:shadow-sm border border-gray-200">
             <div className={`w-full h-1.5 bg-${color}-50`}>
                 <div className={`h-full bg-${color}-600`} style={{ width: `${progressRate}%` }}></div>
             </div>

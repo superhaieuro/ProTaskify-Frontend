@@ -23,7 +23,7 @@ const InputDate: FC<InputDateProps> = ({ title, value, readonly, onChange }) => 
 
     return (
         <div className="flex flex-col gap-y-2">
-            <div className="text-sm">{title}</div>
+            <div className="text-sm font-semibold">{title}</div>
 
             <div className="relative">
                 <input id="inputDate" className={`border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg outline-none w-full

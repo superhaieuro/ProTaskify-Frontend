@@ -48,15 +48,12 @@ const ModalTaskInformation: FC<ModalTaskInformationProps> = ({ isVisible, onClos
         }
     }
 
-    console.log(feature);
-    
-
     if (!isVisible) {
         return null;
     } else {
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center shadow">
+            flex justify-center items-center shadow-sm">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">Task information</div>
@@ -69,44 +66,47 @@ const ModalTaskInformation: FC<ModalTaskInformationProps> = ({ isVisible, onClos
 
                     <StatusBox color={color!} message={task!.priority} />
 
-                    <div>
-                        <div className="text-sm font-bold">Feature</div>
-                        <div className="text-sm text-gray-600">{feature?.name}</div>
-                    </div>
+                    {feature ?
+                        <>
+                            <div>
+                                <div className="text-sm font-semibold">Feature</div>
+                                <div className="text-sm text-gray-600">{feature?.name}</div>
+                            </div>
+
+                            <div>
+                                <div className="text-sm font-semibold">Due date</div>
+                                <div className="text-sm text-gray-600">
+                                    {new Date(feature!.startDate).toLocaleDateString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    })}
+                                    {" - "}
+                                    {new Date(feature!.endDate).toLocaleDateString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    })}
+                                </div>
+                            </div>
+                        </> : null}
 
                     <div>
-                        <div className="text-sm font-bold">Assign to</div>
+                        <div className="text-sm font-semibold">Assign to</div>
                         <div className="text-sm text-gray-600">{task?.student.FullName}</div>
                     </div>
 
                     <div>
-                        <div className="text-sm font-bold">Description</div>
+                        <div className="text-sm font-semibold">Description</div>
                         <div className="text-sm text-gray-600 whitespace-pre-wrap">{task?.description}</div>
                     </div>
 
                     {task?.feedback == null ? null :
                         <div>
-                            <div className="text-sm font-bold">Feedback from leader</div>
+                            <div className="text-sm font-semibold">Feedback from leader</div>
                             <div className="text-sm text-gray-600 whitespace-pre-wrap">{task?.feedback}</div>
                         </div>
                     }
-
-                    <div>
-                        <div className="text-sm font-bold">Due date</div>
-                        <div className="text-sm text-gray-600">
-                            {new Date(feature!.startDate).toLocaleDateString(undefined, {
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit'
-                            })}
-                            {" - "}
-                            {new Date(feature!.endDate).toLocaleDateString(undefined, {
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit'
-                            })}
-                        </div>
-                    </div>
                 </div>
             </div>
         )

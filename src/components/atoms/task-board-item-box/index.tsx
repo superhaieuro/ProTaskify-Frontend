@@ -9,27 +9,28 @@ type TaskBoardItemBoxProps = {
 }
 
 const TaskBoardItemBox: FC<TaskBoardItemBoxProps> = ({ picture, priority, feature, name }) => {
-    let color;
+    let priorityColor;
 
     if (priority === "High") {
-        color = "red";
+        priorityColor = "red";
     } else if (priority === "Medium") {
-        color = "yellow";
+        priorityColor = "yellow";
     } else {
-        color = "green";
+        priorityColor = "green";
     }
 
     return (
-        <div className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs hover:shadow border border-gray-200">
-            <div className="flex justify-between items-center">
+        <div className="bg-white rounded p-2.5 flex gap-2 text-xs hover:shadow-sm border border-gray-200 items-center">
+            <div>
                 <img className="w-8 h-8 rounded-full" src={picture}></img>
-                <StatusBox color={color} message={priority} />
             </div>
 
-            <div>
-                <div className="text-xxs font-bold text-gray-600 uppercase">{feature}</div>
-                <div className="w-full text-sm">{name}</div>
+            <div className="w-full truncate">
+                <div className="text-xs text-gray-600 uppercase">{feature}</div>
+                <div className="text-sm">{name}</div>
             </div>
+
+            <StatusBox color={priorityColor} message={priority} />
         </div>
     )
 }

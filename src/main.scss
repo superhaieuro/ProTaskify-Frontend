@@ -7,7 +7,11 @@
 body {
     font-family: 'Inter', sans-serif;
     transition: all 0.1s ease-in-out;
-    @apply font-medium
+    @apply font-medium;
+}
+
+img {
+    @apply max-w-none max-h-none;
 }
 
 .material-symbols-rounded {
@@ -34,32 +38,34 @@ body {
 }
 
 .sub-menu {
-    a {
-        @apply py-1.5 px-3 rounded m-1 w-fit text-center
-    }
+    @apply text-sm flex gap-5 text-gray-600 relative;
 
     a {
-        // Min weight
-        div {
-            @apply w-32
-        }
+        @apply py-1.5;
+    }
+
+    ::before {
+        content: "";
+        height: 1px;
+        z-index: -100;
+        @apply absolute left-0 bottom-0 w-full bg-gray-200;
     }
 
     .active {
-        @apply bg-white text-black shadow
+        @apply text-blue-600 border-b-2 border-blue-600;
     }
 }
 
 div, textarea {
     &::-webkit-scrollbar {
-        @apply w-1
+        @apply w-1;
     }
 
     &::-webkit-scrollbar-thumb {
-        @apply bg-gray-200 rounded-full
+        @apply bg-gray-200 rounded-full;
     }
 
     &::-webkit-scrollbar-track {
-        @apply m-1
+        @apply m-1;
     }
 }

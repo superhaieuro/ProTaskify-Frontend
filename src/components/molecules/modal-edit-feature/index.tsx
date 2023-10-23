@@ -156,7 +156,7 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
             return null;
         } else {
             return (
-                <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full flex justify-end shadow overflow-auto">
+                <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full flex justify-end shadow-sm overflow-auto">
                     <div className="bg-white w-96 p-5 border-l border-gray-200 flex flex-col gap-y-5 overflow-y-auto">
                         <div className="flex items-center justify-between">
                             <div className="text-2xl font-bold">Edit feature</div>
@@ -184,7 +184,7 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
 
                         <div className="w-full">
                             <div className="flex flex-col gap-y-2">
-                                <div className="text-sm">Description</div>
+                                <div className="text-sm font-semibold">Description</div>
                                 <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
                             outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
                                     minRows={5} maxRows={10} value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />

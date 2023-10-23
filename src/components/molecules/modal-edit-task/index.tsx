@@ -59,7 +59,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     const [featureList, setFeatureList] = useState<Feature[]>([]);
 
     const [inputNameError, setInputNameError] = useState("");
-    const [inputFeatureError, setInputFeatureError] = useState("");
+    // const [inputFeatureError, setInputFeatureError] = useState("");
     const [inputDescriptionError, setInputDescriptionError] = useState("");
 
     const priorityList = [
@@ -102,9 +102,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     useEffect(() => {
         if (task) {
             setInputName(task.name);
-            if (feature) {
-                setInputFeature(feature!.id);
-            }
+            setInputFeature(feature ? feature.id : "0");
             setInputPriority(task.priority);
             setInputMember(task.student.RollNumber);
             setInputDescription(task.description);
@@ -128,12 +126,12 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
             setInputDescriptionError("");
         }
 
-        if (inputFeature === "") {
-            setInputFeatureError("Please select a feature.");
-            valid = false;
-        } else {
-            setInputFeatureError("");
-        }
+        // if (inputFeature === "") {
+        //     setInputFeatureError("Please select a feature.");
+        //     valid = false;
+        // } else {
+        //     setInputFeatureError("");
+        // }
 
         if (valid === true) {
             try {
@@ -168,7 +166,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     const handleDelete = () => {
         try {
             const fetchUserData = async () => {
-                const response = await api.delete(`/api/v1/student/delete-task/${task!.id}/${inputMember}/${inputFeature === "" ? 0 : inputFeature}`);
+                const response = await api.delete(`/api/v1/student/delete-task/${task!.id}/${inputMember}/${inputFeature}`);
                 if (response.status === 204) {
                     // toast?.setSuccessMessage("Create feature successfully.");
                     window.location.reload();
@@ -187,7 +185,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     } else {
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center shadow">
+            flex justify-center items-center shadow-sm">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">Edit task</div>
@@ -203,7 +201,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Feature" data={JSON.stringify(featureList)} onChange={(e) => setInputFeature(e.target.value)} value={inputFeature} error={inputFeatureError} />
+                        <InputSelect title="Feature" data={JSON.stringify([{ id: "0", name: "No feature" }, ...featureList])} onChange={(e) => setInputFeature(e.target.value)} value={inputFeature} error="" />
                     </div>
 
                     <div className="w-full">
@@ -220,7 +218,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
 
                     <div className="w-full">
                         <div className="flex flex-col gap-y-2">
-                            <div className="text-sm">Description</div>
+                            <div className="text-sm font-semibold">Description</div>
                             <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
                             outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
                                 minRows={5} maxRows={10} value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />

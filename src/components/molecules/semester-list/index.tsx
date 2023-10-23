@@ -33,7 +33,7 @@ const SemesterList: FC<SemesterListProps> = ({ semester }) => {
                                 {
                                     new Date(semesterItem.endDate) > new Date() ?
                                         <StatusBox color="green" message="On-going" /> :
-                                        <StatusBox color="gray" message="Finish" />
+                                        <StatusBox color="gray" message="Finished" />
                                 }
                             </div>
 

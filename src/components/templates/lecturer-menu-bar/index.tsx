@@ -1,5 +1,5 @@
 import MenuLogo from "../../atoms/menu-logo";
-import UserInfoTab from "../../atoms/user-info-box";
+import UserInfoTab from "../../atoms/user-information-box";
 import LecturerAccountField from "../../organisms/lecturer-account-field";
 import LecturerMenuField from "../../organisms/lecturer-menu-field";
 
