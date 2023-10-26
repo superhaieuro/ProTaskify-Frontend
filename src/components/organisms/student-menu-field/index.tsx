@@ -9,9 +9,9 @@ const StudentMenuField = () => {
                 title="Menu"
                 components={[
                     <>
-                        <NavLink to={"timeline"}>
+                        {/* <NavLink to={"timeline"}>
                             <MenuItem icon="view_timeline" message="Timeline" />
-                        </NavLink>
+                        </NavLink> */}
 
                         <NavLink to={"backlog"}>
                             <MenuItem icon="grid_view" message="Backlog" />

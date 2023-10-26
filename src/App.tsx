@@ -37,7 +37,7 @@ function App() {
 
             <Route path="/student" element={<PrivateRoute authRole={'STUDENT'} />}>
               <Route path="/student" element={<Student />} >
-                <Route path="" element={<Navigate to="timeline" />} />
+                <Route path="" element={<Navigate to="backlog" />} />
                 <Route path="timeline" element={<StudentTimeline />} />
                 <Route path="backlog" element={<StudentBacklog />} >
                 <Route path="" element={<Navigate to="featuretask" />} />

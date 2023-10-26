@@ -13,7 +13,7 @@ const RejectButton: FC<RejectButtonProps> = ({ icon, message }) => {
                 {message !== "" ? <div className="text-sm">{message}</div> : null}
             </div>
             {/* Min Width */}
-            <div className="w-12 h-0"></div>
+            {message !== "" ? <div className="w-12 h-0"></div> : null}
         </div>
     )
 }

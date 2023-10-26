@@ -8,6 +8,7 @@ type StatusBoxProps = {
 const StatusBox: FC<StatusBoxProps> = ({ color, message }) => {
     return (
         <div className={`text-xxs w-fit h-fit px-1.5 rounded-full bg-${color}-50 text-${color}-600`}>{message}</div>
+        // <div className={`text-xxs w-fit h-fit px-1.5 rounded-full bg-${color}-600 text-white`}>{message}</div>
     )
 }
 

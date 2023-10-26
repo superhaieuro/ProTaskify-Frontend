@@ -60,10 +60,10 @@ const StudentFeatureTask = () => {
                 const sortedTaskList = JSON.parse(JSON.stringify(taskData.data)).sort((a: Tasks, b: Tasks) => {
                     const featureNameA = featureList.find(feature =>
                         feature.taskList.some(task => task.id === a.id))?.name ?? "No feature";
-    
+
                     const featureNameB = featureList.find(feature =>
                         feature.taskList.some(task => task.id === b.id))?.name ?? "No feature";
-    
+
                     return featureNameA.localeCompare(featureNameB);
                 });
 
@@ -140,7 +140,8 @@ const StudentFeatureTask = () => {
                                 priority={taskItem.priority}
                                 feature={featureList.find(feature =>
                                     feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                                name={taskItem.name} />
+                                name={taskItem.name}
+                                status={taskItem.status} />
                         </div>
                     ))}
 

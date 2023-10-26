@@ -3,6 +3,7 @@ import NormalButton from "../../atoms/normal-button";
 import api from "../../../config/axios";
 import StudentInformationBox from "../../atoms/student-information-box";
 import ModalGroupSetting from "../../molecules/modal-group-setting";
+import ModalSettingProject from "../../molecules/modal-setting-project";
 
 type Student = {
     RollNumber: string;
@@ -16,6 +17,7 @@ type Student = {
 }
 
 type Project = {
+    id: string;
     name: string;
     problems: string;
     context: string;
@@ -37,6 +39,7 @@ const StudentTeamManage = () => {
     const [expandIcon, setExpandIcon] = useState("expand_more")
     const [group, setGroup] = useState<Group | null>(null);
     const [showGroupSettingModal, setShowGroupSettingModal] = useState(false);
+    const [showTopicSettingModal, setShowTopicSettingModal] = useState(false);
 
     const handleExpand = () => {
         expand ? setExpand(false) : setExpand(true);
@@ -80,8 +83,16 @@ const StudentTeamManage = () => {
                 </div>
 
                 {expand ?
-                    <div className="flex flex-col gap-2">
-                        <div className="text-lg font-bold">Topic details</div>
+                    <div className="flex flex-col gap-2 whitespace-pre-wrap">
+                        <div className="flex items-center justify-between">
+                            <div className="text-lg font-bold ">
+                                Topic details
+                            </div>
+
+                            <button onClick={() => setShowTopicSettingModal(true)}>
+                                <NormalButton icon="" message="Change topic" />
+                            </button>
+                        </div>
 
                         {group?.project.name ?
                             <div className="text-sm">
@@ -137,6 +148,11 @@ const StudentTeamManage = () => {
                     name={group!.name}
                     studentList={group!.studentList} />
                 : null}
+
+            <ModalSettingProject
+                isVisible={showTopicSettingModal}
+                onClose={() => setShowTopicSettingModal(false)} 
+                currentProjectId={group?.project.id}/>
         </div>
     )
 }

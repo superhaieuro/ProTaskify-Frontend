@@ -30,6 +30,8 @@ const MessageChat = () => {
                 stomp.subscribe('/topic/room', (response: any) => {
                     console.log(response);
                 });
+
+                // stomp.publish('/topic/room')
             })
         }
     }

@@ -101,7 +101,7 @@ const ModalTaskInformation: FC<ModalTaskInformationProps> = ({ isVisible, onClos
                         <div className="text-sm text-gray-600 whitespace-pre-wrap">{task?.description}</div>
                     </div>
 
-                    {task?.feedback == null ? null :
+                    {task?.feedback == null || task?.feedback === "" ? null :
                         <div>
                             <div className="text-sm font-semibold">Feedback from leader</div>
                             <div className="text-sm text-gray-600 whitespace-pre-wrap">{task?.feedback}</div>
