@@ -1,6 +1,7 @@
 import { FC } from "react";
 import StatusBox from "../../atoms/status-box";
 import LecturerClassesBox from "../../atoms/lecturer-classes-box";
+import { NavLink } from "react-router-dom";
 
 type SemesterListProps = {
     semester: string;
@@ -17,6 +18,7 @@ type Class = {
     id: number;
     name: string;
     studentList: any;
+    groupList: any;
 };
 
 const SemesterList: FC<SemesterListProps> = ({ semester }) => {
@@ -38,7 +40,7 @@ const SemesterList: FC<SemesterListProps> = ({ semester }) => {
                             </div>
 
                             <div className="text-gray-600 flex gap-1.5 items-center">
-                                <span className="material-symbols-rounded h-fit icon">calendar_today</span>
+                                {/* <span className="material-symbols-rounded h-fit icon">calendar_today</span> */}
                                 <div className="text-sm">
                                     {new Date(semesterItem.startDate).toLocaleDateString(undefined, {
                                         year: 'numeric',
@@ -58,10 +60,13 @@ const SemesterList: FC<SemesterListProps> = ({ semester }) => {
                         <div>
                             <div className="flex gap-5 flex-wrap">
                                 {semesterItem.classesList.map((classItem) => (
-                                    <LecturerClassesBox
-                                        name={classItem.name}
-                                        numOfStudent={classItem.studentList.length}
-                                    />
+                                    <NavLink to={`classdetail/${classItem.id}`} >
+                                        <LecturerClassesBox
+                                            name={classItem.name}
+                                            numOfStudent={classItem.studentList.length}
+                                            numOfGroup={classItem.groupList.length}
+                                        />
+                                    </NavLink>
                                 ))}
                             </div>
                         </div>

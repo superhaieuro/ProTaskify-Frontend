@@ -16,41 +16,53 @@ import StudentSetting from "./components/templates/student-setting";
 import { ToastProvider } from "./utils/toast-context";
 import StudentFeatureTask from "./components/organisms/student-feature-task";
 import StudentVerifyRequest from "./components/organisms/student-verify-request";
+import LecturerClassDetail from "./components/templates/lecturer-class-detail";
+import LecturerClassesManage from "./components/organisms/lecturer-classes-manage";
+import LecturerClassStudentList from "./components/organisms/lecturer-class-student-list";
+import { ClassInfoProvider } from "./utils/class-info-context";
 
 function App() {
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <BrowserRouter>
         <ToastProvider>
-          <Routes>
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route index element={<Login />} />
+          <ClassInfoProvider>
+            <Routes>
+              <Route path="*" element={<Navigate to="/" />} />
+              <Route index element={<Login />} />
 
-            <Route element={<PrivateRoute authRole={'LECTURER'} />}>
-              <Route path="/lecturer" element={<Lecturer />} >
-                <Route path="" element={<Navigate to="dashboard" />} />
-                <Route index path="dashboard" element={<LecturerDashboard />} />
-                <Route path="classes" element={<LecturerClasses />} />
-                <Route path="notification" element={<LecturerNotification />} />
-              </Route>
-            </Route>
-
-            <Route path="/student" element={<PrivateRoute authRole={'STUDENT'} />}>
-              <Route path="/student" element={<Student />} >
-                <Route path="" element={<Navigate to="backlog" />} />
-                <Route path="timeline" element={<StudentTimeline />} />
-                <Route path="backlog" element={<StudentBacklog />} >
-                <Route path="" element={<Navigate to="featuretask" />} />
-                  <Route path="featuretask" element={<StudentFeatureTask />} />
-                  <Route path="verifyrequest" element={<StudentVerifyRequest />} />
+              <Route element={<PrivateRoute authRole={'LECTURER'} />}>
+                <Route path="/lecturer" element={<Lecturer />} >
+                  <Route path="" element={<Navigate to="dashboard" />} />
+                  <Route index path="dashboard" element={<LecturerDashboard />} />
+                  <Route path="classes" element={<LecturerClasses />} >
+                    <Route index element={<LecturerClassesManage />} />
+                    <Route path="classdetail/:classId" element={<LecturerClassDetail />} >
+                      <Route path="" element={<Navigate to="studentlist" />} />
+                      <Route path="studentlist" element={<LecturerClassStudentList />} />
+                    </Route>
+                  </Route>
+                  <Route path="notification" element={<LecturerNotification />} />
                 </Route>
-                <Route path="tasks" element={<StudentTasks />} />
-                <Route path="team" element={<StudentTeam />} />
-                <Route path="notification" element={<StudentNotification />} />
-                <Route path="setting" element={<StudentSetting />} />
               </Route>
-            </Route>
-          </Routes>
+
+              <Route path="/student" element={<PrivateRoute authRole={'STUDENT'} />}>
+                <Route path="/student" element={<Student />} >
+                  <Route path="" element={<Navigate to="backlog" />} />
+                  <Route path="timeline" element={<StudentTimeline />} />
+                  <Route path="backlog" element={<StudentBacklog />} >
+                    <Route path="" element={<Navigate to="featuretask" />} />
+                    <Route path="featuretask" element={<StudentFeatureTask />} />
+                    <Route path="verifyrequest" element={<StudentVerifyRequest />} />
+                  </Route>
+                  <Route path="tasks" element={<StudentTasks />} />
+                  <Route path="team" element={<StudentTeam />} />
+                  <Route path="notification" element={<StudentNotification />} />
+                  <Route path="setting" element={<StudentSetting />} />
+                </Route>
+              </Route>
+            </Routes>
+          </ClassInfoProvider>
         </ToastProvider>
       </BrowserRouter>
     </GoogleOAuthProvider >
