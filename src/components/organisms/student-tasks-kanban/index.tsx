@@ -210,8 +210,8 @@ const StudentTasksKanban = () => {
 
                 <Droppable droppableId="In progress">
                     {(provided) => (
-                        <div className="w-1/4 p-2.5 rounded-lg bg-gray-50 border border-gray-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                            <div className="flex justify-between text-gray-600">
+                        <div className="w-1/4 p-2.5 rounded-lg bg-blue-50 border border-blue-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                            <div className="flex justify-between text-blue-600">
                                 <div>In progress</div>
                                 <div>{inProgressList.length}</div>
                             </div>
@@ -247,8 +247,8 @@ const StudentTasksKanban = () => {
 
                 <Droppable droppableId="Verifying">
                     {(provided) => (
-                        <div className="w-1/4 p-2.5 rounded-lg bg-gray-50 border border-gray-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                            <div className="flex justify-between text-gray-600">
+                        <div className="w-1/4 p-2.5 rounded-lg bg-yellow-50 border border-yellow-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                            <div className="flex justify-between text-yellow-600">
                                 <div>Verifying</div>
                                 <div>{verifyingList.length}</div>
                             </div>
@@ -282,8 +282,8 @@ const StudentTasksKanban = () => {
                     )}
                 </Droppable>
 
-                <div className="w-1/4 p-2.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                    <div className="flex justify-between text-gray-600">
+                <div className="w-1/4 p-2.5 rounded-lg bg-green-50 border border-green-200 text-xs">
+                    <div className="flex justify-between text-green-600">
                         <div>Done</div>
                         <div>{doneList.length}</div>
                     </div>

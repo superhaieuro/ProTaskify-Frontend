@@ -7,8 +7,6 @@ import api from "../../../config/axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-const STUDENT_ID = "SE172220";
-
 type MessageChat = {
     content: string;
     date: Date;
@@ -16,7 +14,7 @@ type MessageChat = {
     status: boolean;
 }
 
-const MessageChat = () => {
+const MessageChat2 = () => {
     const [inputMessage, setInputMessage] = useState(""); //Message input box
     const [stomp, setStomp] = useState<any>(null); //Connect with Socket
     const [pageSize, setPageSize] = useState(20);
@@ -28,7 +26,9 @@ const MessageChat = () => {
         if (stomp) {
             stomp.connect({}, () => {
                 stomp.subscribe('/topic/room', (response: any) => {
+                    console.log("Subscribe****************************");
                     console.log(response);
+
                 });
 
                 // stomp.publish('/topic/room')
@@ -45,8 +45,8 @@ const MessageChat = () => {
             try {
                 const messages = {
                     content: inputMessage,
-                    lecturerId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
-                    studentId: STUDENT_ID,
+                    studentId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
+                    lecturerId: "vanhai",
                     date: new Date().toISOString(),
                     fromId: JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber,
                 }
@@ -70,9 +70,9 @@ const MessageChat = () => {
     const getNewMessage = () => {
         const fetchUserData = async () => {
             try {
-                const lecturerId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
-                const studentId = STUDENT_ID;
-                const response = await api.get(`/api/v1/common/message-detail?pageNo=0&pageSize=${pageSize}&studentId=${studentId}&lecturerId=${lecturerId}`);
+                const studentId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
+                const lecturerId = "vanhai";
+                const response = await api.get(`/api/v1/common/message-detail?pageNo=0&pageSize=${pageSize}&studentId=SE172220&lecturerId=vanhai`);
                 setMessageChatList(JSON.parse(JSON.stringify(response.data)).reverse());
                 if (response.data.length < 10) {
                     setPageSize(response.data.length + 1);
@@ -86,7 +86,6 @@ const MessageChat = () => {
 
     useEffect(() => {
         getNewMessage();
-
         //Auto scroll into bottom
         document.getElementById("scroll-into-bottom")?.scrollIntoView({ behavior: "smooth", inline: "start" });
     }, [messageChatList.length, pageSize]);
@@ -94,7 +93,7 @@ const MessageChat = () => {
     return (
         <div className="border border-gray-200 rounded-lg h-full w-2/3 flex flex-col overflow-y-auto">
             <div className="p-5 border-b border-gray-200 bg-gray-50">
-                <div className="text-lg font-bold">Student</div>
+                <div className="text-lg font-bold">Lecturer</div>
                 <div className="text-sm text-gray-600">NET1700</div>
             </div>
 
@@ -121,4 +120,4 @@ const MessageChat = () => {
     )
 }
 
-export default MessageChat;
+export default MessageChat2;
