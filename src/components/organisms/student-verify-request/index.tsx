@@ -70,61 +70,52 @@ const StudentVerifyRequest = () => {
     return (
         <div className="w-full flex flex-col gap-2 h-fit">
             <div className="border border-gray-200 rounded-lg text-sm overflow-auto">
-                <div className="p-5 bg-gray-50 flex gap-x-2 border-b border-gray-200 font-semibold text-gray-600">
-                    <div className="w-fit">
+                <div className="p-5 bg-gray-50 flex gap-x-5 border-b border-gray-200 font-semibold text-gray-600">
+                    <div className="w-10">
                         #
-                        <div className="w-10"></div>
                     </div>
 
-                    <div className="w-fit">
-                        Priority
-                        <div className="w-20"></div>
-                    </div>
-
-                    <div className="w-fit">
+                    <div className="w-96">
                         Task name
-                        <div className="w-96"></div>
                     </div>
 
-                    <div className="w-fit">
+                    <div className="w-96">
                         Feature
-                        <div className="w-96"></div>
                     </div>
 
-                    <div className="w-fit">
+                    <div className="w-36">
+                        Priority
+                    </div>
+
+                    <div className="w-56">
                         Assign to
-                        <div className="w-56"></div>
                     </div>
                 </div>
                 <div className="divide-y">
                     {taskList.filter(task => task.status === "Verifying").map((taskItem, index) => (
-                        <div key={index} className="p-5 flex gap-x-2 items-center">
-                            <div className="w-fit">
+                        <div key={index} className="p-5 flex gap-x-5">
+                            <div className="w-10 my-1.5">
                                 {index + 1}
-                                <div className="w-10"></div>
                             </div>
 
-                            <div className="w-fit">
-                                <StatusBox color={taskItem.priority === "High" ? "red" : taskItem.priority === "Medium" ? "yellow" : "green"} message={taskItem.priority} />
-                                <div className="w-20"></div>
-                            </div>
-
-                            <div className="w-fit">
+                            <div className="w-96 my-1.5">
                                 {taskItem.name}
-                                <div className="w-96"></div>
                             </div>
 
-                            <div className="w-fit">
+                            <div className="w-96 my-1.5">
                                 {featureList.find(feature => feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                                <div className="w-96"></div>
                             </div>
 
-                            <div className="w-full flex items-center gap-1.5">
+                            <div className="w-36 my-2">
+                                <StatusBox color={taskItem.priority === "High" ? "red" : taskItem.priority === "Medium" ? "yellow" : "green"} message={taskItem.priority} />
+                            </div>
+
+                            <div className="h-fit mr-auto flex items-center gap-1.5">
                                 <img className="w-8 h-8 rounded-full" src={taskItem.student.picture}></img>
                                 <div>{taskItem.student.FullName}</div>
                             </div>
-                            
-                            <button onClick={() => {
+
+                            <button className="h-fit" onClick={() => {
                                 setShowVerifyTaskModal(true);
                                 setTempTask(taskItem);
                                 setTempFeature(featureList.find(feature =>

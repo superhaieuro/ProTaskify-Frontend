@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { ClassInfoContext } from "../../../utils/class-info-context";
 import api from "../../../config/axios";
 import StatusBox from "../../atoms/status-box";
+import NormalButton from "../../atoms/normal-button";
+import ModalGroupInformation from "../../molecules/modal-group-information";
 
 type Class = {
     id: number;
@@ -49,6 +51,7 @@ type Group = {
     project: Project;
     score: string;
     studentList: Student[];
+    featureList: Feature[];
 }
 
 type Project = {
@@ -61,9 +64,11 @@ type Project = {
     nonFunctionalRequirements: string;
 }
 
-const LecturerClassStudentList = () => {
+const LecturerClassGroupList = () => {
     const classIdContext = useContext(ClassInfoContext);
     const [classInfo, setClassInfo] = useState<Class>();
+    const [tempGroup, setTempGroup] = useState<Group | undefined>();
+    const [showModalGroupInformation, setShowGroupInformation] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -82,33 +87,37 @@ const LecturerClassStudentList = () => {
             <div className="border border-gray-200 rounded-lg overflow-auto">
                 <div className="p-5 bg-gray-50 flex gap-x-5 border-b border-gray-200 font-semibold text-gray-600">
                     <div className="w-10">#</div>
-                    <div className="w-28">Roll Number</div>
-                    <div className="w-72">Email</div>
-                    <div className="w-60">Full Name</div>
-                    <div className="w-60">Group</div>
-                    <div className="w-36">Status</div>
+                    <div className="w-60">Group name</div>
+                    <div className="w-1/2">Project</div>
+                    <div className="w-36">Members</div>
                 </div>
                 <div className="divide-y">
-                    {classInfo?.studentList.map((student, index) => (
+                    {classInfo?.groupList.map((groupItem, index) => (
                         <div key={index} className="p-5 flex gap-x-5 items-center">
-                            <div className="w-10">{index + 1}</div>
-                            <div className="w-28">{student.RollNumber}</div>
-                            <div className="w-72">{student.MemberCode}</div>
-                            <div className="w-60">{student.FullName}</div>
-                            <div className="w-60">
-                                {classInfo.groupList.find(group =>
-                                    group.studentList.some(st => st.RollNumber === student.RollNumber))?.name ??
-                                    <StatusBox color="red" message="No group" />}
+                            <div className="w-10 flex-shrink-0">{index + 1}</div>
+                            <div className="w-60 flex-shrink-0">{groupItem.name}</div>
+                            <div className="w-1/2 flex-shrink-0">{groupItem.project ?
+                                groupItem.project.name :
+                                <StatusBox color="red" message="No project" />}
                             </div>
-                            <div className="w-36">
-                                <StatusBox color={student.status ? "green" : "red"} message={student.status ? "Enrolled" : "Not enrolled"} />
-                            </div>
+                            <div className="w-36 flex-grow">{groupItem.studentList.length}</div>
+                            <button className="h-fit" onClick={() => {
+                                setTempGroup(groupItem);
+                                setShowGroupInformation(true);
+                            }}>
+                                <NormalButton icon="" message="View" />
+                            </button>
                         </div>
                     ))}
                 </div>
             </div>
+
+            <ModalGroupInformation
+                isVisible={showModalGroupInformation}
+                onClose={() => setShowGroupInformation(false)} 
+                group={tempGroup}/>
         </div>
     )
 }
 
-export default LecturerClassStudentList;
+export default LecturerClassGroupList;

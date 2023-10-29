@@ -94,43 +94,49 @@ const StudentTeamManage = () => {
                             </button>
                         </div>
 
-                        {group?.project.name ?
-                            <div className="text-sm">
-                                <div className="font-semibold">Subject name</div>
-                                <div className="text-gray-600">{group.project.name}</div>
-                            </div> : null}
+                        {
+                            group?.project ?
+                                <>
+                                    {group?.project.name ?
+                                        <div className="text-sm">
+                                            <div className="font-semibold">Subject name</div>
+                                            <div className="text-gray-600">{group.project.name}</div>
+                                        </div> : null}
 
-                        {group?.project.problems ?
-                            <div className="text-sm">
-                                <div className="font-semibold">Problems</div>
-                                <div className="text-gray-600">{group.project.problems}</div>
-                            </div> : null}
-
-
-                        {group?.project.context ?
-                            <div className="text-sm">
-                                <div className="font-semibold">Context</div>
-                                <div className="text-gray-600">{group.project.context}</div>
-                            </div> : null}
+                                    {group?.project.problems ?
+                                        <div className="text-sm">
+                                            <div className="font-semibold">Problems</div>
+                                            <div className="text-gray-600">{group.project.problems}</div>
+                                        </div> : null}
 
 
-                        {group?.project.actors ?
-                            <div className="text-sm">
-                                <div className="font-semibold">Actors</div>
-                                <div className="text-gray-600">{group.project.actors}</div>
-                            </div> : null}
+                                    {group?.project.context ?
+                                        <div className="text-sm">
+                                            <div className="font-semibold">Context</div>
+                                            <div className="text-gray-600">{group.project.context}</div>
+                                        </div> : null}
 
-                        {group?.project.functionalRequirements ?
-                            <div className="text-sm">
-                                <div className="font-semibold">Functional requirements</div>
-                                <div className="text-gray-600">{group.project.functionalRequirements}</div>
-                            </div> : null}
 
-                        {group?.project.nonFunctionalRequirements ?
-                            <div className="text-sm">
-                                <div className="font-semibold">Non-Functional requirements</div>
-                                <div className="text-gray-600">{group.project.nonFunctionalRequirements}</div>
-                            </div> : null}
+                                    {group?.project.actors ?
+                                        <div className="text-sm">
+                                            <div className="font-semibold">Actors</div>
+                                            <div className="text-gray-600">{group.project.actors}</div>
+                                        </div> : null}
+
+                                    {group?.project.functionalRequirements ?
+                                        <div className="text-sm">
+                                            <div className="font-semibold">Functional requirements</div>
+                                            <div className="text-gray-600">{group.project.functionalRequirements}</div>
+                                        </div> : null}
+
+                                    {group?.project.nonFunctionalRequirements ?
+                                        <div className="text-sm">
+                                            <div className="font-semibold">Non-Functional requirements</div>
+                                            <div className="text-gray-600">{group.project.nonFunctionalRequirements}</div>
+                                        </div> : null}</>
+                                :
+                                <div className="text-sm text-gray-600">No project is chosen.</div>
+                        }
                     </div>
                     : null}
             </div>
@@ -151,8 +157,8 @@ const StudentTeamManage = () => {
 
             <ModalSettingProject
                 isVisible={showTopicSettingModal}
-                onClose={() => setShowTopicSettingModal(false)} 
-                currentProjectId={group?.project.id}/>
+                onClose={() => setShowTopicSettingModal(false)}
+                currentProjectId={group?.project ? group?.project.id : "0"} />
         </div>
     )
 }

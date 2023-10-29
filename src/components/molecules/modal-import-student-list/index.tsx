@@ -84,7 +84,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
                     <div className="flex flex-col gap-2 text-sm">
                         <div className="font-semibold">Student list</div>
                         <div className="border border-gray-200 rounded-lg overflow-auto">
-                            <div className="p-5 bg-gray-50 flex gap-x-2 border-b border-gray-200 font-semibold text-gray-600">
+                            <div className="p-5 bg-gray-50 flex gap-x-5 border-b border-gray-200 font-semibold text-gray-600">
                                 <div className="w-10">#</div>
                                 <div className="w-28">Roll Number</div>
                                 <div className="w-52">Member Code</div>
@@ -92,7 +92,7 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
                             </div>
                             <div className="max-h-80 overflow-y-auto divide-y">
                                 {jsonData.map((student, index) => (
-                                    <div key={index} className="p-5 flex gap-x-2">
+                                    <div key={index} className="p-5 flex gap-x-5">
                                         <div className="w-10">{index + 1}</div>
                                         <div className="w-28">{student.RollNumber}</div>
                                         <div className="w-52">{student.MemberCode}</div>

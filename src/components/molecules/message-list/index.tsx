@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import MessageGroup from "../../atoms/message-group";
 import api from "../../../config/axios";
 
-type MessageListProps = {
-    onClick: () => void;
-}
+// type MessageListProps = {
+//     onClick: () => void;
+// }
 
 const MessageList = () => {
     const [groupChatList, setGroupChatList] = useState<[]>([]);

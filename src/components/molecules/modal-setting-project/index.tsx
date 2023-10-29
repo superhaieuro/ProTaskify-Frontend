@@ -76,7 +76,7 @@ const ModalSettingProject: FC<ModalSettingProjectProps> = ({ isVisible, onClose,
                     subTitle="Change your group's project topic." />
 
                 <div className="border border-gray-200 rounded-lg text-sm">
-                    <div className="p-5 bg-gray-50 flex gap-x-2 border-b border-gray-200 font-semibold text-gray-600 rounded-t-lg">
+                    <div className="p-5 bg-gray-50 flex gap-x-5 border-b border-gray-200 font-semibold text-gray-600 rounded-t-lg">
                         <div className="w-fit">
                             #
                             <div className="w-10"></div>
@@ -88,7 +88,7 @@ const ModalSettingProject: FC<ModalSettingProjectProps> = ({ isVisible, onClose,
                     </div>
                     <div className="divide-y">
                         {projectList.map((projectItem, index) => (
-                            <div key={index} className="p-5 flex gap-x-2 whitespace-pre-wrap">
+                            <div key={index} className="p-5 flex gap-x-5 whitespace-pre-wrap">
                                 <div className="w-fit">
                                     {index + 1}
                                     <div className="w-10"></div>

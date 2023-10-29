@@ -1,0 +1,5 @@
+div, textarea {
+    &::-webkit-scrollbar {
+        @apply hidden;
+    }
+}

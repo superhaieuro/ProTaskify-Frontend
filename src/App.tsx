@@ -20,6 +20,8 @@ import LecturerClassDetail from "./components/templates/lecturer-class-detail";
 import LecturerClassesManage from "./components/organisms/lecturer-classes-manage";
 import LecturerClassStudentList from "./components/organisms/lecturer-class-student-list";
 import { ClassInfoProvider } from "./utils/class-info-context";
+import LecturerSrpintStudentList from "./components/organisms/lecturer-class-sprint-list";
+import LecturerClassGroupList from "./components/organisms/lecturer-class-group-list";
 
 function App() {
   return (
@@ -38,8 +40,10 @@ function App() {
                   <Route path="classes" element={<LecturerClasses />} >
                     <Route index element={<LecturerClassesManage />} />
                     <Route path="classdetail/:classId" element={<LecturerClassDetail />} >
-                      <Route path="" element={<Navigate to="studentlist" />} />
+                      <Route path="" element={<Navigate to="sprintlist" />} />
+                      <Route path="sprintlist" element={<LecturerSrpintStudentList />} />
                       <Route path="studentlist" element={<LecturerClassStudentList />} />
+                      <Route path="grouplist" element={<LecturerClassGroupList />} />
                     </Route>
                   </Route>
                   <Route path="notification" element={<LecturerNotification />} />

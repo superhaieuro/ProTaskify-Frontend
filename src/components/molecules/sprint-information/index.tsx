@@ -7,9 +7,13 @@ import ModalSprintHistory from "../modal-sprint-history";
 type Sprint = {
     name: string;
     note: string;
-    feedback: string;
+    feedbackList: Feedback[];
     startDate: Date;
     endDate: Date;
+}
+
+type Feedback = {
+    feedback: string;
 }
 
 const SprintInformation = () => {
@@ -30,6 +34,8 @@ const SprintInformation = () => {
                 const studentId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
                 const response = await api.get(`/api/v1/student/sprint/${studentId}`);
                 setSprintList(response.data);
+                console.log(response.data);
+
             }
             fetchUserData();
         } catch (error) {
@@ -40,7 +46,7 @@ const SprintInformation = () => {
     return (
         <div>
             {sprintList.length !== 0 ?
-                <div className="border border-gray-200 rounded-lg p-5 flex flex-col gap-5">
+                <div className="border border-gray-200 rounded-lg p-5 flex flex-col gap-5 whitespace-pre-wrap">
                     <div className="flex justify-between items-center">
                         <div>
                             <div className="flex gap-1.5 items-center">
@@ -87,7 +93,11 @@ const SprintInformation = () => {
 
                             <div className="text-sm">
                                 <div className="font-semibold">Feedback from Lecturer</div>
-                                <div className="text-gray-600">{sprintList[0].feedback}</div>
+                                <div className="text-gray-600">{
+                                    sprintList[0].feedbackList.length !== 0 ?
+                                        sprintList[0].feedbackList[0].feedback :
+                                        "No feedback is available yet."}
+                                </div>
                             </div>
                         </div>
                         : null}
