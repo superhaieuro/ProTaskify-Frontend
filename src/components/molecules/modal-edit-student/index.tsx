@@ -6,60 +6,51 @@ import InputText from "../../atoms/input-text";
 import InputSelect from "../../atoms/input-select";
 import api from "../../../config/axios";
 import { ToastContext } from "../../../utils/toast-context";
+import NotificationBox from "../../atoms/notification-box";
 
-type ModalGroupSettingProps = {
+type ModalEditStudentProps = {
     isVisible: boolean;
     onClose: () => void;
-    name: string;
-    studentList: Student[];
+    score: number | null;
+    groupList: Group[];
+    group: Group | null;
+    studentId: string;
+    leader: boolean;
 };
 
-type Student = {
-    RollNumber: string;
-    FullName: string;
-    leader: boolean;
-}
-
-type StudentFormatted = {
+type Group = {
     id: string;
     name: string;
-    leader: boolean;
 }
 
-const ModalGroupSetting: FC<ModalGroupSettingProps> = ({ isVisible, onClose, name, studentList }) => {
-    const [inputName, setInputName] = useState("");
-    const [inputMember, setInputMember] = useState("");
-    const [studentListFormatted, setStudentListFormatted] = useState<StudentFormatted[]>([]);
+const ModalEditStudent: FC<ModalEditStudentProps> = ({ isVisible, onClose, score, groupList, group, studentId, leader }) => {
+    const [inputScore, setInputScore] = useState<number | null>();
+    const [inputGroup, setInputGroup] = useState<string>();
 
-    const [inputNameError, setInputNameError] = useState("");
+    const [inputScoreError, setInputScoreError] = useState("");
 
     const toast = useContext(ToastContext);
 
     useEffect(() => {
-        let formattedStudents: StudentFormatted[] = studentList.map(student => ({
-            id: student.RollNumber,
-            name: student.FullName,
-            leader: student.leader
-        }));
-        setInputName(name);
-        setInputMember(studentList.find(student => student.leader)!.RollNumber);
-        setStudentListFormatted(formattedStudents);
-    }, [studentList]);
+        setInputScore(score);
+        setInputGroup(group ? groupList.find(gr => gr.id = group.id)!.id : "0");
+    }, [score, group])
 
     const handleUpdate = () => {
         let valid = true;
-        if (inputName.length < 5 || inputName.length > 50) {
-            setInputNameError("Name must be from 5 to 50 characters.");
-            valid = false;
-        } else {
-            setInputNameError("");
+        if (inputScore) {
+            if (isNaN(inputScore) || inputScore < 0 || inputScore > 10) {
+                setInputScoreError("Score must be a number between 0 to 10");
+                valid = false;
+            } else {
+                setInputScoreError("");
+            }
         }
 
         if (valid === true) {
             try {
                 const fetchUserData = async () => {
-                    const userInfo = JSON.parse(sessionStorage.getItem("userSession")!);
-                    const response = await api.put(`/api/v1/student/update-group-info/${userInfo.userInfo.RollNumber}/${inputMember}/${inputName}`, {
+                    const response = await api.put(`/api/v1/lecturer/update-student-info?studentId=${studentId}&groupId=${inputGroup}${inputScore ? `&score=${inputScore}` : ""}`, {
                         headers: {
                             'Content-Type': 'application/json;charset=UTF-8'
                         }
@@ -86,27 +77,33 @@ const ModalGroupSetting: FC<ModalGroupSettingProps> = ({ isVisible, onClose, nam
             flex justify-center items-center">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm">
                     <div className="flex items-center justify-between">
-                        <div className="text-2xl font-bold">Group setting</div>
+                        <div className="text-2xl font-bold">Edit student</div>
                         <button onClick={() => {
                             onClose();
-                            setInputNameError("");
+                            setInputScore(null);
+                            setInputScoreError("");
                         }}>
                             <XButton />
                         </button>
                     </div>
 
-                    <div className="w-full">
-                        <InputText title="Group name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
-                    </div>
+                    {leader ?
+                        <NotificationBox icon="lightbulb" message="Can not change leader's group." style="text-blue-600 border-blue-200 bg-blue-50" /> :
+                        <div className="w-full">
+                            <InputSelect title="Group" value={inputGroup!} data={JSON.stringify([{ id: "0", name: "No group" }, ...groupList])} onChange={(e) => setInputGroup(e.target.value)} error="" />
+                        </div>}
+
+
 
                     <div className="w-full">
-                        <InputSelect title="Leader" value={inputMember} data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} error="" />
+                        <InputText title="Score" placeholder="" value={inputScore ? inputScore.toString() : ""} readonly={false} onChange={(e) => setInputScore(e.target.value)} error={inputScoreError} />
                     </div>
 
                     <div className="flex gap-2 justify-end">
                         <button onClick={() => {
                             onClose();
-                            setInputNameError("");
+                            setInputScore(null);
+                            setInputScoreError("");
                         }}>
                             <NormalButton icon="" message="Cancel" />
                         </button>
@@ -121,4 +118,4 @@ const ModalGroupSetting: FC<ModalGroupSettingProps> = ({ isVisible, onClose, nam
     }
 }
 
-export default ModalGroupSetting;
+export default ModalEditStudent;

@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { ClassInfoContext } from "../../../utils/class-info-context";
 import api from "../../../config/axios";
 import StatusBox from "../../atoms/status-box";
+import NormalButton from "../../atoms/normal-button";
+import ModalEditStudent from "../../molecules/modal-edit-student";
 
 type Class = {
     id: number;
@@ -41,6 +43,7 @@ type Student = {
     MemberCode: string;
     status: boolean;
     leader: boolean;
+    score: number;
 }
 
 type Group = {
@@ -64,6 +67,8 @@ type Project = {
 const LecturerClassStudentList = () => {
     const classIdContext = useContext(ClassInfoContext);
     const [classInfo, setClassInfo] = useState<Class>();
+    const [showModalEditStudent, setShowModalEditStudent] = useState(false);
+    const [tempStudent, setTempStudent] = useState<Student | undefined>();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -87,6 +92,7 @@ const LecturerClassStudentList = () => {
                     <div className="w-60">Full Name</div>
                     <div className="w-60">Group</div>
                     <div className="w-36">Status</div>
+                    <div className="w-36">Score</div>
                 </div>
                 <div className="divide-y">
                     {classInfo?.studentList.map((student, index) => (
@@ -94,7 +100,18 @@ const LecturerClassStudentList = () => {
                             <div className="w-10">{index + 1}</div>
                             <div className="w-28">{student.RollNumber}</div>
                             <div className="w-72">{student.MemberCode}</div>
-                            <div className="w-60">{student.FullName}</div>
+                            <div className="w-60 flex gap-1.5">{student.FullName}
+                                {student.leader ?
+                                    <div className="text-xs font-bold text-yellow-600 flex items-center gap-0.5">
+                                        <span className="material-symbols-rounded icon">
+                                            stars
+                                        </span>
+                                        {/* <p>LEADER</p> */}
+                                    </div>
+                                    :
+                                    null
+                                }
+                                </div>
                             <div className="w-60">
                                 {classInfo.groupList.find(group =>
                                     group.studentList.some(st => st.RollNumber === student.RollNumber))?.name ??
@@ -103,10 +120,34 @@ const LecturerClassStudentList = () => {
                             <div className="w-36">
                                 <StatusBox color={student.status ? "green" : "red"} message={student.status ? "Enrolled" : "Not enrolled"} />
                             </div>
+                            <div className="w-5 mr-auto">{
+                                student.score != null ? student.score : "-"
+                            }</div>
+
+                            <button className="h-fit" onClick={() => {
+                                setTempStudent(student);
+                                setShowModalEditStudent(true);
+                            }}>
+                                <NormalButton icon="" message="Edit" />
+                            </button>
                         </div>
                     ))}
                 </div>
             </div>
+
+            {classInfo && tempStudent ?
+                <ModalEditStudent
+                    isVisible={showModalEditStudent}
+                    onClose={() => setShowModalEditStudent(false)}
+                    groupList={classInfo!.groupList}
+                    score={tempStudent?.score}
+                    group={
+                        classInfo!.groupList.find(group =>
+                            group.studentList.some(st => st.RollNumber === tempStudent!.RollNumber))!
+                    }
+                    studentId={tempStudent.RollNumber}
+                    leader={tempStudent.leader} />
+                : null}
         </div>
     )
 }

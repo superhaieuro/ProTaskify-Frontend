@@ -20,7 +20,7 @@ import LecturerClassDetail from "./components/templates/lecturer-class-detail";
 import LecturerClassesManage from "./components/organisms/lecturer-classes-manage";
 import LecturerClassStudentList from "./components/organisms/lecturer-class-student-list";
 import { ClassInfoProvider } from "./utils/class-info-context";
-import LecturerSrpintStudentList from "./components/organisms/lecturer-class-sprint-list";
+import LecturerSprintStudentList from "./components/organisms/lecturer-class-sprint-list";
 import LecturerClassGroupList from "./components/organisms/lecturer-class-group-list";
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
                     <Route index element={<LecturerClassesManage />} />
                     <Route path="classdetail/:classId" element={<LecturerClassDetail />} >
                       <Route path="" element={<Navigate to="sprintlist" />} />
-                      <Route path="sprintlist" element={<LecturerSrpintStudentList />} />
+                      <Route path="sprintlist" element={<LecturerSprintStudentList />} />
                       <Route path="studentlist" element={<LecturerClassStudentList />} />
                       <Route path="grouplist" element={<LecturerClassGroupList />} />
                     </Route>

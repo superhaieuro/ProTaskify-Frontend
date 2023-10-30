@@ -14,7 +14,7 @@ type Sprint = {
     endDate: Date;
 }
 
-const LecturerSrpintStudentList = () => {
+const LecturerSprintStudentList = () => {
     const classIdContext = useContext(ClassInfoContext);
     const [sprintList, setSprintList] = useState<Sprint[]>([]);
     const [showEditSprintModal, setShowEditSprintModal] = useState(false);
@@ -97,4 +97,4 @@ const LecturerSrpintStudentList = () => {
     )
 }
 
-export default LecturerSrpintStudentList;
+export default LecturerSprintStudentList;

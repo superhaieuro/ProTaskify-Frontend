@@ -9,9 +9,9 @@ const LecturerMenuField = () => {
                 title="Menu"
                 components={[
                     <>
-                        <NavLink to={"dashboard"}>
+                        {/* <NavLink to={"dashboard"}>
                             <MenuItem icon="grid_view" message="Dashboard" />
-                        </NavLink>
+                        </NavLink> */}
 
                         <NavLink to={"classes"}>
                             <MenuItem icon="groups" message="Classes" />

@@ -86,8 +86,6 @@ const ModalEditSprint: FC<ModalEditSprintProps> = ({ isVisible, onClose, sprint 
                             'Content-Type': 'application/json;charset=UTF-8'
                         }
                     });
-                    console.log(response);
-
                     if (response.status === 200) {
                         // toast?.setSuccessMessage("Create feature successfully.");
                         window.location.reload();
