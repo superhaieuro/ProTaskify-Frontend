@@ -94,7 +94,7 @@ const ModalEditSemester: FC<ModalEditSemesterProps> = ({ isVisible, onClose, sem
             flex justify-center items-center shadow-sm">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
-                        <div className="text-2xl font-bold">New semester</div>
+                        <div className="text-2xl font-bold">Edit semester</div>
                         <button onClick={() => {
                             onClose();
                             setInputNameError("");

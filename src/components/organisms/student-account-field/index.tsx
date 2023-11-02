@@ -10,9 +10,9 @@ const StudentAccountField = () => {
                 title="Account"
                 components={[
                     <>
-                        <NavLink to={"notification"}>
+                        {/* <NavLink to={"notification"}>
                             <MenuItem icon="app_badging" message="Notification" />
-                        </NavLink>
+                        </NavLink> */}
 
                         <NavLink to={"setting"}>
                             <MenuItem icon="settings" message="Setting" />
