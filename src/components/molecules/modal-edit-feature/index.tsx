@@ -48,7 +48,7 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
         const [inputName, setInputName] = useState("");
         const [startDate, setStartDate] = useState(new Date());
         const [endDate, setEndDate] = useState(new Date());
-        const [showAlertModel, setShowAlertModel] = useState(false);
+        const [showAlertModal, setShowAlertModal] = useState(false);
 
         const [inputNameError, setInputNameError] = useState("");
         const [inputDescriptionError, setInputDescriptionError] = useState("");
@@ -194,7 +194,7 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                         </div>
 
                         <div className="flex gap-2 justify-end">
-                            <button onClick={() => setShowAlertModel(true)}>
+                            <button onClick={() => setShowAlertModal(true)}>
                                 <RejectButton icon="" message="Delete" />
                             </button>
 
@@ -218,8 +218,8 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                     </div>
 
                     <ModalAlert
-                        isVisible={showAlertModel}
-                        onClose={() => setShowAlertModel(false)} type={"warning"}
+                        isVisible={showAlertModal}
+                        onClose={() => setShowAlertModal(false)} type={"warning"}
                         title="Warning"
                         description="Are you sure you want to delete this feature?"
                         button={

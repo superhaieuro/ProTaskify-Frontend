@@ -1,21 +1,17 @@
-import LeaderRoute from "../../../utils/leader-route";
 import MenuLogo from "../../atoms/menu-logo";
 import UserInfoTab from "../../atoms/user-information-box";
-import StudentAccountField from "../../organisms/student-account-field";
-import StudentMenuField from "../../organisms/student-menu-field";
+import AdminMenuField from "../../organisms/admin-menu-field";
 
-const StudentMenuBar = () => {
+const AdminMenuBar = () => {
     return (
         <div className="w-80 p-5 bg-gray-50 border-r border-gray-200 h-screen gap-y-10 flex flex-col">
             <MenuLogo />
-            <StudentMenuField />
-            <StudentAccountField />
-
+            <AdminMenuField />
             <div className="h-full flex items-end">
                 <UserInfoTab />
             </div>
-        </div >
+        </div>
     )
 }
 
-export default StudentMenuBar;
+export default AdminMenuBar;

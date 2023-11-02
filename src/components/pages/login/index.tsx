@@ -19,7 +19,7 @@ const Login = () => {
         );
     } else {
         return <Navigate to={
-            JSON.parse(userInfo).userInfo.authorities[0].authority === "LECTURER" ? "/lecturer" : "/student"
+            JSON.parse(userInfo).userInfo.authorities[0].authority === "LECTURER" ? "/lecturer" : JSON.parse(userInfo).userInfo.authorities[0].authority === "ADMIN" ? "/admin" : "/student"
         } replace={true} />;
     }
 }

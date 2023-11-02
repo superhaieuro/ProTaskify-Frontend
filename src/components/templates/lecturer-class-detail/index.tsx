@@ -36,7 +36,7 @@ const LecturerClassDetail = () => {
     if (classInfo) {
         return (
             <div className="flex flex-col gap-5">
-                <button className="w-fit" onClick={() => navigate("/lecturer/classes")}>
+                <button className="w-fit" onClick={() => navigate("/lecturer")}>
                     <NormalButton icon="arrow_back" message="Back to classes" />
                 </button>
 

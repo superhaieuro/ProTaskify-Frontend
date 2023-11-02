@@ -52,7 +52,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     const [inputMember, setInputMember] = useState("");
     const [inputStatus, setInputStatus] = useState("");
     const [inputDescription, setInputDescription] = useState("");
-    const [showAlertModel, setShowAlertModel] = useState(false);
+    const [showAlertModal, setShowAlertModal] = useState(false);
 
     const [studentList, setStudentList] = useState<Student[]>([]);
     const [studentListFormatted, setStudentListFormatted] = useState<StudentFormatted[]>([]);
@@ -229,7 +229,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
                     </div>
 
                     <div className="flex gap-2 justify-end">
-                        <button onClick={() => setShowAlertModel(true)}>
+                        <button onClick={() => setShowAlertModal(true)}>
                             <RejectButton icon="" message="Delete" />
                         </button>
 
@@ -239,8 +239,8 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
                     </div>
                 </div>
                 <ModalAlert
-                    isVisible={showAlertModel}
-                    onClose={() => setShowAlertModel(false)} type={"warning"}
+                    isVisible={showAlertModal}
+                    onClose={() => setShowAlertModal(false)} type={"warning"}
                     title="Warning"
                     description="Are you sure you want to delete this feature?"
                     button={

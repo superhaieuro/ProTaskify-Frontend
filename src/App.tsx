@@ -22,6 +22,10 @@ import LecturerClassStudentList from "./components/organisms/lecturer-class-stud
 import { ClassInfoProvider } from "./utils/class-info-context";
 import LecturerSprintStudentList from "./components/organisms/lecturer-class-sprint-list";
 import LecturerClassGroupList from "./components/organisms/lecturer-class-group-list";
+import Admin from "./components/pages/admin";
+import AdminSemesters from "./components/templates/admin-semesters";
+import StudentWelcome from "./components/pages/student-welcome";
+import AdminLecturers from "./components/templates/admin-lecturer";
 
 function App() {
   return (
@@ -33,10 +37,17 @@ function App() {
               <Route path="*" element={<Navigate to="/" />} />
               <Route index element={<Login />} />
 
-              <Route element={<PrivateRoute authRole={'LECTURER'} />}>
+              <Route path="/admin" element={<PrivateRoute authRole={'ADMIN'} />}>
+                <Route path="/admin" element={<Admin />} >
+                  <Route path="" element={<Navigate to="semesters" />} />
+                  <Route path="semesters" element={<AdminSemesters />} />
+                  <Route path="lecturers" element={<AdminLecturers />} />
+                </Route>
+              </Route>
+
+              <Route path="/lecturer" element={<PrivateRoute authRole={'LECTURER'} />}>
                 <Route path="/lecturer" element={<Lecturer />} >
-                  <Route path="" element={<Navigate to="dashboard" />} />
-                  <Route index path="dashboard" element={<LecturerDashboard />} />
+                  <Route path="" element={<Navigate to="classes" />} />
                   <Route path="classes" element={<LecturerClasses />} >
                     <Route index element={<LecturerClassesManage />} />
                     <Route path="classdetail/:classId" element={<LecturerClassDetail />} >
@@ -46,14 +57,14 @@ function App() {
                       <Route path="grouplist" element={<LecturerClassGroupList />} />
                     </Route>
                   </Route>
-                  <Route path="notification" element={<LecturerNotification />} />
                 </Route>
+                <Route path="notification" element={<LecturerNotification />} />
               </Route>
 
               <Route path="/student" element={<PrivateRoute authRole={'STUDENT'} />}>
                 <Route path="/student" element={<Student />} >
                   <Route path="" element={<Navigate to="backlog" />} />
-                  <Route path="timeline" element={<StudentTimeline />} />
+                  {/* <Route path="timeline" element={<StudentTimeline />} /> */}
                   <Route path="backlog" element={<StudentBacklog />} >
                     <Route path="" element={<Navigate to="featuretask" />} />
                     <Route path="featuretask" element={<StudentFeatureTask />} />
@@ -65,6 +76,8 @@ function App() {
                   <Route path="setting" element={<StudentSetting />} />
                 </Route>
               </Route>
+
+              <Route path="/creategroup" element={<StudentWelcome />} />
             </Routes>
           </ClassInfoProvider>
         </ToastProvider>

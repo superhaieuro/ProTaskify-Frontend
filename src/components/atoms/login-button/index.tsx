@@ -18,8 +18,8 @@ const LoginButton = () => {
             const fetchUserData = async () => {
                 try {
                     const response = await api.post("/api/v1/auth", userToken);
-                    const { token, userInfo } = response.data;
-                    const userSessionData = { token, userInfo };
+                    const { token, userInfo, inGroup, groupStatus } = response.data;
+                    const userSessionData = { token, userInfo, inGroup, groupStatus };
                     const userSession = JSON.stringify(userSessionData);
                     sessionStorage.setItem("userSession", userSession);
                     setRole(userSessionData.userInfo.authorities[0].authority);
@@ -34,7 +34,7 @@ const LoginButton = () => {
 
     if (redirecting) {
         return (
-            <Navigate to={role === "LECTURER" ? "/lecturer" : "/student"} replace={true} />
+            <Navigate to={role === "LECTURER" ? "/lecturer" : role === "ADMIN" ? "/admin" : "/student"} replace={true} />
         );
     }
 

@@ -72,7 +72,7 @@ const StudentTeamManage = () => {
                     </div>
 
                     <div className="flex gap-1.5">
-                        <NormalButton icon="add" message="Add more member" />
+                        {/* <NormalButton icon="add" message="Add more member" /> */}
                         <button onClick={() => setShowGroupSettingModal(true)}>
                             <NormalButton icon="page_info" message="Setting" />
                         </button>

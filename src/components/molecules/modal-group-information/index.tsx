@@ -3,7 +3,6 @@ import XButton from "../../atoms/x-button";
 import api from "../../../config/axios";
 import { ClassInfoContext } from "../../../utils/class-info-context";
 import FeatureBoardItemBox from "../../atoms/feature-board-item-box";
-import "./index.scss";
 import TaskBoardItemBox from "../../atoms/task-board-item-box";
 import StatusBox from "../../atoms/status-box";
 import TextareaAutosize from 'react-textarea-autosize';
@@ -97,7 +96,7 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
     const [sprintList, setSprintList] = useState<Sprint[]>([]);
     const [tempSprint, setTempSprint] = useState<Sprint | null>(null);
     const [inputFeedback, setInputFeedback] = useState<string | null>(null);
-    const [showAlertModel, setShowAlertModel] = useState(false);
+    const [showAlertModal, setShowAlertModal] = useState(false);
 
     const [expandTask, setExpandTask] = useState(false);
     const [expandTaskIcon, setExpandTaskIcon] = useState("expand_more")
@@ -122,7 +121,7 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
     }, [sprintList])
 
     useEffect(() => {
-        setInputFeedback(group?.feedbackList.find(fb => fb.sprint.id === tempSprint!.id)?.feedback ?? null)
+        setInputFeedback(group?.feedbackList.find(fb => fb.sprint.id === tempSprint!.id)?.feedback ?? "")
     }, [tempSprint])
 
     useEffect(() => {
@@ -217,7 +216,7 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
                         <div className="text-2xl font-bold">Group information</div>
                         <button onClick={() => {
                             onClose();
-                            setInputFeedback(null);
+                            // setInputFeedback(null);
                         }}>
                             <XButton />
                         </button>
@@ -227,7 +226,7 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
                         <div className="flex flex-col gap-5 max-w-2xl">
                             <div className="flex w-full justify-between items-center border border-gray-200 rounded-lg p-5 bg-gray-50">
                                 <div className="text-xl font-bold">{group?.name}</div>
-                                <button onClick={() => setShowAlertModel(true)}>
+                                <button onClick={() => setShowAlertModal(true)}>
                                     <RejectButton icon="" message="Delete this group" />
                                 </button>
                             </div>
@@ -352,8 +351,8 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
                 </div>
 
                 <ModalAlert
-                    isVisible={showAlertModel}
-                    onClose={() => setShowAlertModel(false)} type={"warning"}
+                    isVisible={showAlertModal}
+                    onClose={() => setShowAlertModal(false)} type={"warning"}
                     title="Warning"
                     description="Are you sure you want to delete this group?"
                     button={

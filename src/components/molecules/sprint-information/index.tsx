@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import NormalButton from "../../atoms/normal-button";
 import StatusBox from "../../atoms/status-box";
 import api from "../../../config/axios";
 import ModalSprintHistory from "../modal-sprint-history";
 
+type SprintInformationProps = {
+    group: Group;
+}
+
 type Sprint = {
+    id: string;
     name: string;
     note: string;
     feedbackList: Feedback[];
@@ -14,9 +19,17 @@ type Sprint = {
 
 type Feedback = {
     feedback: string;
+    sprint: Sprint;
 }
 
-const SprintInformation = () => {
+type Group = {
+    id: string;
+    name: string;
+    score: string;
+    feedbackList: Feedback[];
+}
+
+const SprintInformation: FC<SprintInformationProps> = ({ group }) => {
     const [expand, setExpand] = useState(false);
     const [expandIcon, setExpandIcon] = useState("expand_more")
     const [showSprintHistoryModal, setShowSprintHistoryModal] = useState(false);
@@ -32,10 +45,8 @@ const SprintInformation = () => {
         try {
             const fetchUserData = async () => {
                 const studentId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
-                const response = await api.get(`/api/v1/student/sprint/${studentId}`);
+                const response = await api.get(`/api/v1/student/sprint/${studentId}`); console.log(response.data);
                 setSprintList(response.data);
-                console.log(response.data);
-
             }
             fetchUserData();
         } catch (error) {
@@ -93,10 +104,10 @@ const SprintInformation = () => {
 
                             <div className="text-sm">
                                 <div className="font-semibold">Feedback from Lecturer</div>
-                                <div className="text-gray-600">{
-                                    sprintList[0].feedbackList.length !== 0 ?
-                                        sprintList[0].feedbackList[0].feedback :
-                                        "No feedback is available yet."}
+                                <div className="text-gray-600">
+                                    {
+                                        group?.feedbackList.find(fb => fb.sprint.id === sprintList[0].id)?.feedback ?? "No feedback is available yet."
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -107,7 +118,8 @@ const SprintInformation = () => {
             <ModalSprintHistory
                 isVisible={showSprintHistoryModal}
                 onClose={() => setShowSprintHistoryModal(false)}
-                sprintList={sprintList} />
+                sprintList={sprintList}
+                group={group} />
         </div>
     )
 }

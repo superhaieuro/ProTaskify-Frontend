@@ -6,9 +6,11 @@ type ModalSprintHistoryProps = {
     isVisible: boolean;
     onClose: () => void;
     sprintList: Sprint[] | undefined;
+    group: Group;
 };
 
 type Sprint = {
+    id: string;
     name: string;
     note: string;
     feedbackList: Feedback[];
@@ -18,9 +20,17 @@ type Sprint = {
 
 type Feedback = {
     feedback: string;
+    sprint: Sprint;
 }
 
-const ModalSprintHistory: FC<ModalSprintHistoryProps> = ({ isVisible, onClose, sprintList }) => {
+type Group = {
+    id: string;
+    name: string;
+    score: string;
+    feedbackList: Feedback[];
+}
+
+const ModalSprintHistory: FC<ModalSprintHistoryProps> = ({ isVisible, onClose, sprintList, group }) => {
     if (!isVisible) {
         return null;
     } else {
@@ -49,9 +59,7 @@ const ModalSprintHistory: FC<ModalSprintHistoryProps> = ({ isVisible, onClose, s
                                     }
                                 </div>
                                 <div className="text-gray-600">{
-                                    sprintItem.feedbackList.length !== 0 ?
-                                        sprintItem.feedbackList[0].feedback :
-                                        "No feedback is available yet."
+                                    group?.feedbackList.find(fb => fb.sprint.id === sprintItem.id)?.feedback ?? "No feedback is available yet."
                                 }</div>
                             </div>
                         ))}
