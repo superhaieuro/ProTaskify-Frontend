@@ -7,12 +7,21 @@ import InputDate from "../../atoms/input-date";
 import { ToastContext } from "../../../utils/toast-context";
 import api from "../../../config/axios";
 
-type ModalCreateSemesterProps = {
+type ModalEditSemesterProps = {
     isVisible: boolean;
     onClose: () => void;
+    semester: Semester;
 };
 
-const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose }) => {
+type Semester = {
+    id: string;
+    name: string;
+    startDate: Date;
+    endDate: Date;
+    status: boolean;
+}
+
+const ModalEditSemester: FC<ModalEditSemesterProps> = ({ isVisible, onClose, semester }) => {
     const [inputName, setInputName] = useState("");
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -35,6 +44,12 @@ const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose 
         }
     }, [startDate, endDate]);
 
+    useEffect(() => {
+        setInputName(semester.name);
+        setStartDate(new Date(semester.startDate));
+        setEndDate(new Date(semester.endDate));
+    }, [semester])
+
     const handleCreate = () => {
         let valid = true;
         if (inputName.length < 5 || inputName.length > 11) {
@@ -53,17 +68,13 @@ const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose 
                     endDate: endDate
                 }
                 const fetchUserData = async () => {
-                    const response = await api.post("/api/v1/admin/create-semester", request, {
+                    const response = await api.put(`/api/v1/admin/update-semester/${semester.id}`, request, {
                         headers: {
                             'Content-Type': 'application/json;charset=UTF-8'
                         }
                     });
                     if (response.status === 200) {
-                        if (!JSON.parse(response.data)) {
-                            toast?.setErrorMessage("There is an on-going semester now.");
-                        } else {
-                            window.location.reload();
-                        }
+                        window.location.reload();
                     } else {
                         toast?.setErrorMessage("Failed to send data.");
                     }
@@ -86,7 +97,6 @@ const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose 
                         <div className="text-2xl font-bold">New semester</div>
                         <button onClick={() => {
                             onClose();
-                            setInputName("");
                             setInputNameError("");
                             setStartDate(new Date());
                             setEndDate(new Date());
@@ -112,7 +122,6 @@ const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose 
                     <div className="flex gap-2 justify-end">
                         <button onClick={() => {
                             onClose();
-                            setInputName("");
                             setInputNameError("");
                             setStartDate(new Date());
                             setEndDate(new Date());
@@ -121,7 +130,7 @@ const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose 
                         </button>
 
                         <button onClick={handleCreate}>
-                            <ApproveButton icon="" message="Create" />
+                            <ApproveButton icon="" message="Save" />
                         </button>
                     </div>
                 </div>
@@ -130,4 +139,4 @@ const ModalCreateSemester: FC<ModalCreateSemesterProps> = ({ isVisible, onClose 
     }
 }
 
-export default ModalCreateSemester;
+export default ModalEditSemester;

@@ -10,10 +10,6 @@ const AdminMenuField = () => {
                 title="Menu"
                 components={[
                     <>
-                        {/* <NavLink to={"dashboard"}>
-                            <MenuItem icon="grid_view" message="Dashboard" />
-                        </NavLink> */}
-
                         <NavLink to={"semesters"}>
                             <MenuItem icon="school" message="Semesters" />
                         </NavLink>
@@ -22,6 +18,9 @@ const AdminMenuField = () => {
                             <MenuItem icon="badge" message="Lecturers" />
                         </NavLink>
 
+                        <NavLink to={"projects"}>
+                            <MenuItem icon="topic" message="Projects" />
+                        </NavLink>
 
                         <LogoutButton />
                     </>

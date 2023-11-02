@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../../../config/axios";
 import StatusBox from "../../atoms/status-box";
 import NormalButton from "../../atoms/normal-button";
+import ModalEditSemester from "../../molecules/modal-edit-semester";
 
 type Semester = {
     id: string;
@@ -9,6 +10,7 @@ type Semester = {
     startDate: Date;
     endDate: Date;
     classesList: Class[];
+    status: boolean;
 }
 
 type Class = {
@@ -17,6 +19,8 @@ type Class = {
 
 const AdminSemesterList = () => {
     const [semesterList, setSemesterList] = useState<Semester[]>([]);
+    const [tempSemester, setTempSemester] = useState<Semester | undefined>();
+    const [showModalEditSemester, setShowModalEditSemester] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -42,9 +46,11 @@ const AdminSemesterList = () => {
             </div>
             <div className="divide-y">
                 {semesterList.map((semesterItem, index) => (
-                    <div key={index} className="p-5 flex gap-x-5">
+                    <div key={index} className="p-5 flex gap-x-5 items-center">
                         <div className="w-10 flex-shrink-0 my-1.5 h-fit">{index + 1}</div>
-                        <div className="w-60 flex-shrink-0 my-1.5 h-fit">{semesterItem.name}</div>
+                        <div className="w-60 flex-shrink-0 my-1.5 h-fit">
+                            {semesterItem.name}
+                        </div>
                         <div className="w-56 flex-shrink-0 my-1.5 h-fit">
                             {new Date(semesterItem.startDate).toLocaleDateString(undefined, {
                                 year: 'numeric',
@@ -57,21 +63,32 @@ const AdminSemesterList = () => {
                                 year: 'numeric',
                                 month: '2-digit',
                                 day: '2-digit'
+
                             })}
                         </div>
                         <div className="w-56 flex-shrink-0 my-1.5 items-center flex h-5">
-                            <StatusBox color={new Date(semesterItem.endDate) > new Date() ? "green" : "gray"} message={new Date(semesterItem.endDate) > new Date() ? "On-going" : "Finished"} />
+                            <StatusBox
+                                color={new Date(semesterItem.startDate) > new Date() ? "yellow" : new Date(semesterItem.endDate) > new Date() ? "green" : "gray"}
+                                message={new Date(semesterItem.startDate) > new Date() ? "Not start" : new Date(semesterItem.endDate) > new Date() ? "On-going" : "Finished"} />
                         </div>
 
                         <div className="w-56 mr-auto">{semesterItem.classesList.length}</div>
 
-                        {/* <button className="h-fit" onClick={() => {
+                        <button className="h-fit" onClick={() => {
+                            setTempSemester(semesterItem);
+                            setShowModalEditSemester(true);
                         }}>
-                            {new Date(semesterItem.startDate) < new Date() ? <NormalButton icon="" message="Edit" /> : null}
-                        </button> */}
+                            {new Date(semesterItem.startDate) > new Date() ? <NormalButton icon="" message="Edit" /> : null}
+                        </button>
                     </div>
+
                 ))}
             </div>
+            {tempSemester ? 
+            <ModalEditSemester
+            isVisible={showModalEditSemester}
+            onClose={() => setShowModalEditSemester(false)}
+            semester={tempSemester} /> : null}
         </div>
     )
 }

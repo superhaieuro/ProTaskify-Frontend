@@ -26,6 +26,7 @@ import Admin from "./components/pages/admin";
 import AdminSemesters from "./components/templates/admin-semesters";
 import StudentWelcome from "./components/pages/student-welcome";
 import AdminLecturers from "./components/templates/admin-lecturer";
+import AdminProject from "./components/templates/admin-projects";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                   <Route path="" element={<Navigate to="semesters" />} />
                   <Route path="semesters" element={<AdminSemesters />} />
                   <Route path="lecturers" element={<AdminLecturers />} />
+                  <Route path="projects" element={<AdminProject />} />
                 </Route>
               </Route>
 
