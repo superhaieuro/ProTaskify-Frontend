@@ -28,6 +28,7 @@ const AdminImportProjectList: React.FC = () => {
             return expectedKeys.some(key => item.hasOwnProperty(key));
         });
     };
+    
 
     const handleFile = (e: ChangeEvent<HTMLInputElement>): void => {
         const selectedFile = e.target.files && e.target.files[0];
@@ -41,9 +42,17 @@ const AdminImportProjectList: React.FC = () => {
                     const worksheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[worksheetName];
                     const data = XLSX.utils.sheet_to_json(worksheet);
-
+                    const transformedData = data.map((item: any) => ({
+                        name: item["Subject name"],
+                        problems: item["Problems"],
+                        context: item["Context"],
+                        actors: item["Actors"],
+                        functionalRequirements: item["Functional requirements"],
+                        nonFunctionalRequirements: item["Non-Functional requirements"]
+                    }));
+    
                     if (isValidExcelFormat(data)) {
-                        setJsonData(JSON.stringify(data));
+                        setJsonData(JSON.stringify(transformedData));
                         setShowModal(true);
                         setInvalid(false);
                     } else {
@@ -58,10 +67,10 @@ const AdminImportProjectList: React.FC = () => {
         }
     }
 
-    useEffect(() => {
-        // Log jsonData whenever it changes
-        console.log("jsonData changed:", jsonData);
-    }, [jsonData]);
+    // useEffect(() => {
+    //     // Log jsonData whenever it changes
+    //     console.log("jsonData changed:", jsonData);
+    // }, [jsonData]);
 
     return (
         <>

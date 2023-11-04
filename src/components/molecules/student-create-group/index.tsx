@@ -55,7 +55,7 @@ const StudentCreateGroup = () => {
     }
 
     useEffect(() => {
-        if (JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("isMemeber") != null) {
+        if (JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("isMemeber") != null || sessionStorage.getItem("isLeader") != null) {
             if (inputName.length >= 5 && inputName.length <= 50) {
                 setInputNameError("");
                 const fetchUserData = async () => {
@@ -103,6 +103,7 @@ const StudentCreateGroup = () => {
                         }
                         const response = await api.post(`/api/v1/student/create-group/${JSON.parse(userInfo!).userInfo.RollNumber}`, request);
                         if (response.status === 200) {
+                            sessionStorage.setItem("isLeader", "true");
                             getClassDetail();
                         }
                     } catch (error) {
@@ -147,7 +148,7 @@ const StudentCreateGroup = () => {
                     const updatedUserInfo = {
                         ...JSON.parse(userInfo!),
                         inGroup: true,
-                        groupStatus: true
+                        groupStatus: true,
                     }
                     sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
                     window.location.reload();

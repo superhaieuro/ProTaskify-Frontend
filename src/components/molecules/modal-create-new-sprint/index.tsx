@@ -78,7 +78,6 @@ const ModalCreateSprint: FC<ModalCreateNewSprintProps> = ({ isVisible, onClose }
                             'Content-Type': 'application/json;charset=UTF-8'
                         }
                     });
-                    console.log(response);
 
                     if (response.status === 200) {
                         // toast?.setSuccessMessage("Create feature successfully.");

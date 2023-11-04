@@ -1,18 +1,17 @@
 import { FC, useContext, useEffect, useState } from "react";
 import XButton from "../../atoms/x-button";
-import InputText from "../../atoms/input-text";
 import ApproveButton from "../../atoms/approve-button";
 import NormalButton from "../../atoms/normal-button";
 import api from "../../../config/axios";
 import { ToastContext } from "../../../utils/toast-context";
 
 export type Project = {
-    Subjectname: string | null;
-    Problems: string | null;
-    Context: string | null;
-    Actors: string | null;
-    Functionalrequirements: string | null;
-    NonFunctionalrequirements: string | null;
+    name: string | null;
+    problems: string | null;
+    context: string | null;
+    actors: string | null;
+    functionalRequirements: string | null;
+    nonFunctionalRequirements: string | null;
 };
 
 type ModalImportProjectListProps = {
@@ -39,7 +38,6 @@ const ModalImportProjectList: FC<ModalImportProjectListProps> = ({
                 const request = {
                     projects: JSON.parse(data),
                 };
-                console.log(request);
                 const response = await api.post(
                     "api/v1/admin/import-project",
                     request,
@@ -50,7 +48,8 @@ const ModalImportProjectList: FC<ModalImportProjectListProps> = ({
                     }
                 );
                 if (response.status === 200) {
-                    toast?.setSuccessMessage("Import successfully.");
+                    // toast?.setSuccessMessage("Import successfully.");
+                    window.location.reload();
                     onClose();
                 } else {
                     toast?.setErrorMessage("Failed to send data.");
@@ -85,41 +84,31 @@ const ModalImportProjectList: FC<ModalImportProjectListProps> = ({
                         </button>
                     </div>
 
-                    {/* <div className="flex gap-5">
-                        <div className="w-full">
-                            <InputText
-                                title="Semester"
-                                placeholder=""
-                                value="Fall 2023"
-                                readonly={true} onChange={function (e: any): void {
-                                    throw new Error("Function not implemented.");
-                                }} error={""} />
-                        </div>
-                    </div> */}
-
                     <div className="flex flex-col gap-2 text-sm">
                         {/* <div>Project list</div> */}
                         <div className="border border-gray-200 rounded-lg">
-                            <div className="p-5 bg-gray-50 flex gap-x-2 rounded-t-lg border-b border-gray-200 ">
+                            <div className="p-5 bg-gray-50 flex gap-x-5 rounded-t-lg border-b border-gray-200 ">
                                 <div className="w-10">#</div>
                                 <div className="w-32">Subject name</div>
                                 <div className="w-52">Context</div>
+                                <div className="w-52">Problem</div>
                                 <div className="w-52">Actors</div>
                                 <div className="w-52">Functional requirements</div>
                                 <div className="w-52">Non-Functional requirements</div>
                             </div>
-                            <div className="h-80 overflow-y-auto divide-y">
+                            <div className="max-h-96 overflow-y-auto divide-y">
                                 {jsonData.map((project, index) => (
-                                    <div key={index} className="p-5 flex gap-x-2">
+                                    <div key={index} className="p-5 flex gap-x-5">
                                         <div className="w-10">{index + 1}</div>
-                                        <div className="w-32">{project.Subjectname}</div>
-                                        <div className="w-52">{project.Context}</div>
-                                        <div className="w-52">{project.Actors}</div>
+                                        <div className="w-32">{project.name}</div>
+                                        <div className="w-52">{project.context}</div>
+                                        <div className="w-52">{project.problems}</div>
+                                        <div className="w-52">{project.actors}</div>
                                         <div className="w-52">
-                                            {project.Functionalrequirements}
+                                            {project.functionalRequirements}
                                         </div>
                                         <div className="w-52">
-                                            {project.NonFunctionalrequirements}
+                                            {project.nonFunctionalRequirements}
                                         </div>
                                     </div>
                                 ))}
