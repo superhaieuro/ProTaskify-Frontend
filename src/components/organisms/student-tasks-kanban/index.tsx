@@ -49,6 +49,14 @@ const StudentTasksKanban = () => {
 
     const [showTaskInformationModal, setShowTaskInformationModal] = useState(false);
 
+    const [showAssignToMeTasks, setShowAssignToMeTasks] = useState(false);
+
+    const userId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
+
+    const filteredTaskList = showAssignToMeTasks
+        ? taskList.filter(taskItem => taskItem.student.RollNumber === userId)
+        : taskList;
+
     useEffect(() => {
         try {
             const fetchUserData = async () => {
@@ -65,11 +73,11 @@ const StudentTasksKanban = () => {
     }, [])
 
     useEffect(() => {
-        setTodoList(taskList.filter(task => task.status === "To do").sort((a, b) => { return a.taskIndex - b.taskIndex }));
-        setInProgressList(taskList.filter(task => task.status === "In progress").sort((a, b) => { return a.taskIndex - b.taskIndex }));
-        setVerifyingList(taskList.filter(task => task.status === "Verifying").sort((a, b) => { return a.taskIndex - b.taskIndex }));
-        setDoneList(taskList.filter(task => task.status === "Done").sort((a, b) => { return a.taskIndex - b.taskIndex }));
-    }, [taskList]);
+        setTodoList(filteredTaskList.filter(task => task.status === "To do").sort((a, b) => { return a.taskIndex - b.taskIndex }));
+        setInProgressList(filteredTaskList.filter(task => task.status === "In progress").sort((a, b) => { return a.taskIndex - b.taskIndex }));
+        setVerifyingList(filteredTaskList.filter(task => task.status === "Verifying").sort((a, b) => { return a.taskIndex - b.taskIndex }));
+        setDoneList(filteredTaskList.filter(task => task.status === "Done").sort((a, b) => { return a.taskIndex - b.taskIndex }));
+    }, [taskList, showAssignToMeTasks]);
 
     const reorderOneList = (srcIndex: number, desIndex: number, [...Task], draggedTask: Tasks) => {
         const items = Array.from([...Task]);
@@ -169,149 +177,162 @@ const StudentTasksKanban = () => {
     };
 
     return (
-        <div className="flex gap-5">
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="To do">
-                    {(provided) => (
-                        <div className="w-1/4 p-2.5 rounded-lg bg-gray-50 border border-gray-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                            <div className="flex justify-between text-gray-600">
-                                <div>To do</div>
-                                <div>{todoList.length}</div>
-                            </div>
-                            {todoList.map((taskItem, index) => {
-                                return (
-                                    <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
-                                        {(provided) => (
-                                            <div className="mt-2 w-full" ref={provided.innerRef} onClick={() => {
-                                                setShowTaskInformationModal(true)
-                                                setTempTask(taskItem);
-                                                setTempFeature(featureList.find(feature =>
-                                                    feature.taskList.some(task => task.id === taskItem.id)));
-                                            }}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}>
-                                                <TaskDetailBox
-                                                    picture={taskItem.student.picture}
-                                                    status={taskItem.priority}
-                                                    feature={featureList.find(feature =>
-                                                        feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                                                    date={featureList.find(feature =>
-                                                        feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
-                                                    title={taskItem.name} />
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+        <div>
+            <div className="border border-gray-200 rounded-lg text-gray-600 text-xs p-2.5 bg-gray-50 mb-5 flex justify-end items-center gap-1.5 w-fit ml-auto">
+                <input
+                    type="checkbox"
+                    id="filter"
+                    name="filter"
+                    value="assignToMe"
+                    checked={showAssignToMeTasks}
+                    onChange={() => setShowAssignToMeTasks(!showAssignToMeTasks)}
+                /> Assign to me
+            </div>
 
-                <Droppable droppableId="In progress">
-                    {(provided) => (
-                        <div className="w-1/4 p-2.5 rounded-lg bg-blue-50 border border-blue-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                            <div className="flex justify-between text-blue-600">
-                                <div>In progress</div>
-                                <div>{inProgressList.length}</div>
+            <div className="flex gap-5">
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable droppableId="To do">
+                        {(provided) => (
+                            <div className="w-1/4 p-2.5 rounded-lg bg-gray-50 border border-gray-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                                <div className="flex justify-between text-gray-600">
+                                    <div>To do</div>
+                                    <div>{todoList.length}</div>
+                                </div>
+                                {todoList.map((taskItem, index) => {
+                                    return (
+                                        <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
+                                            {(provided) => (
+                                                <div className="mt-2 w-full" ref={provided.innerRef} onClick={() => {
+                                                    setShowTaskInformationModal(true)
+                                                    setTempTask(taskItem);
+                                                    setTempFeature(featureList.find(feature =>
+                                                        feature.taskList.some(task => task.id === taskItem.id)));
+                                                }}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}>
+                                                    <TaskDetailBox
+                                                        picture={taskItem.student.picture}
+                                                        status={taskItem.priority}
+                                                        feature={featureList.find(feature =>
+                                                            feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
+                                                        date={featureList.find(feature =>
+                                                            feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
+                                                        title={taskItem.name} />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                                {provided.placeholder}
                             </div>
-                            {inProgressList.map((taskItem, index) => {
-                                return (
-                                    <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
-                                        {(provided) => (
-                                            <div className="mt-2 w-full" ref={provided.innerRef} onClick={() => {
-                                                setShowTaskInformationModal(true)
-                                                setTempTask(taskItem);
-                                                setTempFeature(featureList.find(feature =>
-                                                    feature.taskList.some(task => task.id === taskItem.id)));
-                                            }}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}>
-                                                <TaskDetailBox
-                                                    picture={taskItem.student.picture}
-                                                    status={taskItem.priority}
-                                                    feature={featureList.find(feature =>
-                                                        feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                                                    date={featureList.find(feature =>
-                                                        feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
-                                                    title={taskItem.name} />
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+                        )}
+                    </Droppable>
 
-                <Droppable droppableId="Verifying">
-                    {(provided) => (
-                        <div className="w-1/4 p-2.5 rounded-lg bg-yellow-50 border border-yellow-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
-                            <div className="flex justify-between text-yellow-600">
-                                <div>Verifying</div>
-                                <div>{verifyingList.length}</div>
+                    <Droppable droppableId="In progress">
+                        {(provided) => (
+                            <div className="w-1/4 p-2.5 rounded-lg bg-blue-50 border border-blue-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                                <div className="flex justify-between text-blue-600">
+                                    <div>In progress</div>
+                                    <div>{inProgressList.length}</div>
+                                </div>
+                                {inProgressList.map((taskItem, index) => {
+                                    return (
+                                        <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
+                                            {(provided) => (
+                                                <div className="mt-2 w-full" ref={provided.innerRef} onClick={() => {
+                                                    setShowTaskInformationModal(true)
+                                                    setTempTask(taskItem);
+                                                    setTempFeature(featureList.find(feature =>
+                                                        feature.taskList.some(task => task.id === taskItem.id)));
+                                                }}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}>
+                                                    <TaskDetailBox
+                                                        picture={taskItem.student.picture}
+                                                        status={taskItem.priority}
+                                                        feature={featureList.find(feature =>
+                                                            feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
+                                                        date={featureList.find(feature =>
+                                                            feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
+                                                        title={taskItem.name} />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                                {provided.placeholder}
                             </div>
-                            {verifyingList.map((taskItem, index) => {
-                                return (
-                                    <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
-                                        {(provided) => (
-                                            <div className="mt-2 w-full" ref={provided.innerRef} onClick={() => {
-                                                setShowTaskInformationModal(true)
-                                                setTempTask(taskItem);
-                                                setTempFeature(featureList.find(feature =>
-                                                    feature.taskList.some(task => task.id === taskItem.id)));
-                                            }}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}>
-                                                <TaskDetailBox
-                                                    picture={taskItem.student.picture}
-                                                    status={taskItem.priority}
-                                                    feature={featureList.find(feature =>
-                                                        feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                                                    date={featureList.find(feature =>
-                                                        feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
-                                                    title={taskItem.name} />
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
+                        )}
+                    </Droppable>
 
-                <div className="w-1/4 p-2.5 rounded-lg bg-green-50 border border-green-200 text-xs">
-                    <div className="flex justify-between text-green-600">
-                        <div>Done</div>
-                        <div>{doneList.length}</div>
+                    <Droppable droppableId="Verifying">
+                        {(provided) => (
+                            <div className="w-1/4 p-2.5 rounded-lg bg-yellow-50 border border-yellow-200 text-xs" {...provided.droppableProps} ref={provided.innerRef}>
+                                <div className="flex justify-between text-yellow-600">
+                                    <div>Verifying</div>
+                                    <div>{verifyingList.length}</div>
+                                </div>
+                                {verifyingList.map((taskItem, index) => {
+                                    return (
+                                        <Draggable key={taskItem.id} draggableId={String(taskItem.id)} index={index}>
+                                            {(provided) => (
+                                                <div className="mt-2 w-full" ref={provided.innerRef} onClick={() => {
+                                                    setShowTaskInformationModal(true)
+                                                    setTempTask(taskItem);
+                                                    setTempFeature(featureList.find(feature =>
+                                                        feature.taskList.some(task => task.id === taskItem.id)));
+                                                }}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}>
+                                                    <TaskDetailBox
+                                                        picture={taskItem.student.picture}
+                                                        status={taskItem.priority}
+                                                        feature={featureList.find(feature =>
+                                                            feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
+                                                        date={featureList.find(feature =>
+                                                            feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
+                                                        title={taskItem.name} />
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+
+                    <div className="w-1/4 p-2.5 rounded-lg bg-green-50 border border-green-200 text-xs">
+                        <div className="flex justify-between text-green-600">
+                            <div>Done</div>
+                            <div>{doneList.length}</div>
+                        </div>
+                        {doneList.map((taskItem) => (
+                            <div role="button" className="mt-2 w-full" onClick={() => {
+                                setShowTaskInformationModal(true)
+                                setTempTask(taskItem);
+                                setTempFeature(featureList.find(feature =>
+                                    feature.taskList.some(task => task.id === taskItem.id)));
+                            }} >
+                                <TaskDetailBox
+                                    picture={taskItem.student.picture}
+                                    status={taskItem.priority}
+                                    feature={featureList.find(feature =>
+                                        feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
+                                    date={featureList.find(feature =>
+                                        feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
+                                    title={taskItem.name} />
+                            </div>
+                        ))}
                     </div>
-                    {doneList.map((taskItem) => (
-                        <div role="button" className="mt-2 w-full" onClick={() => {
-                            setShowTaskInformationModal(true)
-                            setTempTask(taskItem);
-                            setTempFeature(featureList.find(feature =>
-                                feature.taskList.some(task => task.id === taskItem.id)));
-                        }} >
-                            <TaskDetailBox
-                                picture={taskItem.student.picture}
-                                status={taskItem.priority}
-                                feature={featureList.find(feature =>
-                                    feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                                date={featureList.find(feature =>
-                                    feature.taskList.some(task => task.id === taskItem.id))?.endDate ?? null}
-                                title={taskItem.name} />
-                        </div>
-                    ))}
-                </div>
-            </DragDropContext>
+                </DragDropContext>
 
-            <ModalTaskInformation
-                isVisible={showTaskInformationModal}
-                onClose={() => setShowTaskInformationModal(false)}
-                task={tempTask}
-                feature={tempFeature} />
+                <ModalTaskInformation
+                    isVisible={showTaskInformationModal}
+                    onClose={() => setShowTaskInformationModal(false)}
+                    task={tempTask}
+                    feature={tempFeature} />
+            </div>
         </div>
     )
 }

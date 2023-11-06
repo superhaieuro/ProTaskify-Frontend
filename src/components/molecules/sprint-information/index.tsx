@@ -45,7 +45,7 @@ const SprintInformation: FC<SprintInformationProps> = ({ group }) => {
         try {
             const fetchUserData = async () => {
                 const studentId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
-                const response = await api.get(`/api/v1/student/sprint/${studentId}`); console.log(response.data);
+                const response = await api.get(`/api/v1/student/sprint/${studentId}`);
                 setSprintList(response.data);
             }
             fetchUserData();

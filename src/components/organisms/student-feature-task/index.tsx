@@ -76,7 +76,14 @@ const StudentFeatureTask = () => {
     const [tempFeature, setTempFeature] = useState<Feature | undefined>();
     const [tempTask, setTempTask] = useState<Tasks | undefined>();
 
+    const [showAssignToMeTasks, setShowAssignToMeTasks] = useState(false);
+
     const leader = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
+    const userId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
+
+    const filteredTaskList = showAssignToMeTasks
+        ? taskList.filter(taskItem => taskItem.student.RollNumber === userId)
+        : taskList;
 
     useEffect(() => {
         try {
@@ -118,9 +125,9 @@ const StudentFeatureTask = () => {
 
                     <div className="flex gap-5">
                         <div className="w-1/3 bg-gray-50 border border-gray-200 rounded-lg p-2.5 flex flex-col gap-2 h-fit">
-                            <div className="text-xs flex justify-between text-gray-600">
+                            <div className="text-xs flex gap-1.5 text-gray-600">
                                 <div>Features board</div>
-                                <div>{groupInfo?.featureList.length}</div>
+                                <div className="bg-gray-400 text-xxs text-white w-4 h-4 flex justify-center items-center rounded-full">{groupInfo?.featureList.length}</div>
                             </div>
 
                             <LeaderRoute>
@@ -157,8 +164,20 @@ const StudentFeatureTask = () => {
 
                         <div className="w-2/3 bg-gray-50 border border-gray-200 rounded-lg p-2.5 flex flex-col gap-2 h-fit">
                             <div className="text-xs flex justify-between text-gray-600">
-                                <div>Tasks board</div>
-                                <div>{taskList.length}</div>
+                                <div className="flex gap-1.5">
+                                    <div>Tasks board</div>
+                                    <div className="bg-gray-400 text-xxs text-white w-4 h-4 flex justify-center items-center rounded-full">{taskList.length}</div>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <input
+                                        type="checkbox"
+                                        id="filter"
+                                        name="filter"
+                                        value="assignToMe"
+                                        checked={showAssignToMeTasks}
+                                        onChange={() => setShowAssignToMeTasks(!showAssignToMeTasks)}
+                                    /> Assign to me
+                                </div>
                             </div>
 
                             <LeaderRoute>
@@ -169,7 +188,7 @@ const StudentFeatureTask = () => {
                                 </button>
                             </LeaderRoute>
 
-                            {taskList.map((taskItem) => (
+                            {filteredTaskList.map((taskItem) => (
                                 <div role="button" onClick={() => {
                                     setShowEditTaskModal(true);
                                     setTempTask(taskItem);
