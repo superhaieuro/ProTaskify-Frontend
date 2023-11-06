@@ -9,6 +9,7 @@ import RejectButton from "../../atoms/reject-button";
 import TaskItemSubBox from "../../atoms/task-item-sub-box";
 import api from "../../../config/axios";
 import ModalAlert from "../modal-alert";
+import LeaderRoute from "../../../utils/leader-route";
 
 type Feature = {
     id: string,
@@ -54,6 +55,8 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
         const [inputDescriptionError, setInputDescriptionError] = useState("");
 
         const toast = useContext(ToastContext);
+
+        const member = !JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
 
         let progressRate;
         if (feature!.taskList.length === 0) {
@@ -159,7 +162,11 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                 <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full flex justify-end overflow-auto">
                     <div className="bg-white w-96 p-5 border-l border-gray-200 flex flex-col gap-y-5 overflow-y-auto shadow-sm">
                         <div className="flex items-center justify-between">
-                            <div className="text-2xl font-bold">Edit feature</div>
+                            {member ?
+                                <div className="text-2xl font-bold">Feature details</div> :
+                                <div className="text-2xl font-bold">Edit feature</div>
+                            }
+
                             <button onClick={() => {
                                 onClose();
                                 setInputNameError("");
@@ -170,16 +177,16 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                         </div>
 
                         <div className="w-full">
-                            <InputText title="Feature name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                            <InputText title="Feature name" placeholder="" value={inputName} readonly={member} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                         </div>
 
                         <div className="flex gap-5">
                             <div className="w-full">
-                                <InputDate value={startDate} title="Start date" readonly={false} onChange={(e) => setStartDate(e)} />
+                                <InputDate value={startDate} title="Start date" readonly={member} onChange={(e) => setStartDate(e)} />
                             </div>
 
                             <div className="w-full">
-                                <InputDate value={endDate} title="End date" readonly={false} onChange={(e) => setEndDate(e)} />
+                                <InputDate value={endDate} title="End date" readonly={member} onChange={(e) => setEndDate(e)} />
                             </div>
                         </div>
 
@@ -187,21 +194,23 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                             <div className="flex flex-col gap-y-2">
                                 <div className="text-sm font-semibold">Description</div>
                                 <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
-                            outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
+                            outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600" readOnly={member}
                                     minRows={5} maxRows={10} value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />
                                 {inputDescriptionError !== "" ? <div className="text-xs text-red-600">{inputDescriptionError}</div> : null}
                             </div>
                         </div>
 
-                        <div className="flex gap-2 justify-end">
-                            <button onClick={() => setShowAlertModal(true)}>
-                                <RejectButton icon="" message="Delete" />
-                            </button>
+                        <LeaderRoute>
+                            <div className="flex gap-2 justify-end">
+                                <button onClick={() => setShowAlertModal(true)}>
+                                    <RejectButton icon="" message="Delete" />
+                                </button>
 
-                            <button onClick={handleUpdate}>
-                                <ApproveButton icon="" message="Save" />
-                            </button>
-                        </div>
+                                <button onClick={handleUpdate}>
+                                    <ApproveButton icon="" message="Save" />
+                                </button>
+                            </div>
+                        </LeaderRoute>
 
                         <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5 flex flex-col gap-2 h-fit text-xs">
                             <div className="text-gray-600 text-end">Done tasks: {feature!.taskList.filter(task => task.status === "Done").length}/{feature!.taskList.length}</div>

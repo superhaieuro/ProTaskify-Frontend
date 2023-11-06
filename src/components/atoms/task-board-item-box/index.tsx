@@ -32,7 +32,7 @@ const TaskBoardItemBox: FC<TaskBoardItemBoxProps> = ({ picture, priority, featur
     }
 
     return (
-        <div className="bg-white hover:shadow-sm border border-gray-200 rounded overflow-auto flex">
+        <div className="bg-white shadow-sm border border-gray-200 rounded overflow-auto flex">
             <div className="p-2.5 flex gap-2 text-xs items-center justify-between w-full">
                 <div>
                     <img className="w-8 h-8 rounded-full" src={picture}></img>

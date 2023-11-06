@@ -21,7 +21,7 @@ const TaskDetailBox: FC<TaskDetailBoxProps> = ({ picture, status, feature, date,
     }
 
     return (
-        <div role="button" className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs hover:shadow-sm border border-gray-200">
+        <div role="button" className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs shadow-sm border border-gray-200">
             <div className="flex justify-between items-center">
                 <img className="w-8 h-8 rounded-full" src={picture}></img>
                 <StatusBox color={color} message={status} />

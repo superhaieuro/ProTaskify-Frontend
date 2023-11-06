@@ -94,7 +94,7 @@ const ModalSettingProject: FC<ModalSettingProjectProps> = ({ isVisible, onClose,
                                     <div className="w-10"></div>
                                 </div>
 
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 w-full">
                                     {projectItem.name ?
                                         <div className="text-sm">
                                             <div className="font-semibold">Subject name</div>

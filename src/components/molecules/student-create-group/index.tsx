@@ -6,6 +6,7 @@ import { ToastContext } from "../../../utils/toast-context";
 import NotificationBox from "../../atoms/notification-box";
 import RejectButton from "../../atoms/reject-button";
 import ModalAlert from "../modal-alert";
+import LeaderRoute from "../../../utils/leader-route";
 
 type Class = {
     id: number;
@@ -55,7 +56,7 @@ const StudentCreateGroup = () => {
     }
 
     useEffect(() => {
-        if (JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("isMemeber") != null || sessionStorage.getItem("isLeader") != null) {
+        if (JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("isMemeber") == null && sessionStorage.getItem("isLeader") != null) {
             if (inputName.length >= 5 && inputName.length <= 50) {
                 setInputNameError("");
                 const fetchUserData = async () => {
@@ -207,7 +208,7 @@ const StudentCreateGroup = () => {
 
     return (
         <div className="h-screen p-5 flex justify-center">
-            <div className="flex flex-col gap-5 h-full w-1/3">
+            <div className="flex flex-col gap-5 h-fit max-h-full w-1/3">
                 <div className="flex flex-col gap-5 p-5 border border-gray-200 rounded-lg h-full overflow-auto">
                     <div className="flex justify-between items-start">
                         <div>
@@ -216,10 +217,12 @@ const StudentCreateGroup = () => {
                         </div>
 
                         <div className="flex gap-2">
-                            {classInfo?.groupList.find(gr => gr.id == groupId)?.studentList.length! < 4 || classInfo?.groupList.find(gr => gr.id == groupId)?.studentList.length! > 6 ? null :
-                                <button onClick={createGroup}>
-                                    <ApproveButton icon="" message="Create" />
-                                </button>}
+                            <LeaderRoute>
+                                {classInfo?.groupList.find(gr => gr.id == groupId)?.studentList.length! < 4 || classInfo?.groupList.find(gr => gr.id == groupId)?.studentList.length! > 6 ? null :
+                                    <button onClick={createGroup}>
+                                        <ApproveButton icon="" message="Create" />
+                                    </button>}
+                            </LeaderRoute>
 
                             <button onClick={() => {
                                 sessionStorage.clear();
@@ -255,7 +258,7 @@ const StudentCreateGroup = () => {
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Group name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                        <InputText title="Group name" placeholder="" value={inputName} readonly={JSON.parse(userInfo!).userInfo.leader != true || sessionStorage.getItem("isMember") != null} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="flex flex-col gap-y-2">
@@ -279,40 +282,44 @@ const StudentCreateGroup = () => {
                                 {student.leader ?
                                     null
                                     :
-                                    <span onClick={() => outGroup(student.RollNumber)} role="button" className="material-symbols-rounded h-fit icon text-white hover:text-red-600">do_not_disturb_on</span>
+                                    <LeaderRoute>
+                                        <span onClick={() => outGroup(student.RollNumber)} role="button" className="material-symbols-rounded h-fit icon text-white hover:text-red-600">do_not_disturb_on</span>
+                                    </LeaderRoute>
                                 }
                             </div>
                         ))}
                     </div>
 
-                    {classInfo?.groupList.find(gr => gr.id == groupId)?.studentList.length! < 6 ?
-                        <div className="flex flex-col gap-y-2 overflow-auto">
-                            <div className="text-sm font-semibold">Student list</div>
+                    <LeaderRoute>
+                        {classInfo?.groupList.find(gr => gr.id == groupId)?.studentList.length! < 6 ?
+                            <div className="flex flex-col gap-y-2 overflow-auto">
+                                <div className="text-sm font-semibold">Student list</div>
 
-                            <div className="border border-gray-200 rounded-lg h-full flex flex-col overflow-auto text-sm">
-                                <div className="p-5 bg-gray-50 flex gap-x-5 border-b border-gray-200 font-semibold text-gray-600">
-                                    <div className="w-28">Roll Number</div>
-                                    <div className="w-52">Full Name</div>
+                                <div className="border border-gray-200 rounded-lg h-full flex flex-col overflow-auto text-sm">
+                                    <div className="p-5 bg-gray-50 flex gap-x-5 border-b border-gray-200 font-semibold text-gray-600">
+                                        <div className="w-28">Roll Number</div>
+                                        <div className="w-52">Full Name</div>
+                                    </div>
+                                    <div className="max-h-full overflow-y-auto divide-y">
+                                        {classInfo?.studentList.filter(student => (
+                                            classInfo.groupList.every(group => (
+                                                !group.studentList.some(st => st.RollNumber === student.RollNumber)
+                                            )))).map((student, index) =>
+                                                student.RollNumber !== JSON.parse(userInfo!).userInfo.RollNumber ?
+                                                    <div key={index} className="p-5 flex gap-x-5 items-center">
+                                                        {/* <div className="w-10">{index + 1}</div> */}
+                                                        <div className="w-28">{student.RollNumber}</div>
+                                                        <div className="w-52 mr-auto">{student.FullName}</div>
+                                                        <button onClick={() => invite(student.RollNumber)}>
+                                                            <ApproveButton icon="" message="Invite" />
+                                                        </button>
+                                                    </div> : null
+                                            )}
+                                    </div>
                                 </div>
-                                <div className="max-h-full overflow-y-auto divide-y">
-                                    {classInfo?.studentList.filter(student => (
-                                        classInfo.groupList.every(group => (
-                                            !group.studentList.some(st => st.RollNumber === student.RollNumber)
-                                        )))).map((student, index) =>
-                                            student.RollNumber !== JSON.parse(userInfo!).userInfo.RollNumber ?
-                                                <div key={index} className="p-5 flex gap-x-5 items-center">
-                                                    {/* <div className="w-10">{index + 1}</div> */}
-                                                    <div className="w-28">{student.RollNumber}</div>
-                                                    <div className="w-52 mr-auto">{student.FullName}</div>
-                                                    <button onClick={() => invite(student.RollNumber)}>
-                                                        <ApproveButton icon="" message="Invite" />
-                                                    </button>
-                                                </div> : null
-                                        )}
-                                </div>
-                            </div>
-                        </div> :
-                        <NotificationBox icon="lightbulb" message="You group has reached the requirement number of members (4 - 6 members)." style="text-blue-600 border-blue-200 bg-blue-50" />}
+                            </div> :
+                            <NotificationBox icon="lightbulb" message="You group has reached the requirement number of members (4 - 6 members)." style="text-blue-600 border-blue-200 bg-blue-50" />}
+                    </LeaderRoute>
                 </div>
             </div>
         </div>

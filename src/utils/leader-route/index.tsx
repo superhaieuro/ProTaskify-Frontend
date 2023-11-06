@@ -6,7 +6,7 @@ type LeaderRouteProps = {
 
 const LeaderRoute: FC<LeaderRouteProps> = ({ children }) => {
     const userInfo = sessionStorage.getItem("userSession");
-    if (JSON.parse(userInfo!).inGroup !== false) {
+    if (JSON.parse(userInfo!).userInfo.leader) {
         return (
             <>
                 {children}

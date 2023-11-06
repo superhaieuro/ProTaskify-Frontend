@@ -4,6 +4,7 @@ import api from "../../../config/axios";
 import StudentInformationBox from "../../atoms/student-information-box";
 import ModalGroupSetting from "../../molecules/modal-group-setting";
 import ModalSettingProject from "../../molecules/modal-setting-project";
+import LeaderRoute from "../../../utils/leader-route";
 
 type Student = {
     RollNumber: string;
@@ -73,9 +74,11 @@ const StudentTeamManage = () => {
 
                     <div className="flex gap-1.5">
                         {/* <NormalButton icon="add" message="Add more member" /> */}
-                        <button onClick={() => setShowGroupSettingModal(true)}>
-                            <NormalButton icon="page_info" message="Setting" />
-                        </button>
+                        <LeaderRoute>
+                            <button onClick={() => setShowGroupSettingModal(true)}>
+                                <NormalButton icon="page_info" message="Setting" />
+                            </button>
+                        </LeaderRoute>
                         <button onClick={handleExpand}>
                             <NormalButton icon={expandIcon} message="" />
                         </button>
@@ -89,9 +92,11 @@ const StudentTeamManage = () => {
                                 Topic details
                             </div>
 
-                            <button onClick={() => setShowTopicSettingModal(true)}>
-                                <NormalButton icon="" message="Change topic" />
-                            </button>
+                            <LeaderRoute>
+                                <button onClick={() => setShowTopicSettingModal(true)}>
+                                    <NormalButton icon="" message="Change topic" />
+                                </button>
+                            </LeaderRoute>
                         </div>
 
                         {

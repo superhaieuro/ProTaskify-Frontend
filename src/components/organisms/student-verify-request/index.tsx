@@ -3,6 +3,7 @@ import api from "../../../config/axios";
 import NormalButton from "../../atoms/normal-button";
 import ModalVerifyTask from "../../molecules/modal-verify-task";
 import StatusBox from "../../atoms/status-box";
+import LeaderRoute from "../../../utils/leader-route";
 
 type Feature = {
     id: string,
@@ -115,14 +116,16 @@ const StudentVerifyRequest = () => {
                                 <div>{taskItem.student.FullName}</div>
                             </div>
 
-                            <button className="h-fit" onClick={() => {
-                                setShowVerifyTaskModal(true);
-                                setTempTask(taskItem);
-                                setTempFeature(featureList.find(feature =>
-                                    feature.taskList.some(task => task.id === taskItem.id)));
-                            }}>
-                                <NormalButton icon="" message="Review" />
-                            </button>
+                            <LeaderRoute>
+                                <button className="h-fit" onClick={() => {
+                                    setShowVerifyTaskModal(true);
+                                    setTempTask(taskItem);
+                                    setTempFeature(featureList.find(feature =>
+                                        feature.taskList.some(task => task.id === taskItem.id)));
+                                }}>
+                                    <NormalButton icon="" message="Review" />
+                                </button>
+                            </LeaderRoute>
                         </div>
                     ))}
                 </div>

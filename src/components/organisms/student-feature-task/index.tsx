@@ -8,6 +8,7 @@ import api from "../../../config/axios";
 import ModalEditFeature from "../../molecules/modal-edit-feature";
 import ModalEditTask from "../../molecules/modal-edit-task";
 import SprintInformation from "../../molecules/sprint-information";
+import LeaderRoute from "../../../utils/leader-route";
 
 type Feature = {
     id: string,
@@ -75,6 +76,8 @@ const StudentFeatureTask = () => {
     const [tempFeature, setTempFeature] = useState<Feature | undefined>();
     const [tempTask, setTempTask] = useState<Tasks | undefined>();
 
+    const leader = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
+
     useEffect(() => {
         try {
             const fetchUserData = async () => {
@@ -120,11 +123,13 @@ const StudentFeatureTask = () => {
                                 <div>{groupInfo?.featureList.length}</div>
                             </div>
 
-                            <button onClick={() => setShowCreateNewFeatureModal(true)}>
-                                <DashedButton
-                                    icon="add"
-                                    message="Create new feature" />
-                            </button>
+                            <LeaderRoute>
+                                <button onClick={() => setShowCreateNewFeatureModal(true)}>
+                                    <DashedButton
+                                        icon="add"
+                                        message="Create new feature" />
+                                </button>
+                            </LeaderRoute>
 
                             {groupInfo!.featureList.map((featureItem) => (
                                 <div role="button" onClick={() => {
@@ -156,11 +161,13 @@ const StudentFeatureTask = () => {
                                 <div>{taskList.length}</div>
                             </div>
 
-                            <button onClick={() => setShowCreateNewTaskModal(true)}>
-                                <DashedButton
-                                    icon="add"
-                                    message="Create new task" />
-                            </button>
+                            <LeaderRoute>
+                                <button onClick={() => setShowCreateNewTaskModal(true)}>
+                                    <DashedButton
+                                        icon="add"
+                                        message="Create new task" />
+                                </button>
+                            </LeaderRoute>
 
                             {taskList.map((taskItem) => (
                                 <div role="button" onClick={() => {
@@ -183,11 +190,12 @@ const StudentFeatureTask = () => {
                                 isVisible={showCreateNewTaskModal}
                                 onClose={() => setShowCreateNewTaskModal(false)} />
 
-                            <ModalEditTask
-                                isVisible={showEditTaskModal}
-                                onClose={() => setShowEditTaskModal(false)}
-                                task={tempTask}
-                                feature={tempFeature} />
+                            {leader ?
+                                <ModalEditTask
+                                    isVisible={showEditTaskModal}
+                                    onClose={() => setShowEditTaskModal(false)}
+                                    task={tempTask}
+                                    feature={tempFeature} /> : null}
                         </div>
                     </div>
                 </div> : null}
