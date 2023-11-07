@@ -4,6 +4,7 @@ import StatusBox from "../../atoms/status-box";
 import NormalButton from "../../atoms/normal-button";
 import Lecturer from "../../pages/lecturer";
 import ModalEditLecturer from "../../molecules/modal-edit-lecturer";
+import NullTableCell from "../../atoms/null-table-cell";
 
 type Lecturer = {
     RollNumber: string;
@@ -40,26 +41,28 @@ const AdminLecturerList = () => {
                     <div className="w-80">Full Name</div>
                     <div className="w-36">Status</div>
                 </div>
-                <div className="divide-y">
-                    {lecturerList.map((lecturerItem, index) => (
-                        <div key={index} className="p-5 flex gap-x-5 items-center">
-                            <div className="w-10">{index + 1}</div>
-                            <div className="w-72">{lecturerItem.RollNumber}</div>
-                            <div className="w-80">{lecturerItem.MemberCode}</div>
-                            <div className="w-80 flex gap-1.5">{lecturerItem.FullName}</div>
-                            <div className="w-36">
-                                <StatusBox color={lecturerItem.status ? "green" : "red"} message={lecturerItem.status ? "On" : "Off"} />
-                            </div>
+                {lecturerList.length != 0 ?
+                    <div className="divide-y">
+                        {lecturerList.map((lecturerItem, index) => (
+                            <div key={index} className="p-5 flex gap-x-5 items-center">
+                                <div className="w-10">{index + 1}</div>
+                                <div className="w-72">{lecturerItem.RollNumber}</div>
+                                <div className="w-80">{lecturerItem.MemberCode}</div>
+                                <div className="w-80 flex gap-1.5">{lecturerItem.FullName}</div>
+                                <div className="w-36">
+                                    <StatusBox color={lecturerItem.status ? "green" : "red"} message={lecturerItem.status ? "On" : "Off"} />
+                                </div>
 
-                            <button className="h-fit" onClick={() => {
-                                setTempLecturer(lecturerItem);
-                                setShowModalEditLecturer(true);
-                            }}>
-                                <NormalButton icon="" message="Edit" />
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                <button className="h-fit" onClick={() => {
+                                    setTempLecturer(lecturerItem);
+                                    setShowModalEditLecturer(true);
+                                }}>
+                                    <NormalButton icon="" message="Edit" />
+                                </button>
+                            </div>
+                        ))}
+                    </div> :
+                    <NullTableCell />}
             </div>
 
             {tempLecturer ? <ModalEditLecturer
