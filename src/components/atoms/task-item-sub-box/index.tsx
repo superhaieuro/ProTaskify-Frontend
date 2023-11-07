@@ -18,7 +18,7 @@ const TaskItemSubBox: FC<TaskItemSubBoxProps> = ({ picture, name, status }) => {
         color = "green";
     }
     return (
-        <div className="bg-white border border-gray-200 rounded p-2.5 flex flex-col gap-2.5 hover:shadow-sm">
+        <div className="bg-white border border-gray-200 rounded p-2.5 flex flex-col gap-2.5 shadow-sm">
             <div role="button" className="flex gap-2 items-center">
                 <div>
                     <img className="w-8 h-8 rounded-full" src={picture}></img>

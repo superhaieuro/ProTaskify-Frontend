@@ -53,7 +53,7 @@ function App() {
                   <Route path="classes" element={<LecturerClasses />} >
                     <Route index element={<LecturerClassesManage />} />
                     <Route path="classdetail/:classId" element={<LecturerClassDetail />} >
-                      <Route path="" element={<Navigate to="sprintlist" />} />
+                      <Route path="" element={<Navigate to="studentlist" />} />
                       <Route path="sprintlist" element={<LecturerSprintStudentList />} />
                       <Route path="studentlist" element={<LecturerClassStudentList />} />
                       <Route path="grouplist" element={<LecturerClassGroupList />} />

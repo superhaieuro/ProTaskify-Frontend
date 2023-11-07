@@ -44,16 +44,16 @@ const LecturerClassDetail = () => {
 
                 <div className="flex flex-col gap-5">
                     <div className="sub-menu">
-                        <NavLink to={"sprintlist"}>
-                            Sprints
-                        </NavLink>
-
                         <NavLink to={"studentlist"}>
                             Students
                         </NavLink>
 
                         <NavLink to={"grouplist"}>
                             Groups
+                        </NavLink>
+
+                        <NavLink to={"sprintlist"}>
+                            Sprints
                         </NavLink>
                     </div>
 

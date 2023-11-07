@@ -320,33 +320,34 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-5 max-h-full w-96 whitespace-pre-wrap">
-                            {sprintList!.map((sprintItem) => (
-                                <div className="text-sm">
-                                    <div className="flex gap-1.5 items-center">
-                                        <div className="text-sm font-bold">{sprintItem.name}</div>
-                                        {
+                        {sprintList.length != 0 ?
+                            <div className="flex flex-col gap-5 max-h-full w-96 whitespace-pre-wrap">
+                                {sprintList!.map((sprintItem) => (
+                                    <div className="text-sm">
+                                        <div className="flex gap-1.5 items-center">
+                                            <div className="text-sm font-bold">{sprintItem.name}</div>
+                                            {
+                                                new Date(sprintItem.endDate) > new Date() ?
+                                                    <StatusBox color="green" message="On-going" /> :
+                                                    <StatusBox color="gray" message="Finished" />
+                                            }
+                                        </div>
+                                        <div className="text-gray-600">{
                                             new Date(sprintItem.endDate) > new Date() ?
-                                                <StatusBox color="green" message="On-going" /> :
-                                                <StatusBox color="gray" message="Finished" />
-                                        }
+                                                <div className="mr-px mt-2 text-black">
+                                                    <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
+                                                        minRows={5} maxRows={10} value={inputFeedback!} onChange={(e) => { setInputFeedback(e.target.value) }} />
+                                                    <div className="mt-5 w-full flex justify-end">
+                                                        <button onClick={() => handleSendFeedback(sprintItem)}>
+                                                            <ApproveButton icon="" message="Save" />
+                                                        </button>
+                                                    </div>
+                                                </div> :
+                                                group?.feedbackList.find(fb => fb.sprint.id === sprintItem.id)?.feedback ?? "No feedback is available yet."
+                                        }</div>
                                     </div>
-                                    <div className="text-gray-600">{
-                                        new Date(sprintItem.endDate) > new Date() ?
-                                            <div className="mr-px mt-2 text-black">
-                                                <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
-                                                    minRows={5} maxRows={10} value={inputFeedback!} onChange={(e) => { setInputFeedback(e.target.value) }} />
-                                                <div className="mt-5 w-full flex justify-end">
-                                                    <button onClick={() => handleSendFeedback(sprintItem)}>
-                                                        <ApproveButton icon="" message="Save" />
-                                                    </button>
-                                                </div>
-                                            </div> :
-                                            group?.feedbackList.find(fb => fb.sprint.id === sprintItem.id)?.feedback ?? "No feedback is available yet."
-                                    }</div>
-                                </div>
-                            ))}
-                        </div>
+                                ))}
+                            </div> : null}
                     </div>
                 </div>
 

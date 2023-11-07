@@ -234,8 +234,8 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
                     <div className="w-full">
                         <div className="flex flex-col gap-y-2">
                             <div className="text-sm font-semibold">Description</div>
-                            <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
-                            outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600" readOnly={member}
+                            <TextareaAutosize className={`border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
+                            outline-none w-full h-fit resize-none ${member ? "text-gray-600" : "text-black ring-blue-600 focus:ring-1 focus:border-blue-600"}`} readOnly={member}
                                 minRows={5} maxRows={10} value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />
                             {inputDescriptionError !== "" ? <div className="text-xs text-red-600">{inputDescriptionError}</div> : null}
                         </div>

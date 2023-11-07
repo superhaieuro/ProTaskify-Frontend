@@ -46,8 +46,11 @@ const StudentCreateGroup = () => {
     const getClassDetail = () => {
         const fetchUserData = async () => {
             try {
-                console.log("is leader: " + sessionStorage.getItem("isLeader"));
-                console.log("is member: " + sessionStorage.getItem("isMember"));
+                // For debug
+                // console.log("is leader: " + sessionStorage.getItem("isLeader"));
+                // console.log("is member: " + sessionStorage.getItem("isMember"));
+                // console.log(!JSON.parse(sessionStorage.getItem("isLeader") ?? "true"));
+                
                 
                 const response = await api.get(`/api/v1/student/get-class/${JSON.parse(userInfo!).userInfo.RollNumber}`);
                 setClassInfo(response.data);
@@ -270,7 +273,7 @@ const StudentCreateGroup = () => {
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Group name" placeholder="" value={inputName} readonly={JSON.parse(userInfo!).userInfo.leader != true || !JSON.parse(sessionStorage.getItem("isLeader") ?? "false")} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                        <InputText title="Group name" placeholder="" value={inputName} readonly={JSON.parse(userInfo!).userInfo.leader == true || !JSON.parse(sessionStorage.getItem("isLeader") ?? "false")} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="flex flex-col gap-y-2">
