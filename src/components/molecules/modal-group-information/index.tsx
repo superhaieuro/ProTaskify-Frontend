@@ -211,7 +211,7 @@ const ModalGroupInformation: FC<ModalGroupInformationProps> = ({ isVisible, onCl
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
             flex justify-center items-center py-10">
-                <div className="bg-white p-5 border border-gray-200 rounded-lg shadow-sm flex flex-col gap-y-5 max-h-full">
+                <div className="bg-white p-5 border border-gray-200 rounded-lg shadow-sm flex flex-col gap-y-5 max-h-full animate-modalenter">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">Group information</div>
                         <button onClick={() => {

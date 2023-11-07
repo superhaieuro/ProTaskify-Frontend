@@ -4,6 +4,7 @@ import NormalButton from "../../atoms/normal-button";
 import ModalVerifyTask from "../../molecules/modal-verify-task";
 import StatusBox from "../../atoms/status-box";
 import LeaderRoute from "../../../utils/leader-route";
+import NullTableCell from "../../atoms/null-table-cell";
 
 type Feature = {
     id: string,
@@ -92,43 +93,45 @@ const StudentVerifyRequest = () => {
                         Assign to
                     </div>
                 </div>
-                <div className="divide-y">
-                    {taskList.filter(task => task.status === "Verifying").map((taskItem, index) => (
-                        <div key={index} className="p-5 flex gap-x-5">
-                            <div className="w-10 my-1.5">
-                                {index + 1}
-                            </div>
+                {taskList.filter(task => task.status === "Verifying").length != 0 ?
+                    <div className="divide-y">
+                        {taskList.filter(task => task.status === "Verifying").map((taskItem, index) => (
+                            <div key={index} className="p-5 flex gap-x-5">
+                                <div className="w-10 my-1.5">
+                                    {index + 1}
+                                </div>
 
-                            <div className="w-96 my-1.5">
-                                {taskItem.name}
-                            </div>
+                                <div className="w-96 my-1.5">
+                                    {taskItem.name}
+                                </div>
 
-                            <div className="w-96 my-1.5">
-                                {featureList.find(feature => feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
-                            </div>
+                                <div className="w-96 my-1.5">
+                                    {featureList.find(feature => feature.taskList.some(task => task.id === taskItem.id))?.name ?? "No feature"}
+                                </div>
 
-                            <div className="w-36 my-2">
-                                <StatusBox color={taskItem.priority === "High" ? "red" : taskItem.priority === "Medium" ? "yellow" : "green"} message={taskItem.priority} />
-                            </div>
+                                <div className="w-36 my-2">
+                                    <StatusBox color={taskItem.priority === "High" ? "red" : taskItem.priority === "Medium" ? "yellow" : "green"} message={taskItem.priority} />
+                                </div>
 
-                            <div className="h-fit mr-auto flex items-center gap-1.5">
-                                <img className="w-8 h-8 rounded-full" src={taskItem.student.picture}></img>
-                                <div>{taskItem.student.FullName}</div>
-                            </div>
+                                <div className="h-fit mr-auto flex items-center gap-1.5">
+                                    <img className="w-8 h-8 rounded-full" src={taskItem.student.picture}></img>
+                                    <div>{taskItem.student.FullName}</div>
+                                </div>
 
-                            <LeaderRoute>
-                                <button className="h-fit" onClick={() => {
-                                    setShowVerifyTaskModal(true);
-                                    setTempTask(taskItem);
-                                    setTempFeature(featureList.find(feature =>
-                                        feature.taskList.some(task => task.id === taskItem.id)));
-                                }}>
-                                    <NormalButton icon="" message="Review" />
-                                </button>
-                            </LeaderRoute>
-                        </div>
-                    ))}
-                </div>
+                                <LeaderRoute>
+                                    <button className="h-fit" onClick={() => {
+                                        setShowVerifyTaskModal(true);
+                                        setTempTask(taskItem);
+                                        setTempFeature(featureList.find(feature =>
+                                            feature.taskList.some(task => task.id === taskItem.id)));
+                                    }}>
+                                        <NormalButton icon="" message="Review" />
+                                    </button>
+                                </LeaderRoute>
+                            </div>
+                        ))}
+                    </div> :
+                    <NullTableCell />}
             </div>
 
             <ModalVerifyTask

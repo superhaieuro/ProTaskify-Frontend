@@ -46,6 +46,9 @@ const StudentCreateGroup = () => {
     const getClassDetail = () => {
         const fetchUserData = async () => {
             try {
+                console.log("is leader: " + sessionStorage.getItem("isLeader"));
+                console.log("is member: " + sessionStorage.getItem("isMember"));
+                
                 const response = await api.get(`/api/v1/student/get-class/${JSON.parse(userInfo!).userInfo.RollNumber}`);
                 setClassInfo(response.data);
             } catch (error) {
@@ -56,7 +59,7 @@ const StudentCreateGroup = () => {
     }
 
     useEffect(() => {
-        if (JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("isMemeber") == null && sessionStorage.getItem("isLeader") != null) {
+        if (JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("ismember") == null && sessionStorage.getItem("isLeader") != null) {
             if (inputName.length >= 5 && inputName.length <= 50) {
                 setInputNameError("");
                 const fetchUserData = async () => {
@@ -76,42 +79,51 @@ const StudentCreateGroup = () => {
     useEffect(() => {
         if (classInfo) {
             let groupInfo = classInfo?.groupList.find(group => group.studentList.some(st => st.RollNumber === JSON.parse(userInfo!).userInfo.RollNumber));
-            if (groupInfo?.status) {
+            if (groupInfo == null && sessionStorage.getItem("isLeader") == null) {
                 const updatedUserInfo = {
                     ...JSON.parse(userInfo!),
-                    inGroup: true,
-                    groupStatus: true
+                    inGroup: false,
+                    groupStatus: false
                 }
-                sessionStorage.removeItem("isMember");
                 sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
                 window.location.reload();
-            }
-            let grId = null;
-            grId = groupInfo?.id;
-            // grId = classInfo?.groupList.find(group => group.studentList.some(st => st.RollNumber === JSON.parse(userInfo!).userInfo.RollNumber))?.id;
-            if (grId != null) {
-                setGroupId(grId);
-                let grName = classInfo?.groupList.find(group => group.studentList.some(st => st.RollNumber === JSON.parse(userInfo!).userInfo.RollNumber))?.name;
-                if (grName != null) {
-                    setInputName(grName);
-                }
             } else {
-                const fetchUserData = async () => {
-                    try {
-                        const request = {
-                            name: inputName,
-                            status: false
-                        }
-                        const response = await api.post(`/api/v1/student/create-group/${JSON.parse(userInfo!).userInfo.RollNumber}`, request);
-                        if (response.status === 200) {
-                            sessionStorage.setItem("isLeader", "true");
-                            getClassDetail();
-                        }
-                    } catch (error) {
-                        console.log(error);
+                if (groupInfo?.status) {
+                    const updatedUserInfo = {
+                        ...JSON.parse(userInfo!),
+                        inGroup: true,
+                        groupStatus: true
                     }
+                    sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
+                    window.location.reload();
                 }
-                fetchUserData();
+                let grId = null;
+                grId = groupInfo?.id;
+                // grId = classInfo?.groupList.find(group => group.studentList.some(st => st.RollNumber === JSON.parse(userInfo!).userInfo.RollNumber))?.id;
+                if (grId != null) {
+                    setGroupId(grId);
+                    let grName = classInfo?.groupList.find(group => group.studentList.some(st => st.RollNumber === JSON.parse(userInfo!).userInfo.RollNumber))?.name;
+                    if (grName != null) {
+                        setInputName(grName);
+                    }
+                } else {
+                    const fetchUserData = async () => {
+                        try {
+                            const request = {
+                                name: inputName,
+                                status: false
+                            }
+                            const response = await api.post(`/api/v1/student/create-group/${JSON.parse(userInfo!).userInfo.RollNumber}`, request);
+                            if (response.status === 200) {
+                                sessionStorage.setItem("isLeader", "true");
+                                getClassDetail();
+                            }
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                    fetchUserData();
+                }
             }
         }
     }, [classInfo])
@@ -258,7 +270,7 @@ const StudentCreateGroup = () => {
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Group name" placeholder="" value={inputName} readonly={JSON.parse(userInfo!).userInfo.leader != true || sessionStorage.getItem("isMember") != null} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                        <InputText title="Group name" placeholder="" value={inputName} readonly={JSON.parse(userInfo!).userInfo.leader != true || !JSON.parse(sessionStorage.getItem("isLeader") ?? "false")} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="flex flex-col gap-y-2">

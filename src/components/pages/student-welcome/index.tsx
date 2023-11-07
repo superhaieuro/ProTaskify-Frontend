@@ -49,6 +49,7 @@ const StudentWelcome = () => {
                         }
                         sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
                         sessionStorage.setItem("isMember", "true");
+                        sessionStorage.removeItem("isLeader");
                         window.location.reload();
                     } else {
                         toast?.setErrorMessage("Group is full!")
@@ -95,6 +96,7 @@ const StudentWelcome = () => {
                                         inGroup: true
                                     }
                                     sessionStorage.setItem("userSession", JSON.stringify(updatedUserInfo));
+                                    sessionStorage.setItem("isLeader", "true");
                                     window.location.reload();
                                 }}>
                                     <ApproveButton icon="add" message="Create new group" />

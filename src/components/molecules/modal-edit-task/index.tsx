@@ -8,6 +8,7 @@ import api from "../../../config/axios";
 import { ToastContext } from "../../../utils/toast-context";
 import ModalAlert from "../modal-alert";
 import RejectButton from "../../atoms/reject-button";
+import LeaderRoute from "../../../utils/leader-route";
 
 type ModalEditTaskProps = {
     isVisible: boolean;
@@ -62,17 +63,25 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     // const [inputFeatureError, setInputFeatureError] = useState("");
     const [inputDescriptionError, setInputDescriptionError] = useState("");
 
+    const member = !JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
+
     const priorityList = [
         { id: "Low", name: "Low" },
         { id: "Medium", name: "Medium" },
         { id: "High", name: "High" }
     ];
 
-    const statusList = [
+    const statusListLeader = [
         { id: "To do", name: "To do" },
         { id: "In progress", name: "In progress" },
         { id: "Verifying", name: "Verifying" },
-        { id: "Done", name: "Done" }
+        { id: "Done", name: "Done" },
+    ];
+
+    const statusListMember = [
+        { id: "To do", name: "To do" },
+        { id: "In progress", name: "In progress" },
+        { id: "Verifying", name: "Verifying" },
     ];
 
     const toast = useContext(ToastContext);
@@ -186,9 +195,13 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
             flex justify-center items-center">
-                <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm">
+                <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm animate-modalenter">
                     <div className="flex items-center justify-between">
-                        <div className="text-2xl font-bold">Edit task</div>
+                        {member ?
+                            <div className="text-2xl font-bold">Task details</div> :
+                            <div className="text-2xl font-bold">Edit task</div>
+                        }
+                        {/* <div className="text-2xl font-bold">Edit task</div> */}
                         <button onClick={() => {
                             onClose();
                             setInputNameError("");
@@ -199,39 +212,42 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Task name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                        <InputText title="Task name" placeholder="" value={inputName} readonly={member} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Feature" data={JSON.stringify([{ id: "0", name: "No feature" }, ...featureList])} onChange={(e) => setInputFeature(e.target.value)} value={inputFeature} error="" />
+                        <InputSelect title="Feature" data={JSON.stringify([{ id: "0", name: "No feature" }, ...featureList])} onChange={(e) => setInputFeature(e.target.value)} value={inputFeature} error="" readonly={member} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Priority" data={JSON.stringify(priorityList)} onChange={(e) => setInputPriority(e.target.value)} value={inputPriority} error="" />
+                        <InputSelect title="Priority" data={JSON.stringify(priorityList)} onChange={(e) => setInputPriority(e.target.value)} value={inputPriority} error="" readonly={member} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Status" data={JSON.stringify(statusList)} onChange={(e) => setInputStatus(e.target.value)} value={inputStatus} error="" />
+                        <InputSelect title="Status" data={JSON.stringify(member ? statusListMember : statusListLeader)} onChange={(e) => setInputStatus(e.target.value)} value={inputStatus} error="" readonly={false} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Assign to" data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} value={inputMember} error="" />
+                        <InputSelect title="Assign to" data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} value={inputMember} error="" readonly={member} />
                     </div>
 
                     <div className="w-full">
                         <div className="flex flex-col gap-y-2">
                             <div className="text-sm font-semibold">Description</div>
                             <TextareaAutosize className="border border-gray-200 bg-gray-50 py-1.5 px-3 text-sm rounded-lg
-                            outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600"
+                            outline-none w-full h-fit resize-none ring-blue-600 focus:ring-1 focus:border-blue-600" readOnly={member}
                                 minRows={5} maxRows={10} value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />
                             {inputDescriptionError !== "" ? <div className="text-xs text-red-600">{inputDescriptionError}</div> : null}
                         </div>
                     </div>
 
+
                     <div className="flex gap-2 justify-end">
-                        <button onClick={() => setShowAlertModal(true)}>
-                            <RejectButton icon="" message="Delete" />
-                        </button>
+                        <LeaderRoute>
+                            <button onClick={() => setShowAlertModal(true)}>
+                                <RejectButton icon="" message="Delete" />
+                            </button>
+                        </LeaderRoute>
 
                         <button onClick={handleUpdate}>
                             <ApproveButton icon="" message="Update" />

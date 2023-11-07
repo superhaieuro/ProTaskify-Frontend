@@ -146,7 +146,7 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
     } else {
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center shadow-sm">
+            flex justify-center items-center shadow-sm animate-modalenter">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">New task</div>
@@ -173,15 +173,15 @@ const ModalCreateNewTask: FC<ModalCreateNewTaskProps> = ({ isVisible, onClose })
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Feature" data={JSON.stringify([{ id: "0", name: "No feature" }, ...featureList])} onChange={(e) => setInputFeature(e.target.value)} value={""} error={inputFeatureError} />
+                        <InputSelect title="Feature" data={JSON.stringify([{ id: "0", name: "No feature" }, ...featureList])} onChange={(e) => setInputFeature(e.target.value)} value={""} error={inputFeatureError} readonly={false} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Priority" data={JSON.stringify(priorityList)} onChange={(e) => setInputPriority(e.target.value)} value={""} error={inputPriorityError} />
+                        <InputSelect title="Priority" data={JSON.stringify(priorityList)} onChange={(e) => setInputPriority(e.target.value)} value={""} error={inputPriorityError} readonly={false} />
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Assign to" data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} value={""} error={inputMemberError} />
+                        <InputSelect title="Assign to" data={JSON.stringify(studentListFormatted)} onChange={(e) => setInputMember(e.target.value)} value={""} error={inputMemberError} readonly={false} />
                     </div>
 
                     <div className="w-full">

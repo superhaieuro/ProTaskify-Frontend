@@ -64,7 +64,7 @@ const ModalSettingProject: FC<ModalSettingProjectProps> = ({ isVisible, onClose,
         return null;
     } else {
         return (
-            <div className="absolute bg-white w-full min-h-full left-0 top-0 p-5 flex flex-col gap-5">
+            <div className="absolute bg-white w-full min-h-full left-0 top-0 p-5 flex flex-col gap-5 animate-modalenter">
                 <div>
                     <button onClick={() => onClose()}>
                         <NormalButton icon="arrow_back" message="Back to team" />

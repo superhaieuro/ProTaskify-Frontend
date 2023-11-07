@@ -63,8 +63,8 @@ const ModalImportStudentList: FC<ModalImportStudentListProps> = ({
 
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center shadow-sm">
-                <div className="bg-white p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
+            flex justify-center items-center">
+                <div className="bg-white p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm animate-modalenter">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">New class</div>
                         <button onClick={() => onClose()}>

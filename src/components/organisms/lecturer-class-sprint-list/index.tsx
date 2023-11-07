@@ -5,6 +5,7 @@ import api from "../../../config/axios";
 import ModalEditSprint from "../../molecules/modal-edit-sprint";
 import NormalButton from "../../atoms/normal-button";
 import ModalCreateSprint from "../../molecules/modal-create-new-sprint";
+import NullTableCell from "../../atoms/null-table-cell";
 
 type Sprint = {
     id: string;
@@ -50,39 +51,41 @@ const LecturerSprintStudentList = () => {
                     <div className="w-36">Status</div>
                     <div>Note</div>
                 </div>
-                <div className="divide-y">
-                    {sprintList.map((sprintItem, index) => (
-                        <div key={index} className="p-5 flex gap-x-5">
-                            <div className="w-10 flex-shrink-0 my-1.5 h-fit">{index + 1}</div>
-                            <div className="w-56 flex-shrink-0 my-1.5 h-fit">{sprintItem.name}</div>
-                            <div className="w-40 flex-shrink-0 my-1.5 h-fit">
-                                {new Date(sprintItem.startDate).toLocaleDateString(undefined, {
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit'
-                                })}
-                            </div>
-                            <div className="w-40 flex-shrink-0 my-1.5 h-fit">
-                                {new Date(sprintItem.endDate).toLocaleDateString(undefined, {
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit'
-                                })}
-                            </div>
-                            <div className="w-36 flex-shrink-0 my-1.5 items-center flex h-5">
-                                <StatusBox color={new Date(sprintItem.endDate) > new Date() ? "green" : "gray"} message={new Date(sprintItem.endDate) > new Date() ? "On-going" : "Finished"} />
-                            </div>
-                            <div className="w-full flex-grow-0 my-1.5 h-fit">{sprintItem.note}</div>
+                {sprintList.length != 0 ?
+                    <div className="divide-y">
+                        {sprintList.map((sprintItem, index) => (
+                            <div key={index} className="p-5 flex gap-x-5">
+                                <div className="w-10 flex-shrink-0 my-1.5 h-fit">{index + 1}</div>
+                                <div className="w-56 flex-shrink-0 my-1.5 h-fit">{sprintItem.name}</div>
+                                <div className="w-40 flex-shrink-0 my-1.5 h-fit">
+                                    {new Date(sprintItem.startDate).toLocaleDateString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    })}
+                                </div>
+                                <div className="w-40 flex-shrink-0 my-1.5 h-fit">
+                                    {new Date(sprintItem.endDate).toLocaleDateString(undefined, {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit'
+                                    })}
+                                </div>
+                                <div className="w-36 flex-shrink-0 my-1.5 items-center flex h-5">
+                                    <StatusBox color={new Date(sprintItem.endDate) > new Date() ? "green" : "gray"} message={new Date(sprintItem.endDate) > new Date() ? "On-going" : "Finished"} />
+                                </div>
+                                <div className="w-full flex-grow-0 my-1.5 h-fit">{sprintItem.note}</div>
 
-                            <button className="h-fit" onClick={() => {
-                                setTempSprint(sprintItem);
-                                setShowEditSprintModal(true);
-                            }}>
-                                <NormalButton icon="" message="Edit" />
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                <button className="h-fit" onClick={() => {
+                                    setTempSprint(sprintItem);
+                                    setShowEditSprintModal(true);
+                                }}>
+                                    <NormalButton icon="" message="Edit" />
+                                </button>
+                            </div>
+                        ))}
+                    </div> :
+                    <NullTableCell />}
             </div>
 
             <ModalEditSprint

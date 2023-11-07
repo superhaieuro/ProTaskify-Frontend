@@ -92,7 +92,7 @@ const ModalEditLecturer: FC<ModalEditLecturerProps> = ({ isVisible, onClose, lec
     } else {
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
-            flex justify-center items-center shadow-sm">
+            flex justify-center items-center shadow-sm animate-modalenter">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">Edit lecturer</div>
@@ -116,7 +116,7 @@ const ModalEditLecturer: FC<ModalEditLecturerProps> = ({ isVisible, onClose, lec
                     </div>
 
                     <div className="w-full">
-                        <InputSelect title="Status" data={JSON.stringify(statusList)} onChange={(e) => setInputStatus(e.target.value)} value={inputStatus} error="" />
+                        <InputSelect title="Status" data={JSON.stringify(statusList)} onChange={(e) => setInputStatus(e.target.value)} value={inputStatus} error="" readonly={false} />
                     </div>
 
                     <div className="flex gap-2 justify-end">

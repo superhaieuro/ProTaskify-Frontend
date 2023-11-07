@@ -5,6 +5,7 @@ import StatusBox from "../../atoms/status-box";
 import NormalButton from "../../atoms/normal-button";
 import ModalGroupInformation from "../../molecules/modal-group-information";
 import ModalLecturerCreateGroup from "../../molecules/modal-lecturer-create-group";
+import NullTableCell from "../../atoms/null-table-cell";
 
 type Class = {
     id: number;
@@ -109,8 +110,8 @@ const LecturerClassGroupList = () => {
 
             <ModalLecturerCreateGroup
                 isVisible={showModalCreateGroup}
-                onClose={() => setShowModalCreateGroup(false)} 
-                classes={classInfo!}/>
+                onClose={() => setShowModalCreateGroup(false)}
+                classes={classInfo!} />
 
             <div className="flex flex-col gap-2 text-sm">
                 <div className="border border-gray-200 rounded-lg overflow-auto">
@@ -120,25 +121,27 @@ const LecturerClassGroupList = () => {
                         <div className="w-1/2">Project</div>
                         <div className="w-36">Members</div>
                     </div>
-                    <div className="divide-y">
-                        {classInfo?.groupList.map((groupItem, index) => (
-                            <div key={index} className="p-5 flex gap-x-5 items-center">
-                                <div className="w-10 flex-shrink-0">{index + 1}</div>
-                                <div className="w-60 flex-shrink-0">{groupItem.name}</div>
-                                <div className="w-1/2 flex-shrink-0">{groupItem.project ?
-                                    groupItem.project.name :
-                                    <StatusBox color="red" message="No project" />}
+                    {classInfo?.groupList.length != 0 ?
+                        <div className="divide-y">
+                            {classInfo?.groupList.map((groupItem, index) => (
+                                <div key={index} className="p-5 flex gap-x-5 items-center">
+                                    <div className="w-10 flex-shrink-0">{index + 1}</div>
+                                    <div className="w-60 flex-shrink-0">{groupItem.name}</div>
+                                    <div className="w-1/2 flex-shrink-0">{groupItem.project ?
+                                        groupItem.project.name :
+                                        <StatusBox color="red" message="No project" />}
+                                    </div>
+                                    <div className="w-36 flex-grow">{groupItem.studentList.length}</div>
+                                    <button className="h-fit" onClick={() => {
+                                        setTempGroup(groupItem);
+                                        setShowGroupInformation(true);
+                                    }}>
+                                        <NormalButton icon="" message="View" />
+                                    </button>
                                 </div>
-                                <div className="w-36 flex-grow">{groupItem.studentList.length}</div>
-                                <button className="h-fit" onClick={() => {
-                                    setTempGroup(groupItem);
-                                    setShowGroupInformation(true);
-                                }}>
-                                    <NormalButton icon="" message="View" />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div> :
+                        <NullTableCell />}
                 </div>
 
                 <ModalGroupInformation

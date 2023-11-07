@@ -78,7 +78,6 @@ const StudentFeatureTask = () => {
 
     const [showAssignToMeTasks, setShowAssignToMeTasks] = useState(false);
 
-    const leader = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
     const userId = JSON.parse(sessionStorage.getItem("userSession")!).userInfo.RollNumber;
 
     const filteredTaskList = showAssignToMeTasks
@@ -121,8 +120,6 @@ const StudentFeatureTask = () => {
             {groupInfo ?
                 <div className="flex flex-col gap-5">
                     <SprintInformation group={groupInfo!} />
-
-
                     <div className="flex gap-5">
                         <div className="w-1/3 bg-gray-50 border border-gray-200 rounded-lg p-2.5 flex flex-col gap-2 h-fit">
                             <div className="text-xs flex gap-1.5 text-gray-600">
@@ -209,12 +206,11 @@ const StudentFeatureTask = () => {
                                 isVisible={showCreateNewTaskModal}
                                 onClose={() => setShowCreateNewTaskModal(false)} />
 
-                            {leader ?
-                                <ModalEditTask
-                                    isVisible={showEditTaskModal}
-                                    onClose={() => setShowEditTaskModal(false)}
-                                    task={tempTask}
-                                    feature={tempFeature} /> : null}
+                            <ModalEditTask
+                                isVisible={showEditTaskModal}
+                                onClose={() => setShowEditTaskModal(false)}
+                                task={tempTask}
+                                feature={tempFeature} />
                         </div>
                     </div>
                 </div> : null}

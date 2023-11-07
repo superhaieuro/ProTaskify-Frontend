@@ -31,7 +31,7 @@ export default {
           700: "#D32F2F",
           800: "#C62828",
         },
-        
+
         yellow: {
           50: "#FFFDE7",
           200: "#FFF59D",
@@ -47,9 +47,11 @@ export default {
 
       animation: {
         enter: "fadeInDown 500ms ease-out",
-        leave: "fadeOutDown 500ms ease-in forwards"
+        leave: "fadeOutDown 500ms ease-in forwards",
+        modalenter: "fadeInZoomIn 200ms ease-out",
+        modalenterleft: "fadeInLeft 200ms ease-out",
       },
-      
+
       keyframes: {
         fadeInDown: {
           "0%": {
@@ -67,6 +69,26 @@ export default {
           },
           "100%": {
             opacity: "0"
+          },
+        },
+        fadeInZoomIn: {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.5)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1)"
+          },
+        },
+        fadeInLeft: {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(2rem)"
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)"
           },
         },
       },

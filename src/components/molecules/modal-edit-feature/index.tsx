@@ -10,6 +10,7 @@ import TaskItemSubBox from "../../atoms/task-item-sub-box";
 import api from "../../../config/axios";
 import ModalAlert from "../modal-alert";
 import LeaderRoute from "../../../utils/leader-route";
+import ModalEditTask from "../modal-edit-task";
 
 type Feature = {
     id: string,
@@ -30,11 +31,15 @@ type Tasks = {
     description: string,
     createDate: Date,
     finishDate: Date,
+    taskIndex: number,
+    feature: Feature,
     student: Student
 }
 
 type Student = {
     picture: string;
+    RollNumber: string;
+    FullName: string;
 }
 
 type ModalEditFeatureProps = {
@@ -50,6 +55,8 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
         const [startDate, setStartDate] = useState(new Date());
         const [endDate, setEndDate] = useState(new Date());
         const [showAlertModal, setShowAlertModal] = useState(false);
+        const [showEditTaskModal, setShowEditTaskModal] = useState(false);
+        const [tempTask, setTempTask] = useState<Tasks | undefined>();
 
         const [inputNameError, setInputNameError] = useState("");
         const [inputDescriptionError, setInputDescriptionError] = useState("");
@@ -160,7 +167,7 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
         } else {
             return (
                 <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full flex justify-end overflow-auto">
-                    <div className="bg-white w-96 p-5 border-l border-gray-200 flex flex-col gap-y-5 overflow-y-auto shadow-sm">
+                    <div className="bg-white w-96 p-5 border-l border-gray-200 flex flex-col gap-y-5 overflow-y-auto shadow-sm animate-modalenterleft">
                         <div className="flex items-center justify-between">
                             {member ?
                                 <div className="text-2xl font-bold">Feature details</div> :
@@ -218,10 +225,15 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                                 <div className={`h-full bg-${color}-600`} style={{ width: `${progressRate}%` }}></div>
                             </div>
                             {feature.taskList.map((taskItem) => (
-                                <TaskItemSubBox
-                                    picture={taskItem.student.picture}
-                                    name={taskItem.name}
-                                    status={taskItem.status} />
+                                <div onClick={() => {
+                                    setTempTask(taskItem);
+                                    setShowEditTaskModal(true);
+                                }}>
+                                    <TaskItemSubBox
+                                        picture={taskItem.student.picture}
+                                        name={taskItem.name}
+                                        status={taskItem.status} />
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -236,6 +248,12 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
                                 <RejectButton icon="" message="Delete" />
                             </button>
                         } />
+
+                    <ModalEditTask
+                        isVisible={showEditTaskModal}
+                        onClose={() => setShowEditTaskModal(false)} 
+                        task={tempTask} 
+                        feature={feature}/>
                 </div>
             )
         }

@@ -75,7 +75,7 @@ const ModalEditStudent: FC<ModalEditStudentProps> = ({ isVisible, onClose, score
         return (
             <div className="absolute left-0 top-0 bg-black bg-opacity-50 h-full w-full
             flex justify-center items-center">
-                <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm">
+                <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm animate-modalenter">
                     <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">Edit student</div>
                         <button onClick={() => {
@@ -90,7 +90,7 @@ const ModalEditStudent: FC<ModalEditStudentProps> = ({ isVisible, onClose, score
                     {leader ?
                         <NotificationBox icon="lightbulb" message="Can not change leader's group." style="text-blue-600 border-blue-200 bg-blue-50" /> :
                         <div className="w-full">
-                            <InputSelect title="Group" value={inputGroup!} data={JSON.stringify([{ id: "0", name: "No group" }, ...groupList])} onChange={(e) => setInputGroup(e.target.value)} error="" />
+                            <InputSelect title="Group" value={inputGroup!} data={JSON.stringify([{ id: "0", name: "No group" }, ...groupList])} onChange={(e) => setInputGroup(e.target.value)} error="" readonly={false} />
                         </div>}
 
 
