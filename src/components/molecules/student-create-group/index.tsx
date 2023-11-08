@@ -49,8 +49,10 @@ const StudentCreateGroup = () => {
                 // For debug
                 // console.log("is leader: " + sessionStorage.getItem("isLeader"));
                 // console.log("is member: " + sessionStorage.getItem("isMember"));
-                // console.log(!JSON.parse(sessionStorage.getItem("isLeader") ?? "true"));
-                
+                // console.log(JSON.parse(sessionStorage.getItem("isLeader") ?? "false"));
+                // console.log("Session user: " + JSON.parse(userInfo!).userInfo.leader);
+
+                // console.log("final: " + (JSON.parse(sessionStorage.getItem("isLeader") ?? "false") || JSON.parse(userInfo!).userInfo.leader));
                 
                 const response = await api.get(`/api/v1/student/get-class/${JSON.parse(userInfo!).userInfo.RollNumber}`);
                 setClassInfo(response.data);
@@ -273,7 +275,7 @@ const StudentCreateGroup = () => {
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Group name" placeholder="" value={inputName} readonly={JSON.parse(userInfo!).userInfo.leader == true || !JSON.parse(sessionStorage.getItem("isLeader") ?? "false")} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                        <InputText title="Group name" placeholder="" value={inputName} readonly={!(JSON.parse(sessionStorage.getItem("isLeader") ?? "false") || JSON.parse(userInfo!).userInfo.leader)} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="flex flex-col gap-y-2">
