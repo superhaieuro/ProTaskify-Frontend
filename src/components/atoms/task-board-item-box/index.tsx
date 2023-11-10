@@ -31,6 +31,8 @@ const TaskBoardItemBox: FC<TaskBoardItemBoxProps> = ({ picture, priority, featur
         statusColor = "green";
     }
 
+    let hiddenColor = "border-green-600 border-red-600 border-yellow-600" //for install color
+
     return (
         <div className="bg-white shadow-sm border border-gray-200 rounded overflow-auto flex">
             <div className="p-2.5 flex gap-2 text-xs items-center justify-between w-full">

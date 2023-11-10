@@ -25,6 +25,8 @@ const FeatureBoardItemBox: React.FC<FeatureBoardItemBoxProps> = ({ totalTask, do
         color = "green";
     }
 
+    let hiddenColor = "bg-green-600 bg-red-600 bg-yellow-600" //for install color
+
     return (
         <div className="bg-white rounded p-2.5 flex flex-col gap-2.5 text-xs shadow-sm border border-gray-200">
             <div className={`w-full h-1.5 bg-${color}-50`}>
