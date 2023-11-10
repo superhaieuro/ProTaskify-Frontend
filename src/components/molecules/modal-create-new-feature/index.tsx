@@ -91,7 +91,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
             flex justify-center items-center">
                 <div className="bg-white w-96 p-5 border border-gray-200 rounded-lg flex flex-col gap-y-5 shadow-sm animate-modalenter">
                     <div className="flex items-center justify-between">
-                        <div className="text-2xl font-bold">New semester</div>
+                        <div className="text-2xl font-bold">New feature</div>
                         <button onClick={() => {
                             onClose();
                             setInputName("");
@@ -106,7 +106,7 @@ const ModalCreateNewFeature: FC<ModalCreateNewFeatureProps> = ({ isVisible, onCl
                     </div>
 
                     <div className="w-full">
-                        <InputText title="Semester name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
+                        <InputText title="Feature name" placeholder="" value={inputName} readonly={false} onChange={(e) => setInputName(e.target.value)} error={inputNameError} />
                     </div>
 
                     <div className="flex gap-5">
