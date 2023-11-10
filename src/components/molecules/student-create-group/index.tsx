@@ -53,7 +53,7 @@ const StudentCreateGroup = () => {
                 // console.log("Session user: " + JSON.parse(userInfo!).userInfo.leader);
 
                 // console.log("final: " + (JSON.parse(sessionStorage.getItem("isLeader") ?? "false") || JSON.parse(userInfo!).userInfo.leader));
-                
+
                 const response = await api.get(`/api/v1/student/get-class/${JSON.parse(userInfo!).userInfo.RollNumber}`);
                 setClassInfo(response.data);
             } catch (error) {
@@ -248,15 +248,15 @@ const StudentCreateGroup = () => {
                                 <RejectButton icon="logout" message="" />
                             </button>
 
-                            {sessionStorage.getItem("isMember") != null ?
+                            {JSON.parse(userInfo!).userInfo.leader || sessionStorage.getItem("isLeader") != null ?
+                                <button onClick={() => { setShowModalAlert(true) }}>
+                                    <RejectButton icon="delete" message="" />
+                                </button>
+                                :
                                 <button onClick={() => {
                                     outGroup(JSON.parse(userInfo!).userInfo.RollNumber);
                                 }}>
                                     <RejectButton icon="" message="Leave" />
-                                </button>
-                                :
-                                <button onClick={() => { setShowModalAlert(true) }}>
-                                    <RejectButton icon="delete" message="" />
                                 </button>
                             }
 
