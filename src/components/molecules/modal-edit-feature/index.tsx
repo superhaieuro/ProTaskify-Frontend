@@ -63,7 +63,7 @@ const ModalEditFeature: FC<ModalEditFeatureProps> = ({ isVisible, onClose, featu
 
         const toast = useContext(ToastContext);
 
-        const member = !JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
+        const member = !(JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader || sessionStorage.getItem("isLeader") != null);
 
         let progressRate;
         if (feature!.taskList.length === 0) {

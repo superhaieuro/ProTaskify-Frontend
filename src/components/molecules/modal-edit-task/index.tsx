@@ -63,7 +63,7 @@ const ModalEditTask: FC<ModalEditTaskProps> = ({ isVisible, onClose, task, featu
     // const [inputFeatureError, setInputFeatureError] = useState("");
     const [inputDescriptionError, setInputDescriptionError] = useState("");
 
-    const member = !JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader;
+    const member = !(JSON.parse(sessionStorage.getItem("userSession")!).userInfo.leader || sessionStorage.getItem("isLeader") != null);
 
     const priorityList = [
         { id: "Low", name: "Low" },
