@@ -63,7 +63,7 @@ const ModalEditSemester: FC<ModalEditSemesterProps> = ({ isVisible, onClose, sem
             try {
                 const request = {
                     name: inputName,
-                    status: true,
+                    // status: true,
                     startDate: startDate,
                     endDate: endDate
                 }
