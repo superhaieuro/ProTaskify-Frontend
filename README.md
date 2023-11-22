@@ -2,7 +2,7 @@
 A place where you can organize courses, groups and projects with ease and efficiency.
 
 ## Introduction
-This is a simple ReactJS + Vite Frontend application. This application uses Tailwind CSS for styling, React Router and `@react-oauth/google` for Login Google Oauth2.
+This is a simple React + Vite Web Application. This Application uses Tailwind CSS for styling, React Router and `@react-oauth/google` for Login Google Oauth2.
 
 ## Getting Started
 Follow these steps to get your ReactJS application up and running:
